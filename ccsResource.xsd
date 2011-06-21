@@ -3,6 +3,22 @@
     targetNamespace="http://clarin.eu/schemas/ccs"
     xmlns:ccs="http://clarin.eu/schemas/ccs"
     >
+    <xs:annotation>
+        <xs:documentation>This schema shall define the generic inner structure 
+            of one record within the (federated) CLARIN content search.
+            This means it would validate the xml-fragment inside sru:record/sru:recordData
+            and would be referenced in sru:record/sru:recordSchema 
+            of the sru:searchRetrieveResponse.
+            
+            It shall allow:
+            a) any metadata about the matched record, including reference to a CMD-record
+            b) separate (metadata) description of full Resource and ResourceFragment (matching part of the resource) 
+            c) providing metadata AND content 
+            d) various views on the data delivered (text-snippet, image, individual annotation-layers, ...)
+            e) providing links (either as PID or as simple URLs) to any of: 
+               Resource, ResourceFragment, Metadata (CMD-record), DataViews            
+         </xs:documentation>
+    </xs:annotation>
 
     <xs:element name="Resouce">
         <xs:complexType>
