@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://clarin.eu/schemas/ccs"
-    xmlns:ccs="http://clarin.eu/schemas/ccs"
-    >
+    targetNamespace="http://clarin.eu/schemas/ccs" xmlns:ccs="http://clarin.eu/schemas/ccs">
     <xs:annotation>
         <xs:documentation>This schema shall define the generic inner structure 
             of one record within the (federated) CLARIN content search.
@@ -23,27 +21,31 @@
     <xs:element name="Resouce">
         <xs:complexType>
             <xs:sequence>
-                <xs:element maxOccurs="unbounded" minOccurs="0" name="Metadata" type="ccs:MetadataType"/>
-                <xs:element maxOccurs="unbounded" minOccurs="0" name="ResourceFragment" type="ccs:ResourceFragmentType"/>
-                <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView" type="ccs:DataViewType"/>                    
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="Metadata"
+                    type="ccs:MetadataType"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="ResourceFragment"
+                    type="ccs:ResourceFragmentType"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView"
+                    type="ccs:DataViewType"/>
             </xs:sequence>
             <xs:attribute name="pid" type="ccs:pidType" use="optional"/>
             <xs:attribute name="ref" type="ccs:refType" use="optional"/>
         </xs:complexType>
-        
+
     </xs:element>
-    
-    
-    <xs:complexType name="ResourceFragmentType">        
-           <xs:sequence>
-               <xs:element maxOccurs="unbounded" minOccurs="0" name="Metadata" type="ccs:MetadataType"/>
-               <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView" type="ccs:DataViewType"/>                    
-           </xs:sequence>
+
+
+    <xs:complexType name="ResourceFragmentType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="Metadata" type="ccs:MetadataType"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView" type="ccs:DataViewType"
+            />
+        </xs:sequence>
         <xs:attribute name="pid" type="ccs:pidType" use="optional"/>
         <xs:attribute name="ref" type="ccs:refType" use="optional"/>
-    </xs:complexType>        
-        
-    
+    </xs:complexType>
+
+
     <xs:complexType name="MetadataType">
         <xs:annotation>
             <xs:documentation>Taken from oai-pmh:
@@ -57,9 +59,9 @@
             <xs:any namespace="##other" processContents="strict"/>
         </xs:sequence>
         <xs:attribute name="pid" type="ccs:pidType" use="optional"/>
-        <xs:attribute name="ref" type="ccs:refType" use="optional"/>        
+        <xs:attribute name="ref" type="ccs:refType" use="optional"/>
     </xs:complexType>
-    
+
     <xs:complexType name="DataViewType">
         <xs:annotation>
             <xs:documentation>the content expressed in XML that complies
@@ -67,26 +69,28 @@
         </xs:annotation>
         <xs:sequence>
             <xs:any namespace="##other" processContents="strict"/>
-        </xs:sequence>                   
-        <xs:attribute name="type" type="ccs:DataViewTypeType"/>            
+        </xs:sequence>
+        <xs:attribute name="type" type="ccs:DataViewTypeType"/>
         <xs:attribute name="pid" type="ccs:pidType"/>
         <xs:attribute name="ref" type="ccs:refType"/>
-    </xs:complexType>    
-    
+    </xs:complexType>
+
     <xs:simpleType name="DataViewTypeType">
         <xs:annotation>
-            <xs:documentation>This is obviously not exhaustive.</xs:documentation>
-        </xs:annotation>        
+            <xs:documentation>This is obviously not exhaustive.
+
+Shouldn't this be MIME-type ?</xs:documentation>
+        </xs:annotation>
         <xs:restriction base="xs:string">
             <xs:enumeration value="kwic"/>
-            <xs:enumeration value="fulltext"/>            
+            <xs:enumeration value="fulltext"/>
             <xs:enumeration value="image"/>
         </xs:restriction>
     </xs:simpleType>
-    
+
     <xs:simpleType name="pidType">
         <xs:annotation>
-            <xs:documentation>a persistent! identifier of given entity. This should be really only used, when a PID is available</xs:documentation>
+            <xs:documentation>a persistent! identifier of given entity. This should be really only used, when a PID is available. Provider should also fill the sru:record/sru:recordIdentifier-element. If there are more PIDs in one record (for Resource, Metadata, DataView), provider selects the "most important"/primary PID to put into sru:recordIdentifier</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:anyURI"/>
     </xs:simpleType>
@@ -97,6 +101,6 @@
         </xs:annotation>
         <xs:restriction base="xs:anyURI"/>
     </xs:simpleType>
-    
-    
+
+
 </xs:schema>
