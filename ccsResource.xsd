@@ -18,26 +18,21 @@
          </xs:documentation>
     </xs:annotation>
 
-    <xs:element name="Resouce">
-        <xs:complexType>
-            <xs:sequence>
-                <xs:element maxOccurs="unbounded" minOccurs="0" name="Metadata"
-                    type="ccs:MetadataType"/>
-                <xs:element maxOccurs="unbounded" minOccurs="0" name="ResourceFragment"
-                    type="ccs:ResourceFragmentType"/>
-                <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView"
-                    type="ccs:DataViewType"/>
-            </xs:sequence>
-            <xs:attribute name="pid" type="ccs:pidType" use="optional"/>
-            <xs:attribute name="ref" type="ccs:refType" use="optional"/>
-        </xs:complexType>
-
-    </xs:element>
+    <xs:element name="Resource" type="ccs:ResourceType"> </xs:element>
+    <xs:complexType name="ResourceType">
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="Resource" type="ccs:ResourceType"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView" type="ccs:DataViewType"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="ResourceFragment"
+                type="ccs:ResourceFragmentType"/>
+        </xs:sequence>
+        <xs:attribute name="pid" type="ccs:pidType" use="optional"/>
+        <xs:attribute name="ref" type="ccs:refType" use="optional"/>
+    </xs:complexType>
 
 
     <xs:complexType name="ResourceFragmentType">
         <xs:sequence>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="Metadata" type="ccs:MetadataType"/>
             <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView" type="ccs:DataViewType"
             />
         </xs:sequence>
@@ -45,27 +40,9 @@
         <xs:attribute name="ref" type="ccs:refType" use="optional"/>
     </xs:complexType>
 
-
-    <xs:complexType name="MetadataType">
-        <xs:annotation>
-            <xs:documentation>Taken from oai-pmh:
-                Metadata must be expressed in XML that complies
-                with another XML Schema (namespace=#other). Metadata must be 
-                explicitly qualified in the response.
-                So this could be dublincore, OAI_DC, MODS, OLAC or whatever.
-            </xs:documentation>
-        </xs:annotation>
-        <xs:sequence>
-            <xs:any namespace="##other" processContents="strict"/>
-        </xs:sequence>
-        <xs:attribute name="pid" type="ccs:pidType" use="optional"/>
-        <xs:attribute name="ref" type="ccs:refType" use="optional"/>
-    </xs:complexType>
-
     <xs:complexType name="DataViewType">
         <xs:annotation>
-            <xs:documentation>the content expressed in XML that complies
-                with another XML Schema (namespace=#other). Analogous to metadataType.</xs:documentation>
+            <xs:documentation>the content expressed in XML that complies with another XML Schema (namespace=#other). </xs:documentation>
         </xs:annotation>
         <xs:sequence>
             <xs:any namespace="##other" processContents="strict"/>
@@ -73,13 +50,14 @@
         <xs:attribute name="type" type="ccs:DataViewTypeType"/>
         <xs:attribute name="pid" type="ccs:pidType"/>
         <xs:attribute name="ref" type="ccs:refType"/>
+        <xs:attribute name="schema" type="ccs:schemaType"/>
     </xs:complexType>
 
     <xs:simpleType name="DataViewTypeType">
         <xs:annotation>
             <xs:documentation>This is obviously not exhaustive.
 
-Shouldn't this be MIME-type ?</xs:documentation>
+Could this be a superset of of MIME-type?</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
             <xs:enumeration value="kwic"/>
@@ -103,4 +81,10 @@ Shouldn't this be MIME-type ?</xs:documentation>
     </xs:simpleType>
 
 
+    <xs:simpleType name="schemaType">
+        <xs:annotation>
+            <xs:documentation>a reference to a schema, describing the content of the DataView</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:anyURI"/>
+    </xs:simpleType>
 </xs:schema>
