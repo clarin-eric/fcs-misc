@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    targetNamespace="http://clarin.eu/schemas/ccs" xmlns:ccs="http://clarin.eu/schemas/ccs">
-    <xs:annotation>
-        <xs:documentation>
-            This schema is SUPERSEDED BY: Resource.xsd 
-                with a NEW namespace: http://clarin.eu/fcs/1.0
-        </xs:documentation>
-    </xs:annotation>
-    
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://clarin.eu/fcs/1.0"
+    xmlns:fcs="http://clarin.eu/fcs/1.0">
     <xs:annotation>
         <xs:documentation>This schema shall define the generic inner structure 
             of one record within the (federated) CLARIN content search.
@@ -25,26 +18,26 @@
          </xs:documentation>
     </xs:annotation>
 
-    <xs:element name="Resource" type="ccs:ResourceType"> </xs:element>
+    <xs:element name="Resource" type="fcs:ResourceType"> </xs:element>
     <xs:complexType name="ResourceType">
         <xs:sequence>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="Resource" type="ccs:ResourceType"/>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView" type="ccs:DataViewType"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="Resource" type="fcs:ResourceType"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView" type="fcs:DataViewType"/>
             <xs:element maxOccurs="unbounded" minOccurs="0" name="ResourceFragment"
-                type="ccs:ResourceFragmentType"/>
+                type="fcs:ResourceFragmentType"/>
         </xs:sequence>
-        <xs:attribute name="pid" type="ccs:pidType" use="optional"/>
-        <xs:attribute name="ref" type="ccs:refType" use="optional"/>
+        <xs:attribute name="pid" type="fcs:pidType" use="optional"/>
+        <xs:attribute name="ref" type="fcs:refType" use="optional"/>
     </xs:complexType>
 
 
     <xs:complexType name="ResourceFragmentType">
         <xs:sequence>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView" type="ccs:DataViewType"
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView" type="fcs:DataViewType"
             />
         </xs:sequence>
-        <xs:attribute name="pid" type="ccs:pidType" use="optional"/>
-        <xs:attribute name="ref" type="ccs:refType" use="optional"/>
+        <xs:attribute name="pid" type="fcs:pidType" use="optional"/>
+        <xs:attribute name="ref" type="fcs:refType" use="optional"/>
     </xs:complexType>
 
     <xs:complexType name="DataViewType">
@@ -54,10 +47,10 @@
         <xs:sequence>
             <xs:any namespace="##other" processContents="strict"/>
         </xs:sequence>
-        <xs:attribute name="type" type="ccs:DataViewTypeType"/>
-        <xs:attribute name="pid" type="ccs:pidType"/>
-        <xs:attribute name="ref" type="ccs:refType"/>
-        <xs:attribute name="schema" type="ccs:schemaType"/>
+        <xs:attribute name="type" type="fcs:DataViewTypeType"/>
+        <xs:attribute name="pid" type="fcs:pidType"/>
+        <xs:attribute name="ref" type="fcs:refType"/>
+        <xs:attribute name="schema" type="fcs:schemaType"/>
     </xs:complexType>
 
     <xs:simpleType name="DataViewTypeType">
