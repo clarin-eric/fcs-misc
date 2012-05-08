@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://clarin.eu/fcs/1.0"
-    xmlns:fcs="http://clarin.eu/fcs/1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fcs="http://clarin.eu/fcs/1.0"
+    targetNamespace="http://clarin.eu/fcs/1.0" elementFormDefault="qualified">
     <xs:annotation>
         <xs:documentation>This schema shall define the generic inner structure 
             of one record within the (federated) CLARIN content search.
@@ -18,13 +18,13 @@
          </xs:documentation>
     </xs:annotation>
 
-    <xs:element name="Resource" type="fcs:ResourceType"> </xs:element>
+    <xs:element name="Resource" type="fcs:ResourceType"/>
+
     <xs:complexType name="ResourceType">
         <xs:sequence>
             <xs:element maxOccurs="unbounded" minOccurs="0" name="Resource" type="fcs:ResourceType"/>
             <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView" type="fcs:DataViewType"/>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="ResourceFragment"
-                type="fcs:ResourceFragmentType"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="ResourceFragment" type="fcs:ResourceFragmentType"/>
         </xs:sequence>
         <xs:attribute name="pid" type="fcs:pidType" use="optional"/>
         <xs:attribute name="ref" type="fcs:refType" use="optional"/>
@@ -33,8 +33,7 @@
 
     <xs:complexType name="ResourceFragmentType">
         <xs:sequence>
-            <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView" type="fcs:DataViewType"
-            />
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView" type="fcs:DataViewType"/>
         </xs:sequence>
         <xs:attribute name="pid" type="fcs:pidType" use="optional"/>
         <xs:attribute name="ref" type="fcs:refType" use="optional"/>
@@ -42,7 +41,9 @@
 
     <xs:complexType name="DataViewType">
         <xs:annotation>
-            <xs:documentation>the content expressed in XML that complies with another XML Schema (namespace=#other). </xs:documentation>
+            <xs:documentation>
+                The content expressed in XML that complies with another XML Schema (namespace=#other).
+            </xs:documentation>
         </xs:annotation>
         <xs:sequence>
             <xs:any namespace="##other" processContents="strict"/>
@@ -50,14 +51,13 @@
         <xs:attribute name="type" type="fcs:DataViewTypeType"/>
         <xs:attribute name="pid" type="fcs:pidType"/>
         <xs:attribute name="ref" type="fcs:refType"/>
-        <xs:attribute name="schema" type="fcs:schemaType"/>
     </xs:complexType>
 
     <xs:simpleType name="DataViewTypeType">
         <xs:annotation>
-            <xs:documentation>This is obviously not exhaustive.
-
-Could this be a superset of of MIME-type?</xs:documentation>
+            <xs:documentation>
+                This is obviously not exhaustive. Could this be a superset of of MIME-type?
+            </xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
             <xs:enumeration value="kwic"/>
@@ -80,11 +80,4 @@ Could this be a superset of of MIME-type?</xs:documentation>
         <xs:restriction base="xs:anyURI"/>
     </xs:simpleType>
 
-
-    <xs:simpleType name="schemaType">
-        <xs:annotation>
-            <xs:documentation>a reference to a schema, describing the content of the DataView</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:anyURI"/>
-    </xs:simpleType>
 </xs:schema>
