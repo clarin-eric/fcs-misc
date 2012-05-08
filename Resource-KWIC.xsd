@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:kwic="http://clarin.eu/fcs/1.0/kwic"
+    targetNamespace="http://clarin.eu/fcs/1.0/kwic" elementFormDefault="qualified">
+    
+    <xs:element name="kwic" type="kwic:KwicType"/>
+    
+    <xs:complexType name="KwicType">
+        <xs:sequence>
+            <xs:element name="c" type="kwic:ContextType" minOccurs="0"/>
+            <xs:element name="kw" type="kwic:KeywordType"/>
+            <xs:element name="c" type="kwic:ContextType" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ContextType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="type" type="kwic:ContextTypeType"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="KeywordType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string"/>
+        </xs:simpleContent>
+    </xs:complexType>
+    
+    <xs:simpleType name="ContextTypeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="left"/>
+            <xs:enumeration value="right"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
