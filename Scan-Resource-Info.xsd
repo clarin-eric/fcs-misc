@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:ri="http://clarin.eu/fcs/1.0/resource-info" elementFormDefault="qualified"
+    xmlns="http://www.w3.org/1999/xhtml"
+    targetNamespace="http://clarin.eu/fcs/1.0/resource-info" xml:lang="en">
+
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+
+    <xs:element name="ResourceInfo">
+        <xs:annotation>
+            <xs:documentation>
+                <p>
+                    A CLARIN FCS extension describing a corpus to the SRU protocol to be put
+                    inside a <code>&lt;extraTermData&gt;</code> element of a
+                        <em>scan</em> operation result. This information is intended to be
+                    used by CLARIN FCS aggregators.
+                </p>
+                <p>
+                    A CLARIN FCS endpoint should make this information only available if
+                    explicitly asked by the client by using the "x-cmd-resource-info" extra
+                    request parameter is set to "true".
+                </p>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Title" type="ri:i18nString" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <p>
+                                A human readable title for the corpus. An English version is
+                                mandatory.
+                            </p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Description" type="ri:i18nString" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <p>
+                                An optional human-readable description of the corpus. Is should
+                                be at most one sentence. If supplied, an English version is
+                                mandatory.
+                            </p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="LandingPageURI" type="xs:anyURI" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <p>
+                                A link to a website for this resource, e.g. a landing page for a corpus. 
+                            </p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Languages">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <p>
+                                The (relevant) languages available within the resource.
+                            </p>
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Language" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        <p>
+                                            A ISO 639-3 three letter language code. This
+                                            element should be repeated for all languages
+                                            (relevant) available within the resource.
+                                        </p>
+                                    </xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:pattern value="[a-zA-Z]{3}"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="hasSubResources" type="xs:boolean" use="optional" default="false">
+                <xs:annotation>
+                    <xs:documentation>
+                        <p>
+                            A flag denoting that this resource contains one or more
+                            sub-collections. An CLARIN FCS aggregator may perform
+                            a recursive <em>scan</em> on this resource
+                            to find out further details about the sub-collections.
+                        </p>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="i18nString">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute ref="xml:lang" use="required" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+</xs:schema>

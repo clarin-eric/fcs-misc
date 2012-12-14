@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://clarin.eu/fcs/1.0 ../Resource.xsd
+                        http://clarin.eu/fcs/1.0/kwic ../Resource-KWIC.xsd"
+    xmlns="http://clarin.eu/fcs/1.0"
+    pid="hdl:4711/00-0000-0000-0000-0000-0">
+    <DataView type="application/vnd.google-earth.kml+xml"
+              ref="http://poral.example.org/corpus1/00-0000-0000-0000-0000-0#S0815">
+        <!--
+            NOTE: File formatetted for brevitiy.
+                  Indention and formatting should be avoided.
+        -->
+        <kwic:kwic xmlns:kwic="http://clarin.eu/fcs/1.0/kwic">
+            <kwic:c type="left">
+                Und so will ich denn hier auch noch anführen, daß ich in diesem
+                Elend das neckische Gelübde getan: man solle, wenn ich uns
+                erlöst und mich wieder zu Hause sähe, von mir niemals wieder
+                einen Klagelaut vernehmen über den meine freiere Zimmeraussicht
+                beschränkenden Nachbargiebel, den ich vielmehr jetzt recht
+                sehnlich zu erblicken wünsche; ferner wollt' ich mich über
+                Mißbehagen und Langeweile im deutschen Theater nie wieder
+                beklagen, wo man doch immer
+            </kwic:c>
+            <kwic:kw>
+                Gott
+            </kwic:kw>
+            <kwic:c type="right">
+                danken könne, unter Dach zu sein, was auch auf der Bühne vorgehe.
+            </kwic:c>
+        </kwic:kwic>
+    </DataView>
+</Resource>

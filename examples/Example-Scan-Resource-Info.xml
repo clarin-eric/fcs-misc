@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ResourceInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://clarin.eu/fcs/1.0/resource-info ../Scan-Resource-Info.xsd"
+    xmlns="http://clarin.eu/fcs/1.0/resource-info"
+    hasSubResources="false">
+    <Title xml:lang="en">Example Corpus 1</Title>
+    <Title xml:lang="de">Beispiel-Korpus 1</Title>
+    <Description xml:lang="en">An corpus of literature text.</Description>
+    <Description xml:lang="de">Ein Korpus von Literatur-Texten.</Description>
+    <LandingPageURI>http://portal.example.org/corpus1</LandingPageURI>
+    <Languages>
+        <Language>deu</Language>
+        <Language>eng</Language>
+    </Languages>
+</ResourceInfo>
