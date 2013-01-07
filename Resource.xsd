@@ -6,7 +6,7 @@
         <xs:documentation>
             <p>
                 This XML schema defined the inner structure of a hit within the
-                search result in the CLARIN federated content search.
+                search result in the CLARIN federated content search (CLARIN-FCS).
             </p>
             <p>
                 Every hit in the result set must be represented at one

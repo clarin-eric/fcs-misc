@@ -10,13 +10,13 @@
         <xs:annotation>
             <xs:documentation>
                 <p>
-                    A CLARIN FCS extension describing a corpus to the SRU protocol to be put
-                    inside a <code>&lt;extraTermData&gt;</code> element of a
-                        <em>scan</em> operation result. This information is intended to be
-                    used by CLARIN FCS aggregators.
+                    A CLARIN-FCS extension describing a corpus to the SRU protocol to be put
+                    inside a <code>&lt;extraTermData&gt;</code> element of a <em>scan</em>
+                    operation result. This information is intended to be used by CLARIN-FCS
+                    aggregators.
                 </p>
                 <p>
-                    A CLARIN FCS endpoint should make this information only available if
+                    A CLARIN-FCS endpoint should make this information only available if
                     explicitly asked by the client by using the "x-cmd-resource-info" extra
                     request parameter is set to "true".
                 </p>
@@ -89,7 +89,7 @@
                     <xs:documentation>
                         <p>
                             A flag denoting that this resource contains one or more
-                            sub-collections. An CLARIN FCS aggregator may perform
+                            sub-collections. An CLARIN-FCS aggregator may perform
                             a recursive <em>scan</em> on this resource
                             to find out further details about the sub-collections.
                         </p>
