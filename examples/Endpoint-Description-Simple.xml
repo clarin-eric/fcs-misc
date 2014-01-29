@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EndpointDescription xmlns="http://clarin.eu/fcs/1.0/endpoint-description"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://clarin.eu/fcs/1.0/endpoint-description ../schema/Endpoint-Description.xsd">
+    <Profile>basic</Profile>
+    <SupportedDataViews>
+        <SupportedDataView>application/x-clarin-fcs-hits+xml</SupportedDataView>
+    </SupportedDataViews>
+    <Collections>
+        <Collection pid="hdl:10932/goethe">
+            <Title xml:lang="de">Goethe Corpus</Title>
+            <Title xml:lang="en">Goethe Korpus</Title>
+            <Description xml:lang="de">Der Goethe Korpus des IDS Mannheim.</Description>
+            <Description xml:lang="en">The Goethe corpus of IDS Mannheim.</Description>
+            <LandingPageURI>https://cosmas2.ids-mannheim.de/cosmas2-web/</LandingPageURI>
+            <Languages>
+                <Language>deu</Language>
+            </Languages>
+        </Collection>
+    </Collections>
+</EndpointDescription>

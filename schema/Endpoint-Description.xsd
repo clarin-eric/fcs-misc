@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.0"
+    xmlns:ed="http://clarin.eu/fcs/1.0/endpoint-description" elementFormDefault="qualified"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    targetNamespace="http://clarin.eu/fcs/1.0/endpoint-description" xml:lang="en">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation>
+            <h:p>
+                This schema defines the structure of an extension to SRU/CQL
+                used by CLARIN-FCS.
+                </h:p>
+            <h:p>
+                An CLARIN-FCS endpoint MUST provide this
+                information in the <h:code>&lt;extraResponseData&gt;</h:code>
+                element of the result to an <h:em>explain</h:em> operation,
+                if a CLRAIN-FCS client performed the request with the
+                <h:code>x-clarin-fcs-endpoint-description</h:code> extra
+                request parameter with a value of <h:code>true</h:code>.  
+            </h:p>
+        </xs:documentation>    
+    </xs:annotation>
+    
+    <xs:element name="EndpointDescription">
+        <xs:annotation>
+            <xs:documentation>
+                <h:p>
+                    The root element of the endpoint description extension for
+                    CLARIN-FCS extension.
+                </h:p>
+                <h:p>
+                    An CLARIN-FCS endpoint MUST provide this
+                    information in the <h:code>&lt;extraResponseData&gt;</h:code>
+                    element of the result to an <h:em>explain</h:em> operation,
+                    if a CLRAIN-FCS client performed the request with the
+                    <h:code>x-clarin-fcs-endpoint-description</h:code> extra
+                    request parameter with a value of <h:code>true</h:code>.
+                </h:p>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <!-- Profile -->
+                <xs:element name="Profile">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p> The CLARIN-FCS profile, that is supported
+                                by an endpoint. </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="basic">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        <h:p> The endpoint supports the
+                                            <h:em>basic</h:em>
+                                            CLARIN-FCS profile. </h:p>
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            <!-- 'extended' is not yet defined -->
+                            <!--
+                            <xs:enumeration value="extended">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        <h:p> The endpoint supports the
+                                            <h:em>extended</h:em>
+                                            CLARIN-FCS profile. </h:p>
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:enumeration>
+                            -->
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+
+                <xs:element name="SupportedDataViews">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p> A list of DataViews, that are supported
+                                by an endpoint. </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="SupportedDataView"  maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        The MIME type of a supported DataView.
+                                    </xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:pattern value="\w+/\w([\.\-]{0,1}\w)*(\+\w+){0,1}"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <!-- Collections -->
+                <xs:element name="Collections">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                A list of collections, that are available
+                                at an CLARIN-FCS endpoint. An endpoint MUST
+                                declare at least one collection.
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element ref="ed:Collection" maxOccurs="unbounded"/>
+                        </xs:sequence>                            
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Collection">
+        <xs:annotation>
+            <xs:documentation>
+                <h:p>
+                    Detailed description of a collection that is available at an
+                    CLARIN-FCS endpoint. A collection is a searchable
+                    entity at an endpoint, e.g. a single corpus.
+                </h:p>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Title" type="ed:i18nString" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                A human readable title for the corpus. An English version is
+                                mandatory.
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Description" type="ed:i18nString" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                An optional human-readable description of the collection. Is should
+                                be at most one sentence. If supplied, an English version is
+                                mandatory.
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="LandingPageURI" type="xs:anyURI" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                A link to a website for this collection, e.g. a landing page for a corpus. 
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Languages">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                The (relevant) languages available <h:em>within</h:em> the collection.
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Language" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        <p>
+                                            A ISO 639-3 three letter language code. This
+                                            element should be repeated for all languages
+                                            (relevant) available <h:em>within</h:em> the collection.
+                                        </p>
+                                    </xs:documentation>
+                                </xs:annotation>
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:pattern value="[a-zA-Z]{3}"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element ref="ed:Collection" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                If a collection has searchable sub-collections
+                                the endpoint MUST supply additional finer grained
+                                collection elements. A sub-collection is a
+                                searchable entity within a collection, e.g. a sub-corpus.
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:attribute name="pid" type="xs:anyURI" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                        <h:p>
+                            The persistent identifier of this collection. This
+                            value MUST be the same as the <h:code>MdSelfLink</h:code>
+                            of the CMDI record describing the collection.
+                        </h:p>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="i18nString">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute ref="xml:lang" use="required" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+</xs:schema>
