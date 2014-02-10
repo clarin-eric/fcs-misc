@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.0"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
     xmlns:hits="http://clarin.eu/fcs/1.0/hits"
     xmlns:h="http://www.w3.org/1999/xhtml"
-    xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xml:lang="en" vc:minVersion="1.0"
     targetNamespace="http://clarin.eu/fcs/1.0/hits" elementFormDefault="qualified">
 
     <xs:annotation>

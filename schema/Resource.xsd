@@ -1,57 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:fcs="http://clarin.eu/fcs/1.0" xmlns="http://www.w3.org/1999/xhtml"
-    targetNamespace="http://clarin.eu/fcs/1.0" elementFormDefault="qualified" xml:lang="en">
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+    xmlns:fcs="http://clarin.eu/fcs/1.0"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xml:lang="en" vc:minVersion="1.0"
+    targetNamespace="http://clarin.eu/fcs/1.0" elementFormDefault="qualified">
     <xs:annotation>
         <xs:documentation>
-            <p>
-                This XML schema defined the inner structure of a hit within the
+            <h:p>
+                This XML schema defines the inner structure of a hit within the
                 search result in the CLARIN federated content search (CLARIN-FCS).
-            </p>
-            <p>
-                Every hit in the result set must be represented at one
-                &lt;sru:record&gt; in the &lt;sru:searchRetrieveResponse;gt;.
-            </p>
-            <p>
-                It allows endpoint to return:
-            </p>
-            <ul>
-                <li>metadata about the matched record, including
-                    reference to a CMDI record</li>
-                <li>separate (metadata) description of full
+            </h:p>
+            <h:p>
+                Every hit in the result set must be represented as one
+                <h:code>&lt;sru:record&gt;</h:code> element in the
+                <h:code>&lt;sru:searchRetrieveResponse;gt;</h:code> response
+                document.
+            </h:p>
+            <h:p>
+                This schema allows Endpoint to return:
+            </h:p>
+            <h:ul>
+                <h:li>metadata about the matched record, including
+                    reference to a CMDI record</h:li>
+                <h:li>separate (metadata) description of full
                     Resource and ResourceFragment (matching part of the
-                    resource, i.e. an addressable sentence)</li>
-                <li>providing metadata and content</li>
-                <li>various views on the data delivered (KWIC, text-snippet,
-                    image, individual annotation-layers, ...)</li>
-                <li>providing links (either as PID or as simple URLs) to any of: 
-                    Resource, ResourceFragment, Metadata (CMDI record), DataViews</li>
-            </ul>
+                    resource, i.e. an addressable sentence)</h:li>
+                <h:li>various views on the data delivered (HITS, text-snippet,
+                    image, individual annotation-layers, ...)</h:li>
+                <h:li>providing links (either as PID or as
+                    simple URLs) to any of: Resource, ResourceFragment,
+                    Metadata (CMDI record), Data Views</h:li>
+                <h:li>Endpoint specific extensions through an
+                    extension mechanism</h:li>
+            </h:ul>
          </xs:documentation>
     </xs:annotation>
 
     <xs:element name="Resource" type="fcs:ResourceType">
         <xs:annotation>
             <xs:documentation>
-                A one hit in a resource in one or more representations. 
+                <h:p>
+                    A one hit in a resource in one or more representations.
+                </h:p> 
             </xs:documentation>
         </xs:annotation>
     </xs:element>
 
     <xs:complexType name="ResourceType">
         <xs:sequence>
-            <xs:element name="Resource" minOccurs="0" maxOccurs="unbounded" type="fcs:ResourceType"/>
-            <xs:element name="DataView" minOccurs="0" maxOccurs="unbounded" type="fcs:DataViewType"/>
+            <!--
+              As long as there is no clear use-case, don't allow recursive Resources
+              <xs:element name="Resource" minOccurs="0" maxOccurs="unbounded" type="fcs:ResourceType"/>
+            -->
+            <xs:element name="DataView" type="fcs:DataViewType" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="ResourceFragment" minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>
                     <xs:documentation>
-                        <p>
+                        <h:p>
                             A one hit in a resource in one or more representations.
-                            Use this instead of a plain &lt;Resource&gt;, if the
+                            Use this instead of a plain <h:code>&lt;Resource&gt;</h:code>, if the
                             fragment can be addresses directly, e.g. a sentence in
                             a corpus that can be addressed via a PID (with fragment)
-                            and/or a unique URI.
-                        </p>
+                            or a regular URI.
+                        </h:p>
                     </xs:documentation>
                 </xs:annotation>
                 <xs:complexType>
@@ -62,6 +74,22 @@
                     <xs:attribute name="ref" type="fcs:ReferenceType"/>
                 </xs:complexType>
             </xs:element>
+            <xs:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        <h:p>
+                            Extension point to allow Endpoints to add custom data to a resource.
+                            CLARIN-FCS clients SHOULD ignore any data they do not understand.  
+                        </h:p>
+                        <h:p>
+                            This extension mechanism can for example be used to provide hints
+                            to an (XSLT/XQuery) application that works directly on CLARIN-FCS,
+                            e.g. to allow it to generate back and forward links to
+                            navigate in the result set. 
+                        </h:p>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:any>
         </xs:sequence>
         <xs:attribute name="pid" type="fcs:PidType"/>
         <xs:attribute name="ref" type="fcs:ReferenceType"/>
@@ -70,12 +98,13 @@
     <xs:complexType name="DataViewType">
         <xs:annotation>
             <xs:documentation>
-                <p>
-                    A representation of a hit, e.g. a KWIC, a geo location, an image, etc.
-                </p>
-                <p>
-                    A KWIC DataView is mandatory.
-                </p>
+                <h:p>
+                    A representation of a hit, e.g. a HITS, a Geolocation,
+                    an image, etc.
+                </h:p>
+                <h:p>
+                    A HITS Data View is mandatory for every hit in the result set.
+                </h:p>
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
@@ -84,10 +113,13 @@
         <xs:attribute name="type" use="required">
             <xs:annotation>
                 <xs:documentation>
-                    <p>
-                        The type of the content of the DataView as a MIME type.
-                        For the mandatory KWIC view, use "application/x-clarin-fcs-kwic+xml".
-                    </p>
+                    <h:p>
+                        The type of the content of the Data View as a MIME type.
+                    </h:p>
+                    <h:p>
+                        For the mandatory HITS Data View, use the MIME type
+                        <h:code>application/x-clarin-fcs-hits+xml</h:code>.
+                    </h:p>
                 </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
@@ -103,16 +135,19 @@
     <xs:simpleType name="PidType">
         <xs:annotation>
             <xs:documentation>
-                <p>
+                <h:p>
                     A persistent identifier of given entity. This attribute
                     should be used, if a PID is available for the given entity.
-                </p>
-                <p>
-                    An FCS endpoint should also &lt;sru:record&gt;/&lt;sru:recordIdentifier&gt; element.
+                </h:p>
+                <h:p>
+                    An Endpoint SHOULD also make the PID available tough the
+                    <h:code>&lt;sru:recordIdentifier&gt;</h:code> element of
+                    the <h:code>&lt;sru:record&gt;/</h:code> element.
                     If more PIDs are available for one record (i.e. Resource,
-                    Metadata, DataView), the endpoint is supposed to put the
-                    "most important" (e.g. the primary) PID into &lt;sru:recordIdentifier&gt;
-                </p>
+                    Metadata, the individual Data View), the Endpoint is MUST
+                    to put the "most important" (e.g. the primary) PID into the
+                    <h:code>&lt;sru:recordIdentifier&gt;</h:code> element.
+                </h:p>
             </xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:anyURI"/>
@@ -121,10 +156,14 @@
     <xs:simpleType name="ReferenceType">
         <xs:annotation>
             <xs:documentation>
-                <p>
-                    A URI for the given entity, that can be retrieved directly
-                    (via HTTP or HTTPS).
-                </p>
+                <h:p>
+                    A regular URI for the given entity, that can be retrieved
+                    directly (via HTTP or HTTPS). 
+                </h:p>
+                <h:p>
+                    This URI may include custom Endpoint specific query strings
+                    to implement features like hit highlighting.
+                </h:p>
             </xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:anyURI"/>
