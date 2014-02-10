@@ -7,7 +7,7 @@
     <DataView type="application/x-clarin-fcs-hits+xml"
               ref="http://repos.example.org/corpus1/00-0000-0000-0000-0000-0#S0815">
         <!--
-            NOTE: File formatetted for brevitiy.
+            NOTE: File formatted for brevitiy.
                   Indention and formatting should be avoided.
         -->
         <hits:Result xmlns:hits="http://clarin.eu/fcs/1.0/hits">
