@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:fcs="http://clarin.eu/fcs/1.0" xmlns="http://www.w3.org/1999/xhtml"
+    targetNamespace="http://clarin.eu/fcs/1.0" elementFormDefault="qualified" xml:lang="en">
+    <xs:annotation>
+        <xs:documentation>
+            <p>
+                This XML schema defined the inner structure of a hit within the
+                search result in the CLARIN federated content search (CLARIN-FCS).
+            </p>
+            <p>
+                Every hit in the result set must be represented at one
+                &lt;sru:record&gt; in the &lt;sru:searchRetrieveResponse;gt;.
+            </p>
+            <p>
+                It allows endpoint to return:
+            </p>
+            <ul>
+                <li>metadata about the matched record, including
+                    reference to a CMDI record</li>
+                <li>separate (metadata) description of full
+                    Resource and ResourceFragment (matching part of the
+                    resource, i.e. an addressable sentence)</li>
+                <li>providing metadata and content</li>
+                <li>various views on the data delivered (KWIC, text-snippet,
+                    image, individual annotation-layers, ...)</li>
+                <li>providing links (either as PID or as simple URLs) to any of: 
+                    Resource, ResourceFragment, Metadata (CMDI record), DataViews</li>
+            </ul>
+         </xs:documentation>
+    </xs:annotation>
+
+    <xs:element name="Resource" type="fcs:ResourceType">
+        <xs:annotation>
+            <xs:documentation>
+                A one hit in a resource in one or more representations. 
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+    <xs:complexType name="ResourceType">
+        <xs:sequence>
+            <xs:element name="Resource" minOccurs="0" maxOccurs="unbounded" type="fcs:ResourceType"/>
+            <xs:element name="DataView" minOccurs="0" maxOccurs="unbounded" type="fcs:DataViewType"/>
+            <xs:element name="ResourceFragment" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>
+                        <p>
+                            A one hit in a resource in one or more representations.
+                            Use this instead of a plain &lt;Resource&gt;, if the
+                            fragment can be addresses directly, e.g. a sentence in
+                            a corpus that can be addressed via a PID (with fragment)
+                            and/or a unique URI.
+                        </p>
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="DataView" type="fcs:DataViewType"/>
+                    </xs:sequence>
+                    <xs:attribute name="pid" type="fcs:PidType"/>
+                    <xs:attribute name="ref" type="fcs:ReferenceType"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="pid" type="fcs:PidType"/>
+        <xs:attribute name="ref" type="fcs:ReferenceType"/>
+    </xs:complexType>
+
+    <xs:complexType name="DataViewType">
+        <xs:annotation>
+            <xs:documentation>
+                <p>
+                    A representation of a hit, e.g. a KWIC, a geo location, an image, etc.
+                </p>
+                <p>
+                    A KWIC DataView is mandatory.
+                </p>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:any namespace="##other" processContents="strict"/>
+        </xs:sequence>
+        <xs:attribute name="type" use="required">
+            <xs:annotation>
+                <xs:documentation>
+                    <p>
+                        The type of the content of the DataView as a MIME type.
+                        For the mandatory KWIC view, use "application/x-clarin-fcs-kwic+xml".
+                    </p>
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="\w+/\w([\.\-]{0,1}\w)*(\+\w+){0,1}"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="pid" type="fcs:PidType"/>
+        <xs:attribute name="ref" type="fcs:ReferenceType"/>
+    </xs:complexType>
+
+    <xs:simpleType name="PidType">
+        <xs:annotation>
+            <xs:documentation>
+                <p>
+                    A persistent identifier of given entity. This attribute
+                    should be used, if a PID is available for the given entity.
+                </p>
+                <p>
+                    An FCS endpoint should also &lt;sru:record&gt;/&lt;sru:recordIdentifier&gt; element.
+                    If more PIDs are available for one record (i.e. Resource,
+                    Metadata, DataView), the endpoint is supposed to put the
+                    "most important" (e.g. the primary) PID into &lt;sru:recordIdentifier&gt;
+                </p>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:anyURI"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="ReferenceType">
+        <xs:annotation>
+            <xs:documentation>
+                <p>
+                    A URI for the given entity, that can be retrieved directly
+                    (via HTTP or HTTPS).
+                </p>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:anyURI"/>
+    </xs:simpleType>
+</xs:schema>
