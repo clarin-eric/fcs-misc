@@ -14,10 +14,10 @@
                 used by CLARIN-FCS.
                 </h:p>
             <h:p>
-                An CLARIN-FCS endpoint MUST provide this
-                information in the <h:code>&lt;extraResponseData&gt;</h:code>
-                element of the result to an <h:em>explain</h:em> operation,
-                if a CLRAIN-FCS client performed the request with the
+                An Endpoint MUST provide this information in the
+                <h:code>&lt;extraResponseData&gt;</h:code> element of the result
+                to an <h:em>explain</h:em> operation, if (and only if) a
+                CLARIN-FCS client performed the request with the
                 <h:code>x-clarin-fcs-endpoint-description</h:code> extra
                 request parameter with a value of <h:code>true</h:code>.  
             </h:p>
@@ -28,16 +28,16 @@
         <xs:annotation>
             <xs:documentation>
                 <h:p>
-                    The root element of the endpoint description extension for
+                    The root element of the Endpoint description extension for
                     CLARIN-FCS extension.
                 </h:p>
                 <h:p>
-                    An CLARIN-FCS endpoint MUST provide this
-                    information in the <h:code>&lt;extraResponseData&gt;</h:code>
+                    An Endpoint MUST provide this information in the
+                    <h:code>&lt;extraResponseData&gt;</h:code>
                     element of the result to an <h:em>explain</h:em> operation,
-                    if a CLRAIN-FCS client performed the request with the
-                    <h:code>x-clarin-fcs-endpoint-description</h:code> extra
-                    request parameter with a value of <h:code>true</h:code>.
+                    if (and only if) a CLARIN-FCS client performed the request
+                    with the <h:code>x-clarin-fcs-endpoint-description</h:code>
+                    extra request parameter with a value of <h:code>true</h:code>.
                 </h:p>
             </xs:documentation>
         </xs:annotation>
@@ -48,7 +48,7 @@
                     <xs:annotation>
                         <xs:documentation>
                             <h:p> The CLARIN-FCS profile, that is supported
-                                by an endpoint. </h:p>
+                                by an Endpoint. </h:p>
                         </xs:documentation>
                     </xs:annotation>
                     <xs:simpleType>
@@ -56,7 +56,7 @@
                             <xs:enumeration value="basic">
                                 <xs:annotation>
                                     <xs:documentation>
-                                        <h:p> The endpoint supports the
+                                        <h:p> The Endpoint supports the
                                             <h:em>basic</h:em>
                                             CLARIN-FCS profile. </h:p>
                                     </xs:documentation>
@@ -67,7 +67,7 @@
                             <xs:enumeration value="extended">
                                 <xs:annotation>
                                     <xs:documentation>
-                                        <h:p> The endpoint supports the
+                                        <h:p> The Endpoint supports the
                                             <h:em>extended</h:em>
                                             CLARIN-FCS profile. </h:p>
                                     </xs:documentation>
@@ -81,8 +81,8 @@
                 <xs:element name="SupportedDataViews">
                     <xs:annotation>
                         <xs:documentation>
-                            <h:p> A list of DataViews, that are supported
-                                by an endpoint. </h:p>
+                            <h:p> A list of Data Views, that are supported
+                                by this Endpoint. </h:p>
                         </xs:documentation>
                     </xs:annotation>
                     <xs:complexType>
@@ -108,7 +108,7 @@
                         <xs:documentation>
                             <h:p>
                                 A list of collections, that are available
-                                at an CLARIN-FCS endpoint. An endpoint MUST
+                                at an Endpoint. An Endpoint MUST
                                 declare at least one collection.
                             </h:p>
                         </xs:documentation>
@@ -128,8 +128,8 @@
             <xs:documentation>
                 <h:p>
                     Detailed description of a collection that is available at an
-                    CLARIN-FCS endpoint. A collection is a searchable
-                    entity at an endpoint, e.g. a single corpus.
+                    Endpoint. A collection is a searchable
+                    entity at an Endpoint, e.g. a single corpus.
                 </h:p>
             </xs:documentation>
         </xs:annotation>
@@ -199,7 +199,7 @@
                         <xs:documentation>
                             <h:p>
                                 If a collection has searchable sub-collections
-                                the endpoint MUST supply additional finer grained
+                                the Endpoint MUST supply additional finer grained
                                 collection elements. A sub-collection is a
                                 searchable entity within a collection, e.g. a sub-corpus.
                             </h:p>
