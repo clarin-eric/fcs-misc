@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://clarin.eu/fcs/1.0 ../schema/Resource.xsd
-                        http://clarin.eu/fcs/1.0/hits ../schema/Resource-HITS.xsd"
+                        http://clarin.eu/fcs/1.0/hits ../schema/DataView-HITS.xsd"
     xmlns="http://clarin.eu/fcs/1.0"
     pid="hdl:4711/00-0000-0000-0000-0000-0">
     <DataView type="application/x-clarin-fcs-hits+xml"
