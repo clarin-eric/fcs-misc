@@ -3,7 +3,7 @@
     xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
     xmlns:fcs="http://clarin.eu/fcs/1.0"
     xmlns:h="http://www.w3.org/1999/xhtml"
-    xml:lang="en" vc:minVersion="1.0"
+    xml:lang="en" vc:minVersion="1.0" vc:maxVersion="1.1"
     targetNamespace="http://clarin.eu/fcs/1.0" elementFormDefault="qualified">
     <xs:annotation>
         <xs:documentation>

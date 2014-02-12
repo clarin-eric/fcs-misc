@@ -5,6 +5,7 @@
     <Profile>basic</Profile>
     <SupportedDataViews>
         <SupportedDataView>application/x-clarin-fcs-hits+xml</SupportedDataView>
+        <SupportedDataView>application/x-cmdi+xml</SupportedDataView>
     </SupportedDataViews>
     <Collections>
         <Collection pid="hdl:10932/goethe">
@@ -24,22 +25,24 @@
             <Languages>
                 <Language>deu</Language>
             </Languages>
-            <Collection pid="hdl:10932/mannheimer_morgen_before_1990">
-                <Title xml:lang="de">Mannheimer Morgen newspaper Corpus (before 1990)</Title>
-                <Title xml:lang="en">Zeitungskorpus des Mannheimer Morgen (vor 1990)</Title>
-                <LandingPageURI>https://cosmas2.ids-mannheim.de/cosmas2-web/</LandingPageURI>
-                <Languages>
-                    <Language>deu</Language>
-                </Languages>
-            </Collection>
-            <Collection pid="hdl:10932/mannheimer_morgen_after_1990">
-                <Title xml:lang="de">Mannheimer Morgen newspaper Corpus (after 1990)</Title>
-                <Title xml:lang="en">Zeitungskorpus des Mannheimer Morgen (nach 1990)</Title>
-                <LandingPageURI>https://cosmas2.ids-mannheim.de/cosmas2-web/</LandingPageURI>
-                <Languages>
-                    <Language>deu</Language>
-                </Languages>
-            </Collection>
+            <Collections>
+                <Collection pid="hdl:10932/mannheimer_morgen_before_1990">
+                    <Title xml:lang="de">Mannheimer Morgen newspaper Corpus (before 1990)</Title>
+                    <Title xml:lang="en">Zeitungskorpus des Mannheimer Morgen (vor 1990)</Title>
+                    <LandingPageURI>https://cosmas2.ids-mannheim.de/cosmas2-web/</LandingPageURI>
+                    <Languages>
+                        <Language>deu</Language>
+                    </Languages>
+                </Collection>
+                <Collection pid="hdl:10932/mannheimer_morgen_after_1990">
+                    <Title xml:lang="de">Mannheimer Morgen newspaper Corpus (after 1990)</Title>
+                    <Title xml:lang="en">Zeitungskorpus des Mannheimer Morgen (nach 1990)</Title>
+                    <LandingPageURI>https://cosmas2.ids-mannheim.de/cosmas2-web/</LandingPageURI>
+                    <Languages>
+                        <Language>deu</Language>
+                    </Languages>
+                </Collection>
+            </Collections>
         </Collection>
     </Collections>
 </EndpointDescription>

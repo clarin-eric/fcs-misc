@@ -3,7 +3,7 @@
     xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
     xmlns:ed="http://clarin.eu/fcs/1.0/endpoint-description" elementFormDefault="qualified"
     xmlns:h="http://www.w3.org/1999/xhtml"
-    xml:lang="en" vc:minVersion="1.0"
+    xml:lang="en" vc:minVersion="1.0" vc:maxVersion="1.1"
     targetNamespace="http://clarin.eu/fcs/1.0/endpoint-description">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
 
@@ -103,23 +103,35 @@
                     </xs:complexType>
                 </xs:element>
                 <!-- Collections -->
-                <xs:element name="Collections">
+                <xs:element ref="ed:Collections">
                     <xs:annotation>
                         <xs:documentation>
                             <h:p>
-                                A list of collections, that are available
+                                A list of top-level collections, that are available
                                 at an Endpoint. An Endpoint MUST
-                                declare at least one collection.
+                                declare at least one top-level collection.
                             </h:p>
                         </xs:documentation>
                     </xs:annotation>
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element ref="ed:Collection" maxOccurs="unbounded"/>
-                        </xs:sequence>                            
-                    </xs:complexType>
                 </xs:element>
             </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Collections">
+        <xs:annotation>
+            <xs:documentation>
+                <h:p>
+                    A list of collections, that are available
+                    at an Endpoint. An Endpoint MUST
+                    declare at least one collection.
+                </h:p>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ed:Collection" maxOccurs="unbounded"/>
+            </xs:sequence>                            
         </xs:complexType>
     </xs:element>
 
@@ -194,7 +206,7 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element ref="ed:Collection" minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="ed:Collections" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation>
                             <h:p>
