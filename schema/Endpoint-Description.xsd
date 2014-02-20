@@ -5,7 +5,7 @@
     xmlns:h="http://www.w3.org/1999/xhtml"
     xml:lang="en" vc:minVersion="1.0" vc:maxVersion="1.1"
     targetNamespace="http://clarin.eu/fcs/1.0/endpoint-description">
-    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd" />
 
     <xs:annotation>
         <xs:documentation>
