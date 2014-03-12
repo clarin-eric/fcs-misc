@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Result xmlns="http://clarin.eu/fcs/1.0/hits"
+<Result xmlns="http://clarin.eu/fcs/dataview/hits"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://clarin.eu/fcs/1.0/hits ../schema/Resource-Hits.xsd">
+    xsi:schemaLocation="http://clarin.eu/fcs/dataview/hits ../schema/DataView-Hits.xsd">
     The quick brown <Hit>fox</Hit> jumps over the lazy <Hit>dog</Hit>.
 </Result>

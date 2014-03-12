@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
-    xmlns:fcs="http://clarin.eu/fcs/1.0"
     xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:fcs="http://clarin.eu/fcs/resource"
     xml:lang="en" vc:minVersion="1.0" vc:maxVersion="1.1"
-    targetNamespace="http://clarin.eu/fcs/1.0" elementFormDefault="qualified">
+    targetNamespace="http://clarin.eu/fcs/resource" elementFormDefault="qualified">
+
     <xs:annotation>
         <xs:documentation>
             <h:p>
@@ -49,10 +50,6 @@
 
     <xs:complexType name="ResourceType">
         <xs:sequence>
-            <!--
-              As long as there is no clear use-case, don't allow recursive Resources
-              <xs:element name="Resource" minOccurs="0" maxOccurs="unbounded" type="fcs:ResourceType"/>
-            -->
             <xs:element name="DataView" type="fcs:DataViewType" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="ResourceFragment" minOccurs="0" maxOccurs="unbounded">
                 <xs:annotation>

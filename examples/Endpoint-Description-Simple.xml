@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<EndpointDescription xmlns="http://clarin.eu/fcs/1.0/endpoint-description"
+<EndpointDescription xmlns="http://clarin.eu/fcs/endpoint-description"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://clarin.eu/fcs/1.0/endpoint-description ../schema/Endpoint-Description.xsd">
-    <Profile>basic</Profile>
+    xsi:schemaLocation="http://clarin.eu/fcs/endpoint-description ../schema/Endpoint-Description.xsd"
+    version="1">
+    <Capabilities>
+        <Capability>http://clarin.eu/fcs/capability/basic-search</Capability>
+        <Capability>http://clarin.eu/fcs/capability/a-b</Capability>
+    </Capabilities>
     <SupportedDataViews>
-        <SupportedDataView>application/x-clarin-fcs-hits+xml</SupportedDataView>
+        <SupportedDataView id="dv1">application/x-clarin-fcs-hits+xml</SupportedDataView>
     </SupportedDataViews>
-    <Collections>
-        <Collection pid="hdl:10932/goethe">
+    <Resources>
+        <Resource pid="hdl:10932/goethe">
             <Title xml:lang="de">Goethe Corpus</Title>
             <Title xml:lang="en">Goethe Korpus</Title>
             <Description xml:lang="de">Der Goethe Korpus des IDS Mannheim.</Description>
@@ -16,6 +20,6 @@
             <Languages>
                 <Language>deu</Language>
             </Languages>
-        </Collection>
-    </Collections>
+        </Resource>
+    </Resources>
 </EndpointDescription>

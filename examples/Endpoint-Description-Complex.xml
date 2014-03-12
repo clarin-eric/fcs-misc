@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<EndpointDescription xmlns="http://clarin.eu/fcs/1.0/endpoint-description"
+<EndpointDescription xmlns="http://clarin.eu/fcs/endpoint-description"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://clarin.eu/fcs/1.0/endpoint-description ../schema/Endpoint-Description.xsd">
-    <Profile>basic</Profile>
+    xsi:schemaLocation="http://clarin.eu/fcs/endpoint-description ../schema/Endpoint-Description.xsd"
+    version="1">
+    <Capabilities>
+        <Capability>http://clarin.eu/fcs/capability/basic-search</Capability>
+    </Capabilities>
     <SupportedDataViews>
-        <SupportedDataView>application/x-clarin-fcs-hits+xml</SupportedDataView>
-        <SupportedDataView>application/x-cmdi+xml</SupportedDataView>
+        <SupportedDataView id="dv1">application/x-clarin-fcs-hits+xml</SupportedDataView>
+        <SupportedDataView id="dv2">application/x-cmdi+xml</SupportedDataView>
     </SupportedDataViews>
-    <Collections>
-        <Collection pid="hdl:10932/goethe">
+    <Resources>
+        <Resource pid="hdl:10932/goethe">
             <Title xml:lang="de">Goethe Corpus</Title>
             <Title xml:lang="en">Goethe Korpus</Title>
             <Description xml:lang="de">Der Goethe Korpus des IDS Mannheim.</Description>
@@ -17,32 +20,32 @@
             <Languages>
                 <Language>deu</Language>
             </Languages>
-        </Collection>
-        <Collection pid="hdl:10932/mannheimer_morgen">
+        </Resource>
+        <Resource pid="hdl:10932/mannheimer_morgen">
             <Title xml:lang="de">Mannheimer Morgen newspaper Corpus</Title>
             <Title xml:lang="en">Zeitungskorpus des Mannheimer Morgen</Title>
             <LandingPageURI>https://cosmas2.ids-mannheim.de/cosmas2-web/</LandingPageURI>
             <Languages>
                 <Language>deu</Language>
             </Languages>
-            <Collections>
-                <Collection pid="hdl:10932/mannheimer_morgen_before_1990">
+            <Resources>
+                <Resource pid="hdl:10932/mannheimer_morgen_before_1990">
                     <Title xml:lang="de">Mannheimer Morgen newspaper Corpus (before 1990)</Title>
                     <Title xml:lang="en">Zeitungskorpus des Mannheimer Morgen (vor 1990)</Title>
                     <LandingPageURI>https://cosmas2.ids-mannheim.de/cosmas2-web/</LandingPageURI>
                     <Languages>
                         <Language>deu</Language>
                     </Languages>
-                </Collection>
-                <Collection pid="hdl:10932/mannheimer_morgen_after_1990">
+                </Resource>
+                <Resource pid="hdl:10932/mannheimer_morgen_after_1990">
                     <Title xml:lang="de">Mannheimer Morgen newspaper Corpus (after 1990)</Title>
                     <Title xml:lang="en">Zeitungskorpus des Mannheimer Morgen (nach 1990)</Title>
                     <LandingPageURI>https://cosmas2.ids-mannheim.de/cosmas2-web/</LandingPageURI>
                     <Languages>
                         <Language>deu</Language>
                     </Languages>
-                </Collection>
-            </Collections>
-        </Collection>
-    </Collections>
+                </Resource>
+            </Resources>
+        </Resource>
+    </Resources>
 </EndpointDescription>

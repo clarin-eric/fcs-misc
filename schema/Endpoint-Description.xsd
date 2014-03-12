@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
-    xmlns:ed="http://clarin.eu/fcs/1.0/endpoint-description" elementFormDefault="qualified"
     xmlns:h="http://www.w3.org/1999/xhtml"
-    xml:lang="en" vc:minVersion="1.0" vc:maxVersion="1.1"
-    targetNamespace="http://clarin.eu/fcs/1.0/endpoint-description">
-    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd" />
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+    xmlns:ed="http://clarin.eu/fcs/endpoint-description" 
+    xml:lang="en"
+    vc:minVersion="1.0" vc:maxVersion="1.1"
+    elementFormDefault="qualified"
+    targetNamespace="http://clarin.eu/fcs/endpoint-description">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+               schemaLocation="http://www.w3.org/2001/xml.xsd" />
 
     <xs:annotation>
         <xs:documentation>
@@ -43,41 +46,33 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <!-- Profile -->
-                <xs:element name="Profile">
+                <!-- Capabilities -->
+                <xs:element name="Capabilities">
                     <xs:annotation>
                         <xs:documentation>
-                            <h:p> The CLARIN-FCS profile, that is supported
-                                by an Endpoint. </h:p>
+                            <h:p>A list of Capabilities, that are supported by this Endpoint.</h:p>
                         </xs:documentation>
                     </xs:annotation>
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string">
-                            <xs:enumeration value="basic">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Capability" maxOccurs="unbounded">
                                 <xs:annotation>
                                     <xs:documentation>
-                                        <h:p> The Endpoint supports the
-                                            <h:em>basic</h:em>
-                                            CLARIN-FCS profile. </h:p>
+                                        A Capability, encoded by an URI, that is supported by this Endpoint.
+                                        For valid URIs, consult the CLARIN-FCS specification.
                                     </xs:documentation>
                                 </xs:annotation>
-                            </xs:enumeration>
-                            <!-- 'extended' is not yet defined -->
-                            <!--
-                            <xs:enumeration value="extended">
-                                <xs:annotation>
-                                    <xs:documentation>
-                                        <h:p> The Endpoint supports the
-                                            <h:em>extended</h:em>
-                                            CLARIN-FCS profile. </h:p>
-                                    </xs:documentation>
-                                </xs:annotation>
-                            </xs:enumeration>
-                            -->
-                        </xs:restriction>
-                    </xs:simpleType>
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:anyURI">
+                                        <xs:pattern value="http://clarin.eu/fcs/capability/\w([\.\-]{0,1}\w)*" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
                 </xs:element>
 
+                <!-- SupportedDataViews -->
                 <xs:element name="SupportedDataViews">
                     <xs:annotation>
                         <xs:documentation>
@@ -90,57 +85,81 @@
                             <xs:element name="SupportedDataView"  maxOccurs="unbounded">
                                 <xs:annotation>
                                     <xs:documentation>
-                                        The MIME type of a supported DataView.
+                                        The MIME type of a supported Data View.
                                     </xs:documentation>
                                 </xs:annotation>
-                                <xs:simpleType>
-                                    <xs:restriction base="xs:string">
-                                        <xs:pattern value="\w+/\w([\.\-]{0,1}\w)*(\+\w+){0,1}"/>
-                                    </xs:restriction>
-                                </xs:simpleType>
+                                <xs:complexType>
+                                    <xs:simpleContent>
+                                        <xs:extension base="ed:mimetypeString">
+                                            <xs:attribute name="id" type="xs:ID" use="required" />
+                                        </xs:extension>
+                                    </xs:simpleContent>
+                                </xs:complexType>
                             </xs:element>
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <!-- Collections -->
-                <xs:element ref="ed:Collections">
+                
+                <!-- Resources -->
+                <xs:element ref="ed:Resources">
                     <xs:annotation>
                         <xs:documentation>
                             <h:p>
-                                A list of top-level collections, that are available
+                                A list of top-level resources, that are available
                                 at an Endpoint. An Endpoint MUST
-                                declare at least one top-level collection.
+                                declare at least one top-level resource.
                             </h:p>
                         </xs:documentation>
                     </xs:annotation>
                 </xs:element>
+
+                <!-- extension point -->
+                <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                Extension point to allow Endpoints to embed custom data in the Endpoint Description.
+                                CLARIN-FCS clients SHOULD ignore any data they do not understand.  
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:any>
             </xs:sequence>
+            <xs:attribute name="version" type="xs:nonNegativeInteger" use="required">
+                <xs:annotation>
+                    <xs:documentation>
+                        <h:p>
+                            Version used for Endpoint Description. Endpoints MUST use the value "1".
+                        </h:p>
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="Collections">
+    <xs:element name="Resources">
         <xs:annotation>
             <xs:documentation>
                 <h:p>
-                    A list of collections, that are available
+                    A list of resources, that are available
                     at an Endpoint. An Endpoint MUST
-                    declare at least one collection.
+                    declare at least one resource.
                 </h:p>
             </xs:documentation>
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="ed:Collection" maxOccurs="unbounded"/>
+                <xs:element ref="ed:Resource" maxOccurs="unbounded"/>
             </xs:sequence>                            
         </xs:complexType>
     </xs:element>
 
-    <xs:element name="Collection">
+    <xs:element name="Resource">
         <xs:annotation>
             <xs:documentation>
                 <h:p>
-                    Detailed description of a collection that is available at an
-                    Endpoint. A collection is a searchable
+                    Detailed description of a resource that is available at an
+                    Endpoint. A resource is a searchable
                     entity at an Endpoint, e.g. a single corpus.
                 </h:p>
             </xs:documentation>
@@ -151,37 +170,40 @@
                     <xs:annotation>
                         <xs:documentation>
                             <h:p>
-                                A human readable title for the corpus. An English version is
+                                A human readable title for the resource. An English version is
                                 mandatory.
                             </h:p>
                         </xs:documentation>
                     </xs:annotation>
                 </xs:element>
+                
                 <xs:element name="Description" type="ed:i18nString" minOccurs="0" maxOccurs="unbounded">
                     <xs:annotation>
                         <xs:documentation>
                             <h:p>
-                                An optional human-readable description of the collection. Is should
+                                An optional human-readable description of the resource. Is should
                                 be at most one sentence. If supplied, an English version is
                                 mandatory.
                             </h:p>
                         </xs:documentation>
                     </xs:annotation>
                 </xs:element>
+                
                 <xs:element name="LandingPageURI" type="xs:anyURI" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation>
                             <h:p>
-                                A link to a website for this collection, e.g. a landing page for a corpus. 
+                                A link to a website for the resource, e.g. a landing page for a corpus. 
                             </h:p>
                         </xs:documentation>
                     </xs:annotation>
                 </xs:element>
+                
                 <xs:element name="Languages">
                     <xs:annotation>
                         <xs:documentation>
                             <h:p>
-                                The (relevant) languages available <h:em>within</h:em> the collection.
+                                The (relevant) languages available <h:em>within</h:em> the resource.
                             </h:p>
                         </xs:documentation>
                     </xs:annotation>
@@ -193,7 +215,7 @@
                                         <p>
                                             A ISO 639-3 three letter language code. This
                                             element should be repeated for all languages
-                                            (relevant) available <h:em>within</h:em> the collection.
+                                            (relevant) available <h:em>within</h:em> the resource.
                                         </p>
                                     </xs:documentation>
                                 </xs:annotation>
@@ -206,24 +228,37 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-                <xs:element ref="ed:Collections" minOccurs="0">
+
+                <xs:element ref="ed:Resources" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation>
                             <h:p>
-                                If a collection has searchable sub-collections
+                                If a resource has searchable sub-resources
                                 the Endpoint MUST supply additional finer grained
-                                collection elements. A sub-collection is a
-                                searchable entity within a collection, e.g. a sub-corpus.
+                                &lt;Resource&gt; elements. A sub-resource is a
+                                searchable entity within a resource, e.g. a sub-corpus.
                             </h:p>
                         </xs:documentation>
                     </xs:annotation>
                 </xs:element>
+
+                <!-- extension point -->
+                <xs:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                Extension point to allow Endpoints to embed custom data in the Endpoint Description
+                                for a specific resource. CLARIN-FCS clients SHOULD ignore any data they do not understand.  
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:any>
             </xs:sequence>
             <xs:attribute name="pid" type="xs:anyURI" use="required">
                 <xs:annotation>
                     <xs:documentation>
                         <h:p>
-                            The persistent identifier of this collection. This
+                            The persistent identifier of this resource. This
                             value MUST be the same as the <h:code>MdSelfLink</h:code>
                             of the CMDI record describing the collection.
                         </h:p>
@@ -232,6 +267,12 @@
             </xs:attribute>
         </xs:complexType>
     </xs:element>
+
+    <xs:simpleType name="mimetypeString">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\w+/\w([\.\-]{0,1}\w)*(\+\w+){0,1}" />
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:complexType name="i18nString">
         <xs:simpleContent>
