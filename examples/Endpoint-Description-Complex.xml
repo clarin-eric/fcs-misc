@@ -7,8 +7,8 @@
         <Capability>http://clarin.eu/fcs/capability/basic-search</Capability>
     </Capabilities>
     <SupportedDataViews>
-        <SupportedDataView id="dv1">application/x-clarin-fcs-hits+xml</SupportedDataView>
-        <SupportedDataView id="dv2">application/x-cmdi+xml</SupportedDataView>
+        <SupportedDataView id="dv1" delivery-policy="send-default">application/x-clarin-fcs-hits+xml</SupportedDataView>
+        <SupportedDataView id="dv2" delivery-policy="need-to-request">application/x-cmdi+xml</SupportedDataView>
     </SupportedDataViews>
     <Resources>
         <Resource pid="hdl:10932/goethe">
@@ -20,6 +20,7 @@
             <Languages>
                 <Language>deu</Language>
             </Languages>
+            <AvailableDataViews ref="dv1"/>
         </Resource>
         <Resource pid="hdl:10932/mannheimer_morgen">
             <Title xml:lang="de">Mannheimer Morgen newspaper Corpus</Title>
@@ -28,6 +29,7 @@
             <Languages>
                 <Language>deu</Language>
             </Languages>
+            <AvailableDataViews ref="dv1 dv2"/>
             <Resources>
                 <Resource pid="hdl:10932/mannheimer_morgen_before_1990">
                     <Title xml:lang="de">Mannheimer Morgen newspaper Corpus (before 1990)</Title>
@@ -36,6 +38,7 @@
                     <Languages>
                         <Language>deu</Language>
                     </Languages>
+                    <AvailableDataViews ref="dv1 dv2"/>
                 </Resource>
                 <Resource pid="hdl:10932/mannheimer_morgen_after_1990">
                     <Title xml:lang="de">Mannheimer Morgen newspaper Corpus (after 1990)</Title>
@@ -44,6 +47,7 @@
                     <Languages>
                         <Language>deu</Language>
                     </Languages>
+                    <AvailableDataViews ref="dv1 dv2"/>
                 </Resource>
             </Resources>
         </Resource>

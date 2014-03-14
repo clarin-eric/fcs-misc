@@ -91,7 +91,48 @@
                                 <xs:complexType>
                                     <xs:simpleContent>
                                         <xs:extension base="ed:mimetypeString">
-                                            <xs:attribute name="id" type="xs:ID" use="required" />
+                                            <xs:attribute name="id" type="xs:ID" use="required">
+                                                <xs:annotation>
+                                                    <xs:documentation>
+                                                        <h:p>
+                                                            An unique ID for this support Data View. This value will be used,
+                                                            when referencing in the &lt;AvailableDataViews&gt; element in
+                                                            the &lt;Resource&gt; description. 
+                                                        </h:p>
+                                                    </xs:documentation>
+                                                </xs:annotation>
+                                            </xs:attribute>
+                                            <xs:attribute name="delivery-policy" use="required">
+                                                <xs:annotation>
+                                                    <xs:documentation>
+                                                        <h:p>
+                                                            This attribute indicated the <h:em>delivery policy</h:em> of this supported Data View.
+                                                        </h:p> 
+                                                    </xs:documentation>
+                                                </xs:annotation>
+                                                <xs:simpleType>
+                                                    <xs:restriction base="xs:string">
+                                                        <xs:enumeration value="send-default">
+                                                            <xs:annotation>
+                                                                <xs:documentation>
+                                                                    <h:p>
+                                                                        This Data View is automatically sent by the Endpoint for supported Resources.
+                                                                    </h:p>
+                                                                </xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:enumeration>
+                                                        <xs:enumeration value="need-to-request">
+                                                            <xs:annotation>
+                                                                <xs:documentation>
+                                                                    <h:p>
+                                                                        This Data View needs to be explicatively requested by the Client.
+                                                                    </h:p>
+                                                                </xs:documentation>
+                                                            </xs:annotation>
+                                                        </xs:enumeration>
+                                                    </xs:restriction>
+                                                </xs:simpleType>
+                                            </xs:attribute>
                                         </xs:extension>
                                     </xs:simpleContent>
                                 </xs:complexType>
@@ -226,6 +267,20 @@
                                 </xs:simpleType>
                             </xs:element>
                         </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                
+                <xs:element name="AvailableDataViews">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                This element contains a reference to all Data Views that are
+                                supported by this resource in the <h:code>@ref</h:code> attribute.
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                        <xs:attribute name="ref" type="xs:IDREFS" use="required" />
                     </xs:complexType>
                 </xs:element>
 
