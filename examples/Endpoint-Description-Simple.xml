@@ -5,7 +5,6 @@
     version="1">
     <Capabilities>
         <Capability>http://clarin.eu/fcs/capability/basic-search</Capability>
-        <Capability>http://clarin.eu/fcs/capability/a-b</Capability>
     </Capabilities>
     <SupportedDataViews>
         <SupportedDataView id="dv1" delivery-policy="send-default">application/x-clarin-fcs-hits+xml</SupportedDataView>
