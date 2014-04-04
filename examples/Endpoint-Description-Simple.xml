@@ -7,7 +7,7 @@
         <Capability>http://clarin.eu/fcs/capability/basic-search</Capability>
     </Capabilities>
     <SupportedDataViews>
-        <SupportedDataView id="dv1" delivery-policy="send-default">application/x-clarin-fcs-hits+xml</SupportedDataView>
+        <SupportedDataView id="dv1" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</SupportedDataView>
     </SupportedDataViews>
     <Resources>
         <Resource pid="hdl:10932/goethe">

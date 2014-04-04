@@ -112,7 +112,7 @@
                                                 </xs:annotation>
                                                 <xs:simpleType>
                                                     <xs:restriction base="xs:string">
-                                                        <xs:enumeration value="send-default">
+                                                        <xs:enumeration value="send-by-default">
                                                             <xs:annotation>
                                                                 <xs:documentation>
                                                                     <h:p>
