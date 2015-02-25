@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         id="COSMAS_SRU_SERVER" version="2.5">
+    <display-name>SRU/CQL Service</display-name>
+
+    <servlet>
+        <display-name>SRU/CQL Service (HTTP Interface)</display-name>
+        <servlet-name>CQLServlet</servlet-name> 
+        <servlet-class>eu.clarin.sru.server.utils.SRUServerServlet</servlet-class>
+        <init-param>
+            <param-name>eu.clarin.sru.server.utils.sruServerSearchEngineClass</param-name>
+            <param-value>nl.mpi.annot.search.cqlsearch2.SRUSearchEngineImpl</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CQLServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    
+     
+    <context-param> 
+        <param-name>nl.mpi.cqlsearch2.imdiNamespaceURL</param-name>
+        <param-value>http://www.mpi.nl/IMDI/Schema/IMDI</param-value>
+    </context-param> 
+  
+    <context-param> 
+        <param-name>nl.mpi.cqlsearch2.imdiLanguageMapURL</param-name>
+        <param-value>http://www.mpi.nl/IMDI/Schema/LanguageCodeMap.xml</param-value>
+    </context-param> 
+  
+    <context-param> 
+        <param-name>nl.mpi.cqlsearch2.handleResolverURL</param-name>
+        <param-value>http://hdl.handle.net</param-value>
+    </context-param>
+  
+    <context-param> 
+        <param-name>nl.mpi.cqlsearch2.schemaLocationEndpointDescription</param-name>
+        <param-value>http://clarin.eu/fcs/endpoint-description https://trac.clarin.eu/browser/FederatedSearch/schema/Endpoint-Description.xsd</param-value>
+    </context-param>
+    
+    <context-param> 
+        <param-name>nl.mpi.cqlsearch2.schemaLocationResource</param-name>
+        <param-value>http://clarin.eu/fcs/resource https://trac.clarin.eu/browser/FederatedSearch/schema/Resource.xsd</param-value>
+    </context-param>
+ 
+    <filter>
+        <filter-name>charsetFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>charsetFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+</web-app>

@@ -1,0 +1,29 @@
+Note: <servlet> below is
+
+cqlservlet.mpi.nl/ or corpus1.mpi.nl/ds/cqlsearch/ for corpus1,
+lux17.mpi.nl/ds/cqlsearch/ for lux17
+lux16.mpi.nl/ds/cqlsearch2/ for lux16
+
+EXPLAIN
+
+<servlet>/?operation=explain&version=1.2&x-fcs-endpoint-description=true
+
+SEARCH
+
+<servlet>/?operation=searchRetrieve&query=kind&version=1.2
+
+<servlet>/?operation=searchRetrieve&query=kind&version=1.1&maximumRecords=19&startRecord=3
+
+Another search term (place instead of kind, use " "): "Bayern München" (checks two-word search term and umlauts)
+
+<Servlet>?/?operation=searchRetrieve&version=1.2&query=kind AND (taal AND non-verbaal)&x-fcs-context=hdl:LUX16/00-0000-0000-0005-0986-5,hdl:LUX16/00-0000-0000-0006-584A-9
+
+In the last example node handles are given for Lux16, so replace it for some example nodes for <servlet>. Fro instance: for corpus1 there are
+
+hdl:1839/00-0000-0000-0001-53A5-2@format=cmdi (CGN)
+hdl:1839/00-0000-0000-0008-7CF8-E@format=cmdi (ESF)
+hdl:1839/00-0000-0000-0003-46DA-E@format=cmdi (IPA)
+
+
+Do not put the handles in “.  The postfix @format=cmdi is used when VLO triggers search.
+

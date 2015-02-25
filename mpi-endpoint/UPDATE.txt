@@ -1,0 +1,2 @@
+Take the tar-ball of the new  version 4.4, and follow the standard deployment procedure
+(see the instructions from INSTALL.txt.). web.ml and context.xml are staying intact.

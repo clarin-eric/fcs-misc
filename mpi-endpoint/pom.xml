@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>nl.mpi</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.7.0</version>
+    </parent>
+
+    <groupId>nl.mpi.annot.search</groupId>
+    <artifactId>cqlsearch2</artifactId>
+    <version>4.4</version>
+    <packaging>war</packaging>
+    <name>CQLSearch</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
+    </properties>
+    
+      
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+            
+           
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}.${buildNumber}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <!-- I have no idea why this stuff doesn't get
+                                       copied automatically, but it has to be done.
+                                    -->
+                                    <directory>src/main/resources</directory>
+                                    <includes>
+                                        <include>**/*</include>
+                                    </includes>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--  <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.3</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>nl.mpi</groupId>
+                        <artifactId>mpi-deploy</artifactId>
+                        <version>1.0</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptorRefs>
+                                <descriptorRef>mpi-deploy</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.5.3</version>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/threeservers.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.12.3</version>
+                <executions>
+                    <execution>
+                        <id>jaxb-components</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <bindingDirectory>${basedir}/src/main/resources</bindingDirectory>
+                            <bindingIncludes>
+                                <include>bindingsfcs.xml</include>
+                                <include>bindingshits.xml</include>
+                                <include>bindingsed.xml</include>
+                            </bindingIncludes>
+                            <args>
+                                <arg>-extension</arg>
+                                <arg>-Xnamespace-prefix</arg>
+                            </args>
+                            <forceRegenerate>true</forceRegenerate>
+                            <generatePackage>de.clarin.fcs.schema</generatePackage>                 
+                            <outputDirectory>${basedir}/src/generated/jaxb</outputDirectory>
+                            <schemas>
+                                <schema>
+                                    <fileset>
+                                        <!-- Defaults to schemaDirectory. -->
+                                        <directory>${basedir}/src/main/schemas</directory>
+                                        <!-- Defaults to schemaIncludes. -->
+                                        <includes>
+                                            <include>*.xsd</include>
+                                        </includes>
+                                    </fileset>
+                                </schema>
+                            </schemas>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>  
+                    <dependency>
+                        <groupId>org.jvnet.jaxb2_commons</groupId>
+                        <artifactId>jaxb2-namespace-prefix</artifactId>
+                        <version>1.1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>  
+        </plugins>
+    </build>
+
+    <dependencies>
+      
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>saxon</artifactId>
+            <version>9.1.0.8</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>saxon-dom</artifactId>
+            <version>9.1.0.8</version>
+            <scope>compile</scope>	    
+        </dependency>
+        
+        <dependency>
+            <groupId>nl.mpi</groupId>
+            <artifactId>corpusstructure-api</artifactId>
+            <version>1.8.6</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        
+
+        <dependency>
+            <groupId>nl.mpi.annot</groupId>
+            <artifactId>annot-tools</artifactId>
+            <version>1.1.12</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        
+        
+        <dependency>
+            <groupId>nl.mpi.annot.tools</groupId>
+            <artifactId>annot-tools-servlets</artifactId>
+            <version>1.1.12</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        
+         
+        <dependency>
+            <groupId>nl.mpi</groupId>
+            <artifactId>imdi-api</artifactId>
+            <version>1.1.5</version>
+        </dependency>
+        
+        
+        <dependency>
+            <groupId>nl.mpi.annot.search</groupId>
+            <artifactId>annot-search-lib</artifactId>
+            <version>1.4.11</version> 
+            <exclusions>
+                <exclusion>                    
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        <dependency>
+            <groupId>nl.mpi</groupId>
+            <artifactId>mpi-util</artifactId>
+            <version>1.2.4</version>
+        </dependency>
+        
+        
+        <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+            <version>2.7.2</version>
+        </dependency>
+       
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>annotations</artifactId>
+            <version>2.0.3</version>
+            <!-- Note: the annotations package is needed at compile time only. -->
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>nl.mpi</groupId>
+            <artifactId>mpi-deploy</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.simpleframework</groupId>
+            <artifactId>simple-xml</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.clarin.sru</groupId>
+            <artifactId>sru-server</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${mpi.parent.slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring</artifactId>
+            <version>2.5.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+        </dependency>
+
+       
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>MPI-repos</id>
+            <url>http://lux15.mpi.nl/nexus/content/repositories/MPI</url>
+        </repository>
+        <repository>
+            <id>clarin</id>
+            <url>http://catalog.clarin.eu/ds/nexus/content/repositories/Clarin/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
+    
+    <pluginRepositories>
+        <pluginRepository>
+            <id>MPI</id>
+            <name>MPI LAT Repository</name>
+            <url>http://lux15.mpi.nl/nexus/content/groups/public</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+
+
+</project>

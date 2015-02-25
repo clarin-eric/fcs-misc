@@ -1,0 +1,8 @@
+THere are some problems resolving some maven dependencies.
+Instead of depending on hundreds of external repos, add them to your own!
+
+
+Do the following with the appropriate values for the as3corelib and scrollbar:
+
+mvn install:install-file -Dfile=cql-java.jar -DgroupId=z3950.org -DartifactId=cql-java -Dversion=1.7 -Dpackaging=jar
+

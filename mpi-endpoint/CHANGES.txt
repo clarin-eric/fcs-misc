@@ -1,0 +1,71 @@
+-- 25/02/2015, 16:43. Schema locations (with even amounts of uri's) are added as context parameters
+to the application's web.xml
+
+-- 25/02/2015.  The following fragment have been moved from the tomcat's web.xml to the 
+applications' web.xml.
+  <context-param> 
+    <param-name>nl.mpi.cqlsearch2.imdiNamespaceURL</param-name>
+    <param-value>http://www.mpi.nl/IMDI/Schema/IMDI</param-value>
+  </context-param> 
+  
+  <context-param> 
+    <param-name>nl.mpi.cqlsearch2.imdiLanguageMapURL</param-name>
+    <param-value>http://www.mpi.nl/IMDI/Schema/LanguageCodeMap.xml</param-value>
+  </context-param> 
+  
+  <context-param> 
+    <param-name>nl.mpi.cqlsearch2.handleResolverURL</param-name>
+    <param-value>http://hdl.handle.net</param-value>
+  </context-param>
+  
+ 
+
+-- 16/02/2015. The bug with recordSchemaIdentifier is fixed. The bug is discovered after testing
+lux17's deployment on http://weblicht.sfs.uni-tuebingen.de/Aggregator-testing. also, some
+URL are moved from the source code to the web.xml as parameters.
+
+-- 16/02/2015. schemaRecordURL corrected to http://clarin.eu/fcs/resource. The complete  set of 
+permutations is generated now for clauses of an AND-request (using guava library). The mapping of 
+obsolete language codes in imdi-corpora to the ISO-3 ones is now happens not inside the package
+but using a corpus-management-generated mappoing at
+http://www.mpi.nl/IMDI/Schema/LanguageCodeMap.xml.
+
+-- 11/02/2015. 
+1) The endpoint is adjusted for the new FCS specification, that is the responds for “explain” and 
+“searchRetriwve” satisfy the new schema (it is done using JAXB translating schemata to java classes). 
+2) The search termas with AND and OR are implemented. 
+3) Languages of searchable corpora and their subcorpora are retrieved via retrieving languages 
+of the corresponding sessions; cache is used to preserve retrieved languages; to initiate cache
+(done in a separate thread) one needs to (re)start the application on the tomcat.
+
+-- 29/11/2013. Resolved handle problem (discovered for talkbank and childes which do not have handles).
+The new version delivers the link to the imd-file of a node if there is no handle.
+Moreover, it recongnizes such links when they are given, 
+instead of handles, as parameters for the search and scan operations. 
+
+-- the landing-page URL refers now not to xml-file but to a user-friendly page.
+
+November 2013 
+-- the parent pom version is updated to 1.7
+-- the mpi-libraries versions (including annot-search, corpusstructure- api) are updated to the latest ones mentioned on lux15
+-- the scan operation now is able to recognize handles ending with
+@format=cmdi, which is necessary froVLO-aggregator connection
+
+-- June 2013. CQLConfig.xml is removed, because all necessary parameters (incl. the list of searchable corpora)
+are placed in web.xml
+
+
+-- 24-25/01: README.txt, INSTALL.txt, UPDATE.txt, CHANGES.txt are added.
+
+January 2013:
+-- testing
+-- redistributing parameters in the project's context.xml, web.xml, CQLConfig.xml so that they
+satisfy criteria of the reasonable architecture and requirements of the external sru-library. 
+
+
+December 2012:
+-- small update of the code according to be compatible with the new version of the search library
+(done by Eric)
+
+
+

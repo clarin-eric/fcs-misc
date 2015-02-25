@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jxb:bindings version="1.0"
+              xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns:namespace="http://jaxb2-commons.dev.java.net/namespace-prefix"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd
+			  http://jaxb2-commons.dev.java.net/namespace-prefix http://java.net/projects/jaxb2-commons/sources/svn/content/namespace-prefix/trunk/src/main/resources/prefix-namespace-schema.xsd">
+
+    <jxb:bindings schemaLocation="../schemas/Resource.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="de.clarin.fcs.schema" />
+        </jxb:schemaBindings>
+        <jxb:bindings>
+            <namespace:prefix name="fcs" />
+        </jxb:bindings>
+    </jxb:bindings>
+      
+   
+    
+</jxb:bindings>
+
+
+ <!-- node ="/xs:schema/xs:element/xs:complexType/xs:sequence/xs:element[@name='Hit']"
+ node="/xs:schema/xs:element" -->

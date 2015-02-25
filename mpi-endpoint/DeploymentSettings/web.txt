@@ -1,0 +1,123 @@
+The web.xml should contain the following parameters: 
+
+The following parameters should be present in TomCat's web.xml 
+(with their values -- directories and passwords
+depending on the server and set for lux16, lux17, corpus1  by the adminsitrator)
+
+  <!-- ================= Trova (Annex, CQL Search) Configuration ===============  -->
+  <!--
+    *** Database configuration ***
+    
+    Note that Annex and Trova only need read rights to corpusstructure
+    + annex DB. These database settings may be used by other apps.
+-->
+  <resource-ref>
+    <description>Corpusstructure DB Datasource</description>
+    <res-ref-name>jdbc/CSDB</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+  <context-param>
+    <param-name>nl.mpi.db.corpusstructure</param-name>
+    <param-value>java:comp/env/jdbc/CSDB</param-value>
+  </context-param>
+  <context-param>
+    <param-name>nl.mpi.annot.search.searchDbURL</param-name>
+    <param-value>jdbc:postgresql://lux16.mpi.nl:5432/annex</param-value>
+  </context-param>
+  <context-param>
+    <param-name>nl.mpi.annot.search.searchDbUser</param-name>
+    <param-value>annexreader</param-value>
+  </context-param>
+  
+  <context-param>
+    <param-name>nl.mpi.annot.search.searchDbPassword</param-name>
+    <param-value>PUT PASSWORD HERE</param-value>
+  </context-param>
+  
+  <context-param> 
+    <param-name>nl.mpi.annot.search.luceneDirectory</param-name>
+    <param-value>/Users/olhsha/repositories/lucene.5</param-value>
+  </context-param> 
+  
+  <context-param> 
+  <param-name>nl.mpi.annexUrl</param-name>
+  <param-value>http://lux16.mpi.nl/ds/annex/runLoader</param-value>
+  </context-param> 
+  
+ <!-- CQL search specific parameters -->
+  
+ <!-- lux16, lux17 <param-value>olhsha@mpi.nl</param-value> -->
+  <!-- corpus1 <param-value>cqlservlet</param-value> --> 
+  <context-param>
+    <param-name>nl.mpi.cqlsearch2.userId</param-name>
+    <param-value>olhsha@mpi.nl</param-value>
+  </context-param>
+  
+  
+  <!-- lux16 <param-value>MPI457405#,MPI457406#</param-value> CGN, ESF-->
+  <!-- lux17 <param-value>MPI86949#,MPI556280#</param-value> CGN, ESF -->
+  <!-- corpus1 <param-value>MPI86949#,MPI1377055#,MPI214746#,MPI1296694#,MPI1259419#</param-value> 
+    CGN, ESF, IFA, childes, talkbank-->
+  <context-param>
+    <param-name>nl.mpi.cqlsearch2.searchableCorpora</param-name>
+    <param-value>MPI86949#,MPI556280#</param-value>
+  </context-param>
+  
+  <!-- make it 1 or 2 less than the number of cores of the machine where Tomcat running cql-search works, 
+    e.g. for 4 cores  make it 3 threads-->
+  <context-param>
+    <param-name>nl.mpi.cqlsearch2.tierCollectionThreads</param-name>
+    <param-value>3</param-value>
+  </context-param>
+  
+  <!-- make it 1 or 2 less than the number of the cores of the server where the database is, 
+    e.g. for 4 cores  make it 3 threads -->  
+  <context-param>
+    <param-name>nl.mpi.cqlsearch2.queryThreads</param-name>
+    <param-value>3</param-value>
+  </context-param>
+   
+  <context-param> 
+    <param-name>eu.clarin.sru.server.database</param-name>
+    <param-value>cqlsearch2</param-value>
+    <!--  ds/cqlsearch2 for lux16, , ds/cqlsearch for lux17, ds/cqlsearch or cqlservlet.mpi.nl for corpus1.mpi.ml  -->
+  </context-param> 
+  
+  <context-param> 
+    <param-name>eu.clarin.sru.server.host</param-name>
+    <param-value>localhost</param-value>
+    <!-- respectively: lux16.mpi.ml, lux17.mpi.nl, corpus1.mpi.ml  -->
+  </context-param> 
+  
+  <context-param> 
+    <param-name>eu.clarin.sru.server.port</param-name>
+    <param-value>8080</param-value>
+    <!-- 80 for lux16.mpi.ml, lux17.mpi.nl, corpus1.mpi.ml  -->
+  </context-param> 
+  
+  <context-param> 
+    <param-name>eu.clarin.sru.server.transport</param-name>
+    <param-value>http</param-value>
+    <!-- or https if your servlet is on https -->
+  </context-param> 
+  
+  <context-param> 
+    <param-name>eu.clarin.sru.server.numberOfRecords</param-name>
+    <param-value>100</param-value>
+    <!-- Default number of records used if the user does not assign maximumRecords  in the request. -->
+    <!-- A sysadmin may want to chnaged it but better no. -->
+  </context-param> 
+ 
+  <context-param> 
+    <param-name>eu.clarin.sru.server.maximumRecords</param-name>
+    <param-value>1000</param-value>
+    <!-- If you think it is a too high limit make it less but not less than 250 pls!-->
+  </context-param> 
+  
+  <context-param> 
+    <param-name>eu.clarin.sru.server.allowOverrideMaximumRecords</param-name>
+    <param-value>true</param-value>
+  </context-param> 
+  
+  

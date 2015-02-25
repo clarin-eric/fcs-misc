@@ -1,0 +1,73 @@
+CQL Search Installation 
+(The part of the text about context.xml and  web.xml files 
+can be used to build NetBeans projects as well.)
+------------------------------------
+
+Contents:
+- Requirements
+- Installation and Configuration of CQLSearch
+-- placing war-file
+-- The fragment web.txt to be present in Tomcat's web.xml file
+- Testing URI's file.
+- For the developer: information about Federated-Content-Search subproject of 
+CLARIN and over the external library that
+supplies interfaces and parent classes
+
+= Requirements =
+
+* cqlsearch2-XXX package 
+* Tomcat >=5, with the Trova search engine deployed
+
+
+
+= Installation and Configuration of CQLSearch  =
+=========================================================================================
+== PLACING WAR-file ==
+
+You must deploy the cqlsearch2's .war file to the Tomcat instance where Trova search engine
+is deployed. E.g. on lux16 it is tomcat-webuser.
+
+
+=============================================================================================
+== web.xml ===
+
+Find the following in this tar-ball:
+-- DeploymentSettings/web.txt
+
+Check if you have listed there parameters in TomCat's web.xml and re-set them properly if necessary. 
+
+Th file consist of two parts: the first part contains the parameters shared by Trova, Annex, 
+cqlsearch. The second part consists of the server-dependent parameters specific only for
+CQLSearch. There are comments near these parameters on how to set the values. Read these comments.
+
+
+=============================================================================================
+
+= Testing URI's =
+
+You need to run a couple of url-requests to see if the things work after installation. Take the
+url's from the corresponding file DeploymentSettings/TestURIs.txt.
+
+The base URI depends on a server, so read the first sentence where the base URI's for all
+three srevers lux16, lux17 and corpus1 are listed.
+
+If you are a deploying sysadmin, you do not have to analyse and report the search or scan results,
+you just have to check if there are no exceptions, errors and warnings and report about them 
+if necessary.
+
+=============================================================================================
+
+= For the developer: information over the external library 
+(supplies interfaces and parent classes) =
+
+CQL search is a part of the Federated (aggregated) search project with the idea that via one common 
+interface a user can make a SRU/CQL request which is dispatched across all the institutions 
+participating in the project. See http://weblicht.sfs.uni-tuebingen.de/Aggregator/.
+
+As a result the user obtains hits from all the participants, including
+MPI. Each participant implements its own search engine, and responsible to make it compatible 
+with the common interface.  That's why all the participants are using the same library of interfaces 
+and parent classes, created in Mannheim by Oliver Schoenefeld. The commented sources are available 
+(for reading only!!!) at https://svn.clarin.eu/ (e.g. SRUServer).
+
+
