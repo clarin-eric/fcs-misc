@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EndpointDescription xmlns="http://clarin.eu/fcs/endpoint-description"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://clarin.eu/fcs/endpoint-description ../../schema/Core_2/Endpoint-Description.xsd"
+    version="1">
+    <Capabilities>
+        <Capability>http://clarin.eu/fcs/capability/basic-search</Capability>
+    </Capabilities>
+    <SupportedDataViews>
+        <SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</SupportedDataView>
+        <SupportedDataView id="cmdi" delivery-policy="need-to-request">application/x-cmdi+xml</SupportedDataView>
+    </SupportedDataViews>
+    <SupportedLayers>
+        <SupportedLayer id="orth" result-id="http://endpoint.example.org/orth">orth</SupportedLayer>
+        <SupportedLayer id="orth1" result-id="http://endpoint.example.org/orth">orth</SupportedLayer>
+    </SupportedLayers>
+    <Resources>
+        <Resource pid="hdl:10932/goethe">
+            <Title xml:lang="de">Goethe Corpus</Title>
+            <Title xml:lang="en">Goethe Korpus</Title>
+            <Description xml:lang="de">Der Goethe Korpus des IDS Mannheim.</Description>
+            <Description xml:lang="en">The Goethe corpus of IDS Mannheim.</Description>
+            <LandingPageURI>https://cosmas2.ids-mannheim.de/cosmas2-web/</LandingPageURI>
+            <Languages>
+                <Language>deu</Language>
+            </Languages>
+            <AvailableDataViews ref="hits"/>
+            <AvailableLayers ref="orth"/>
+        </Resource>
+        <Resource pid="hdl:10932/mannheimer_morgen">
+            <Title xml:lang="de">Mannheimer Morgen newspaper Corpus</Title>
+            <Title xml:lang="en">Zeitungskorpus des Mannheimer Morgen</Title>
+            <LandingPageURI>https://cosmas2.ids-mannheim.de/cosmas2-web/</LandingPageURI>
+            <Languages>
+                <Language>deu</Language>
+            </Languages>
+            <AvailableDataViews ref="hits cmdi"/>
+            <Resources>
+                <Resource pid="hdl:10932/mannheimer_morgen_before_1990">
+                    <Title xml:lang="de">Mannheimer Morgen newspaper Corpus (before 1990)</Title>
+                    <Title xml:lang="en">Zeitungskorpus des Mannheimer Morgen (vor 1990)</Title>
+                    <LandingPageURI>https://cosmas2.ids-mannheim.de/cosmas2-web/</LandingPageURI>
+                    <Languages>
+                        <Language>deu</Language>
+                    </Languages>
+                    <AvailableDataViews ref="hits cmdi"/>
+                </Resource>
+                <Resource pid="hdl:10932/mannheimer_morgen_after_1990">
+                    <Title xml:lang="de">Mannheimer Morgen newspaper Corpus (after 1990)</Title>
+                    <Title xml:lang="en">Zeitungskorpus des Mannheimer Morgen (nach 1990)</Title>
+                    <LandingPageURI>https://cosmas2.ids-mannheim.de/cosmas2-web/</LandingPageURI>
+                    <Languages>
+                        <Language>deu</Language>
+                    </Languages>
+                    <AvailableDataViews ref="hits cmdi"/>
+                </Resource>
+            </Resources>
+        </Resource>
+    </Resources>
+</EndpointDescription>
