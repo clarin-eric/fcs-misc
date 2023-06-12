@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sruResponse:searchRetrieveResponse>
+  <sruResponse:version>2.0</sruResponse:version>
+  <sruResponse:numberOfRecords>33260</sruResponse:numberOfRecords>
+  <sruResponse:records>
+    <sruResponse:record>
+      <sruResponse:recordSchema>http://clarin.eu/fcs/resource</sruResponse:recordSchema>
+      <sruResponse:recordXMLEscaping>xml</sruResponse:recordXMLEscaping>
+      <sruResponse:recordData>
+        <fcs:Resource pid="ABOUNDERRATTELSER2012-32245">
+          <fcs:ResourceFragment>
+            <fcs:DataView type="application/x-clarin-fcs-hits+xml">
+              <hits:Result>Youtube-videon har väckt debatt om polisernas <hits:Hit>användning</hits:Hit> av våld .</hits:Result>
+            </fcs:DataView>
+            <fcs:DataView type="application/x-clarin-fcs-adv+xml">
+              <adv:Advanced unit="item">
+                <adv:Segments>
+                  <adv:Segment id="s1" start="1" end="14"/>
+                  <adv:Segment id="s2" start="16" end="18"/>
+                  <adv:Segment id="s3" start="20" end="24"/>
+                  <adv:Segment id="s4" start="26" end="31"/>
+                  <adv:Segment id="s5" start="33" end="34"/>
+                  <adv:Segment id="s6" start="36" end="45"/>
+                  <adv:Segment id="s7" start="47" end="56"/>
+                  <adv:Segment id="s8" start="58" end="59"/>
+                  <adv:Segment id="s9" start="61" end="64"/>
+                  <adv:Segment id="sa" start="66" end="66"/>
+                </adv:Segments>
+                <adv:Layers>
+                  <adv:Layer id="http://spraakbanken.gu.se/ns/fcs/layer/lemma">
+                    <adv:Span ref="s1">|</adv:Span>
+                    <adv:Span ref="s2">|ha|</adv:Span>
+                    <adv:Span ref="s3">|väcka|</adv:Span>
+                    <adv:Span ref="s4">|debatt|</adv:Span>
+                    <adv:Span ref="s5">|om|</adv:Span>
+                    <adv:Span ref="s6">|polis|</adv:Span>
+                    <adv:Span ref="s7" highlight="h1">|användning|</adv:Span>
+                    <adv:Span ref="s8">|av|</adv:Span>
+                    <adv:Span ref="s9">|våld|</adv:Span>
+                    <adv:Span ref="sa">|</adv:Span>
+                  </adv:Layer>
+                  <adv:Layer id="http://spraakbanken.gu.se/ns/fcs/layer/word">
+                    <adv:Span ref="s1">Youtube-videon</adv:Span>
+                    <adv:Span ref="s2">har</adv:Span>
+                    <adv:Span ref="s3">väckt</adv:Span>
+                    <adv:Span ref="s4">debatt</adv:Span>
+                    <adv:Span ref="s5">om</adv:Span>
+                    <adv:Span ref="s6">polisernas</adv:Span>
+                    <adv:Span ref="s7" highlight="h1">användning</adv:Span>
+                    <adv:Span ref="s8">av</adv:Span>
+                    <adv:Span ref="s9">våld</adv:Span>
+                    <adv:Span ref="sa">.</adv:Span>
+                  </adv:Layer>
+                  <adv:Layer id="http://spraakbanken.gu.se/ns/fcs/layer/pos">
+                    <adv:Span ref="s1">PROPN</adv:Span>
+                    <adv:Span ref="s2">VERB</adv:Span>
+                    <adv:Span ref="s3">VERB</adv:Span>
+                    <adv:Span ref="s4">NOUN</adv:Span>
+                    <adv:Span ref="s5">ADP</adv:Span>
+                    <adv:Span ref="s6">NOUN</adv:Span>
+                    <adv:Span ref="s7" highlight="h1">NOUN</adv:Span>
+                    <adv:Span ref="s8">ADP</adv:Span>
+                    <adv:Span ref="s9">NOUN</adv:Span>
+                    <adv:Span ref="sa">PUNCT</adv:Span>
+                  </adv:Layer>
+                </adv:Layers>
+              </adv:Advanced>
+            </fcs:DataView>
+          </fcs:ResourceFragment>
+        </fcs:Resource>
+      </sruResponse:recordData>
+      <sruResponse:recordPosition>1</sruResponse:recordPosition>
+    </sruResponse:record>
+    <!-- 249 records not shown -->
+  </sruResponse:records>
+  <sruResponse:nextRecordPosition>251</sruResponse:nextRecordPosition>
+  <sruResponse:echoedSearchRetrieveRequest>
+    <sruResponse:version>2.0</sruResponse:version>
+    <sruResponse:startRecord>1</sruResponse:startRecord>
+  </sruResponse:echoedSearchRetrieveRequest>
+  <sruResponse:resultCountPrecision>info:srw/vocabulary/resultCountPrecision/1/exact</sruResponse:resultCountPrecision>
+</sruResponse:searchRetrieveResponse>

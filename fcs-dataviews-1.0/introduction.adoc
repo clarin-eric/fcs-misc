@@ -1,0 +1,84 @@
+= Introduction
+
+This specification is a supplementary specification to the CLARIN-FCS Core specification and defines additional Data View to be used in CLARIN-FCS. This specification defines the supplementary Data Views. For detailed information about the CLARIN-FCS interface specification, see <<ref:CLARIN-FCSCore20>>.
+
+
+== Terminology
+
+The key words `MUST`, `MUST NOT`, `REQUIRED`, `SHALL`, `SHALL NOT`, `SHOULD`, `SHOULD NOT`, `RECOMMENDED`, `MAY`, and `OPTIONAL` in this document are to be interpreted as in <<ref:RFC2119>>.
+
+
+== Normative References
+
+[[ref:RFC2119]]RFC2119::
+    Key words for use in RFCs to Indicate Requirement Levels, IETF RFC 2119, March 1997,
+    https://www.ietf.org/rfc/rfc2119.html
+
+[[ref:XML-Namespaces]]XML-Namespaces::
+    Namespaces in XML 1.0 (Third Edition), W3C, 8 December 2009,
+    http://www.w3.org/TR/2009/REC-xml-names-20091208/
+
+[[ref:CLARIN-FCSCore20]]CLARIN-FCS-Core 2.0::
+    CLARIN Federated Content Search (CLARIN-FCS) - Core 2.0, SCCTC FCS Task-Force, May 2017,
+    https://trac.clarin.eu/wiki/FCS/Specification,
+    https://office.clarin.eu/v/CE-2017-1046-FCS-Specification-v89.pdf
+
+
+== Non-Normative References
+
+RFC6838::
+    Media Type Specifications and Registration Procedures, IETF RFC 6838, January 2013,
+    https://www.ietf.org/rfc/rfc6838.html
+
+RFC3023::
+    XML Media Types, IETF RFC 3023, January 2001,
+    https://www.ietf.org/rfc/rfc3023.html
+
+KML::
+    Keyhole Markup Language (KML), Open Geospatial Consortium, 2008,
+    https://www.opengeospatial.org/standards/kml
+
+
+== Typographic and XML Namespace conventions
+
+The following typographic conventions for XML fragments will be used throughout this specification:
+
+* `<prefix:Element>`
++
+An XML element with the Generic Identifier _Element_ that is bound to an XML namespace denoted by the prefix _prefix_.
+
+* `@attr`
++
+An XML attribute with the name _attr_.
+
+* `string`
++
+The literal _string_ must be used either as element content or attribute value.
+
+Endpoints and Clients `MUST` adhere to the XML-Namespaces specification. The CLARIN-FCS interface specification generally does not dictate whether XML elements should be serialized in their prefixed or non-prefixed syntax, but Endpoints `MUST` ensure that the correct XML namespace is used for elements and that XML namespaces are declared correctly. Clients `MUST` be agnostic regarding syntax for serializing the XML elements, i.e. if the prefixed or un-prefixed variant was used, and `SHOULD` operate solely on expanded names, i.e. pairs of namespace name and local name.
+
+The following XML namespace names and prefixes are used throughout this specification. The column "Recommended Syntax" indicates which syntax variant `SHOULD` be used by the Endpoint to serialize the XML response.
+
+.XML Namespaces and prefixes
+[%header,cols="1m,6m,5,2"]
+|===
+|Prefix
+|Namespace Name
+|Comment
+|Recommended Syntax
+
+|fcs
+|http://clarin.eu/fcs/resource
+|CLARIN-FCS Resources
+|prefixed
+
+|cmdi
+|http://www.clarin.eu/cmd/
+|Component Metadata
+|un-prefixed
+
+|kml
+|http://www.opengis.net/kml/2.2
+|Keyhole Markup Language
+|un-prefixed
+|===

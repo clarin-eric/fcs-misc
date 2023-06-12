@@ -1,0 +1,108 @@
+= Data Views
+
+A Data View serves as a container for representing search results within CLARIN-FCS. Data Views are designed to allow for different representations of results. This specification defines supplementary Data Views beyond the Generic Hits Data View and Advanced Data View, that is defined as part of the CLARIN-FCS Core 2.0 specification. For detailed information as to what Data Views are and how they are integrated in CLARIN-FCS, see <<ref:CLARIN-FCSCore20>>.
+
+NOTE: The examples in the following sections show only the payload with the enclosing `<fcs:DataView>` element of a Data View. Of course, the Data View must be embedded either in a `<fcs:Resource>` or a `<fcs:ResourceFragment>` element. The `@pid` and `@ref` attributes have been omitted for all inline payload types.
+
+
+== Generic Hits (HITS)
+
+The _Generic Hits_ (HITS) Data View is an integral part of the Core specification and serves as the as the _most basic_ agreement in CLARIN-FCS for the serialization of search results. For details about this Data View, see the Core specification <<ref:CLARIN-FCSCore20,CLARIN-FCS-Core 1.0 or 2.0, Section "Generic Hits (HITS)">>.
+
+
+== Advanced (ADV)
+
+The _Advanced_ (ADV) Data View is an integral part of the Core 2.0 specification and serves as the as the agreement in CLARIN-FCS for the serialization of CLARIN-FCS 2.0 Advanced Search results. For details about this Data View, see the Core specification <<ref:CLARIN-FCSCore20,CLARIN-FCS-Core 2.0, Section "Advanced (ADV)">>.
+
+
+== Component Metadata (CMDI)
+
+[%noheader,cols="1h,2"]
+|===
+|Description
+|A CMDI metadata record
+
+|MIME type
+|`application/x-cmdi+xml`
+
+|Payload Disposition
+|_inline_ or _reference_
+
+|Payload Delivery
+|_send-by-default_ (`RECOMMENDED`)
+
+|Recommended Short Identifier
+|`cmdi` (`RECOMMENDED`)
+|===
+
+The _Component Metadata Data View_ allows the embedding of a CMDI metadata record that is _applicable_ to the specific context into the Endpoint response, e.g. metadata about the resource in which the hit was produced. If this CMDI record is applicable for the entire Resource, it `SHOULD` be put in a `<fcs:DataView>` element below the `<fcs:Resource>` element. If it is applicable to the Resource Fragment, i.e. it contains more specialized metadata than the metadata for the encompassing resource, it `SHOULD` be put in a `<fcs:DataView>` element below the `<fcs:ResourceFragment>` element. Endpoints `SHOULD` provide the payload _inline_, but Endpoints `MAY` also use the _reference_ method. If an Endpoint uses the _reference_ method, the CMDI metadata record `MUST` be downloadable without any restrictions.
+
+.Example (inline)
+[#cmdi-inline,xml]
+----
+include::examples/cmdi-inline.xml[]
+----
+
+.Example (referenced)
+[#cmdi-referenced,xml]
+----
+include::examples/cmdi-referenced.xml[]
+----
+
+
+== Images (IMG)
+
+[%noheader,cols="1h,2"]
+|===
+|Description
+|An image related to the hit
+
+|MIME type
+|`image/png`, `image/jpeg`, `image/gif`, `image/svg+xml`
+
+|Payload Disposition
+|_reference_
+
+|Payload Delivery
+|_need-to-request_ (`RECOMMENDED`)
+
+|Recommended Short Identifier
+|`image` (`RECOMMENDED`)
+|===
+
+The _Image Data View_ provides an image that is relevant to the hit, e.g. a facsimile of the source of a transcription. Endpoints `MUST` provide the payload by the _reference_ method and the image file `SHOULD` be downloadable without any restrictions.
+
+.Example
+[#image-referenced,xml]
+----
+include::examples/image-referenced.xml[]
+----
+
+
+== Geolocation (GEO)
+
+[%noheader,cols="1h,2"]
+|===
+|Description
+|An geographic location related to the hit
+
+|MIME type
+|`application/vnd.google-earth.kml+xml`
+
+|Payload Disposition
+|_inline_
+
+|Payload Delivery
+|_need-to-request_ (`RECOMMENDED`)
+
+|Recommended Short Identifier
+|`kml` (`RECOMMENDED`)
+|===
+
+The _Geolocation Data View_ allows to geolocalize a hit. If `MUST` be encoded using the XML representation of the Keyhole Markup Language (KML). The KML fragment `MUST` comply with the specification as defined by <<ref:KML>>.
+
+.Example
+[#kml-inline,xml]
+----
+include::examples/kml-inline.xml[]
+----

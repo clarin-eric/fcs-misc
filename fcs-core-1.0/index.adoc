@@ -1,0 +1,53 @@
+= CLARIN Federated Content Search (CLARIN-FCS) - Core 1.0
+Oliver Schonefeld <schonefeld@ids-mannheim.de>; Thomas Eckart <eckart@saw-leipzig.de>; Thomas Kisler <thomas@kisler.de>; Christoph Draxler <draxler@phonetik.uni-muenchen.de>; Kai Zimmer <zimmer@bbaw.de>; Matej Ďurčo <matej.durco@oeaw.ac.at>; Yana Panchenko <yana.panchenko@uni-tuebingen.de>; Hanna Hedeland <hedeland@ids-mannheim.de>; Andre Blessing <andre.blessing@ims.uni-stuttgart.de>; Olha Shkaravska <Olha.Shkaravska@mpi.nl>; Leif-Jöran Olsson <leif-joran.olsson@svenska.gu.se>; Peter M. Fischer <fisseni@ids-mannheim.de>; Erik Körner <koerner@saw-leipzig.de>
+v1.0, 2018-09-06
+// more metadata
+:description: The goal of the CLARIN Federated Content Search (CLARIN-FCS) - Core specification is to introduce an interface specification that decouples the search engine functionality from its exploitation, i.e. user-interfaces, third-party applications, and to allow services to access heterogeneous search engines in a uniform way.
+:organization: CLARIN
+// settings
+:doctype: book
+// source code
+:source-highlighter: rouge
+:rouge-style: igor_pro
+// toc and heading
+:toc:
+:toclevels: 4
+:sectnums:
+:sectnumlevels: 4
+:appendix-caption!:
+// directory stuff
+:imagesdir: images
+// pdf
+ifdef::backend-pdf[]
+:pdf-theme: clarin
+:pdf-themesdir: {docdir}/themes
+:title-logo-image: image:{docdir}/themes/clarin-logo.svg[pdfwidth=5.75in,align=center]
+endif::[]
+
+//ifdef::backend-pdf[]
+//[%notitle]
+//--
+//[abstract]
+//{description}
+//--
+//endif::[]
+
+<<<
+
+include::introduction.adoc[leveloffset=+1]
+
+<<<
+
+include::interface-specification.adoc[leveloffset=+1]
+
+<<<
+
+include::fcs-to-sru-cql-binding.adoc[leveloffset=+1]
+
+<<<
+
+[appendix]
+include::normative-appendix.adoc[leveloffset=+1]
+
+[appendix]
+include::non-normative-appendix.adoc[leveloffset=+1]

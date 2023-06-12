@@ -1,0 +1,7 @@
+<fcs:Resource xmlns:fcs="http://clarin.eu/fcs/resource" pid="http://hdl.handle.net/4711/0815">
+  <fcs:DataView type="application/x-clarin-fcs-hits+xml" ref="http://repos.example.org/resource.cgi/4711/0815?highlight=fox">
+    <hits:Result xmlns:hits="http://clarin.eu/fcs/dataview/hits">
+      The quick brown <hits:Hit>fox</hits:Hit> jumps over the lazy dog.
+    </hits:Result>
+  </fcs:DataView>
+</fcs:Resource>

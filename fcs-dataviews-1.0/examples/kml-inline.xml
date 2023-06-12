@@ -1,0 +1,12 @@
+<!-- potential @pid and @ref attributes omitted -->
+<fcs:DataView type="application/vnd.google-earth.kml+xml">
+  <kml:kml xmlns:kml="http://www.opengis.net/kml/2.2">
+    <kml:Placemark>
+      <kml:name>IDS Mannheim</kml:name>
+      <kml:description>Institut für Deutsche Sprache, R5 6-13, 68161 Mannheim, Germany</kml:description>
+      <kml:Point>
+        <kml:coordinates>8.4719510,49.4883700,0</kml:coordinates>
+      </kml:Point>
+    </kml:Placemark>
+  </kml:kml>
+</fcs:DataView>

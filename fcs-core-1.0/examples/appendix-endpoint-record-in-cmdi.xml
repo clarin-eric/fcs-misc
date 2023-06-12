@@ -1,0 +1,18 @@
+<cmdi:CMD xmlns:cmdi="http://www.clarin.eu/cmd/" CMDVersion="1.1">
+  <cmdi:Header>
+    <!-- ... -->
+    <cmdi:MdSelfLink>http://hdl.handle.net/4711/0815</cmdi:MdSelfLink>
+    <!-- ... -->
+  </cmdi:Header>
+  <cmdi:Resources>
+    <cmdi:ResourceProxyList>
+      <!-- ... -->
+      <cmdi:ResourceProxy id="r4711">
+        <cmdi:ResourceType mimetype="application/sru+xml">SearchService</cmdi:ResourceType>
+        <cmdi:ResourceRef>http://repos.example.org/fcs-endpoint</cmdi:ResourceRef>
+      </cmdi:ResourceProxy>
+      <!-- ... -->
+    </cmdi:ResourceProxyList>
+  </cmdi:Resources>
+  <!-- ... -->
+</cmdi:CMD>

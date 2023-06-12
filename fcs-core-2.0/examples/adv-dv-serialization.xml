@@ -1,0 +1,78 @@
+<Advanced>
+  <Segments unit="items">
+    <Segment id="s1"  start="1"  end="1"
+        ref="http://hdl.handle.net/4711/123456789?urlappend=%3Fplay=0:173"/>
+    <Segment id="s2"  start="3"  end="4"
+        ref="http://hdl.handle.net/4711/123456789?urlappend=%3Fplay=173:304"/>
+    <Segment id="s3"  start="6"  end="7"
+        ref="http://hdl.handle.net/4711/123456789?urlappend=%3Fplay=173:304"/> 
+    <Segment id="s4"  start="9"  end="10"
+        ref="http://hdl.handle.net/4711/123456789?urlappend=%3Fplay=304:480"/>
+    <Segment id="s5"  start="12" end="16"
+        ref="http://hdl.handle.net/4711/123456789?urlappend=%3Fplay=480:1119"/>
+    <Segment id="s6"  start="18" end="22"
+        ref="http://hdl.handle.net/4711/123456789?urlappend=%3Fplay=1339:1901"/>
+    <Segment id="s7"  start="24" end="27"
+        ref="http://hdl.handle.net/4711/123456789?urlappend=%3Fplay=1901:2427"/>
+    <Segment id="s8"  start="29" end="32"
+        ref="http://hdl.handle.net/4711/123456789?urlappend=%3Fplay=3084:3493"/>
+    <Segment id="s9"  start="34" end="36"
+        ref="http://hdl.handle.net/4711/123456789?urlappend=%3Fplay=3493:3754"/>
+    <Segment id="s10" start="38" end="43"
+        ref="http://hdl.handle.net/4711/123456789?urlappend=%3Fplay=3754:4274"/> 
+  </Segments>
+
+  <Layers>
+    <Layer id="http://endpoint.example.org/Layers/orth1">
+      <Span ref="s1">t</Span>
+      <Span ref="s2">da</Span> 
+      <Span ref="s3">'s</Span> 
+      <Span ref="s4">de</Span> 
+      <Span ref="s5">enige</Span> 
+      <Span ref="s6">echte</Span> 
+      <Span ref="s7">hoop</Span> 
+      <Span ref="s8">voor</Span> 
+      <Span ref="s9">ons</Span> 
+      <Span ref="s10">mensen</Span>
+    </Layer>
+
+    <Layer id="http://endpoint.example.org/Layers/pos1">
+      <Span ref="s1"  alt-value="SPEC(afgebr)">X</Span>
+      <Span ref="s2"  alt-value="VNW(aanw,pron,stan,vol,3o,ev)">PRON</Span>
+      <Span ref="s3"  alt-value="WW(pv,tgw,ev)">VERB</Span>
+      <Span ref="s4"  alt-value="LID(bep,stan,rest)">DET</Span>
+      <Span ref="s5"  alt-value="VNW(onbep,det,stan,prenom,met-e,rest)">DET</Span>
+      <Span ref="s6"  alt-value="ADJ(prenom,basis,met-e,stan)">ADJ</Span>
+      <Span ref="s7"  alt-value="N(soort,ev,basis,zijd,stan)">NOUN</Span>
+      <Span ref="s8"  alt-value="VZ(init)">ADP</Span>
+      <Span ref="s9"  alt-value="VNW(pr,pron,obl,vol,1,mv)">PRON</Span>
+      <Span ref="s10" alt-value="N(soort,mv,basis)">NOUN</Span>
+    </Layer>
+
+    <Layer id="http://endpoint.example.org/Layers/lemma1">
+      <Span ref="s1">_</Span>
+      <Span ref="s2">dat</Span>
+      <Span ref="s3">zijn</Span>
+      <Span ref="s4">de</Span>
+      <Span ref="s5">enig</Span>
+      <Span ref="s6" highlight="h1">echt</Span>
+      <Span ref="s7" highlight="h1">hoop</Span>
+      <Span ref="s8">voor</Span>
+      <Span ref="s9">ons</Span>
+      <Span ref="s10">mens</Span>
+    </Layer>
+
+    <Layer id="http://endpoint.example.org/Layers/phon">
+      <Span ref="s1">t@</Span>
+      <Span ref="s2" highlight="h2">dAz</Span>
+      <Span ref="s3">dAz</Span>
+      <Span ref="s4">d@</Span>
+      <Span ref="s5">en@G@</Span>
+      <Span ref="s6">Ext@</Span>
+      <Span ref="s7">hop</Span>
+      <Span ref="s8">for</Span>
+      <Span ref="s9">Ons</Span>
+      <Span ref="s10">mEns@</Span>
+    </Layer>
+  </Layers>
+</Advanced>

@@ -1,0 +1,42 @@
+= CLARIN Federated Content Search (CLARIN-FCS) - AAI 1.0
+Oliver Schonefeld <schonefeld@ids-mannheim.de>; Leif-Jöran Olsson <leif-joran.olsson@svenska.gu.se>; Thomas Eckart <eckart@saw-leipzig.de>; André Moreira <andre@clarin.eu>; Erik Körner <koerner@saw-leipzig.de>
+v1.0, 2023-05-11
+// more metadata
+:description: The goal is to allow restricting access to FCS resources to users that are authenticated using the established AAI infrastructure.
+:organization: CLARIN
+// settings
+:doctype: book
+// source code
+:source-highlighter: rouge
+:rouge-style: igor_pro
+// toc and heading
+:toc:
+:toclevels: 4
+:sectnums:
+:sectnumlevels: 4
+:appendix-caption!:
+// directory stuff
+:imagesdir: images
+// pdf
+ifdef::backend-pdf[]
+:pdf-theme: clarin
+:pdf-themesdir: {docdir}/themes
+:title-logo-image: image:{docdir}/themes/clarin-logo.svg[pdfwidth=5.75in,align=center]
+endif::[]
+
+//ifdef::backend-pdf[]
+//[%notitle]
+//--
+//[abstract]
+//{description}
+//--
+//endif::[]
+
+<<<
+
+include::introduction.adoc[leveloffset=+1]
+
+<<<
+
+include::implementation.adoc[leveloffset=+1]
+

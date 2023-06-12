@@ -1,0 +1,125 @@
+= CLARIN-FCS to SRU/CQL binding
+
+== SRU/CQL
+
+SRU (Search/Retrieve via URL) specifies a general communication protocol for searching and retrieving records and the CQL (Contextual Query Language) specifies an extensible query language. CLARIN-FCS is built on SRU 1.2. A subsequent specification may be built on SRU 2.0.
+
+Endpoints and Clients `MUST` implement the SRU/CQL protocol suite as defined in <<ref:OASIS-SRU-Overview>>, <<ref:OASIS-SRU-APD>>, <<ref:OASIS-CQL>>, <<ref:SRU-Explain>>, <<ref:SRU-Scan>>, especially with respect to:
+
+* Data Model,
+* Query Model,
+* Processing Model,
+* Result Set Model, and
+* Diagnostics Model.
+
+Endpoints and Clients `MUST` implement the APD Binding for SRU 1.2, as defined in <<ref:OASIS-SRU12>>. Endpoints and Clients `MAY` also implement APD binding for version 1.1 or version 2.0.
+
+Endpoints and Clients `MUST` use the following XML namespace names (namespace URIs) for serializing responses:
+
+* `\http://www.loc.gov/zing/srw/` for SRU response documents, and
+* `\http://www.loc.gov/zing/srw/diagnostic/` for diagnostics within SRU response documents. 
+
+CLARIN-FCS deviates from the OASIS specification <<ref:OASIS-SRU-Overview>> and <<ref:OASIS-SRU12>> to ensure backwards comparability with SRU 1.2 services as they were defined by the <<ref:LOC-SRU12>>.
+
+Endpoints or Clients `MUST` support CQL conformance _Level 2_ (as defined in <<ref:OASIS-CQL,OASIS-CQL, section 6>>), i.e. be able to _parse_ (Endpoints) or _serialize_ (Clients) all of CQL and respond with appropriate error messages to the search/retrieve protocol interface.
+
+NOTE: this does _not imply_, that Endpoints are _required_ to support all of CQL, but rather that they are able to _parse_ all of CQL and generate the appropriate error message, if a query includes a feature they do not support.
+
+Endpoints `MUST` generate diagnostics according to <<ref:OASIS-SRU12,OASIS-SRU12, Appendix C>> for error conditions or to indicate unsupported features. Unfortunately, the OASIS specification does not provides a comprehensive list of diagnostics for CQL-related errors. Therefore, Endpoints `MUST` use diagnostics from <<ref:LOC-DIAG,LOC-DIAG, section "Diagnostics Relating to CQL">> for CQL related errors.
+
+Endpoints `MUST` support the HTTP GET <<ref:OASIS-SRU12,OASIS-SRU12, Appendix B.1>> and HTTP POST <<ref:OASIS-SRU12,OASIS-SRU12, Appendix B.2>> lower level protocol binding. Endpoints `MAY` also support the SOAP <<ref:OASIS-SRU12,OASIS-SRU12, Appendix B.3>> binding.
+
+
+== Operation _explain_
+
+The _explain_ operation of the SRU protocol serves to announce server capabilities and to allow clients to configure themselves automatically. This operation is used similarly.
+
+The Endpoint `MUST` respond to a _explain_ request by a proper _explain_ response. As per SRU-Explain, the response `MUST` contain one `<sru:record>` element that contains an _SRU Explain_ record. The `<sru:recordSchema>` element `MUST` contain the literal `\http://explain.z3950.org/dtd/2.0/`, i.e. the official _identifier_ for Explain records.
+
+According to the Capabilities supported by the Endpoint the Explain record `MUST` contain the following elements: 
+
+"Basic Search" Capability::
++
+`<zr:serverInfo>` as defined in <<ref:SRU-Explain>> (`REQUIRED`).
++
+`<zr:databaseInfo>` as defined in <<ref:SRU-Explain>> (`REQUIRED`).
++
+`<zr:schemaInfo>` as defined in <<ref:SRU-Explain>> (`REQUIRED`). This element `MUST` contain an element `<zr:schema>` with an `@identifier` attribute with a value of `\http://clarin.eu/fcs/resource` and a `@name` attribute with a value of `fcs`.
++
+`<zr:configInfo>` is `OPTIONAL`.
++
+Other capabilities may define how the `<zr:indexInfo>` element is to be used, therefore it is `NOT RECOMMENDED` for Endpoints to use it in custom extensions.
+
+To support auto-configuration in CLARIN-FCS, the Endpoint `MUST` provide support _Endpoint Description_. The Endpoint Description is included in explain response utilizing SRUs extension mechanism, i.e. by embedding an XML fragment into the `<sru:extraResponseData>` element. The Endpoint `MUST` include the Endpoint Description _only_ if the Client performs an explain request with the _extra request parameter_ `x-fcs-endpoint-description` with a value of `true`. If the Client performs an explain request _without_ supplying this extra request parameter the Endpoint `MUST NOT`` include the Endpoint Description. The format of the Endpoint Description XML fragment is defined in <<Endpoint Description>>.
+
+The following example shows a request and response to an _explain_ request with added extra request parameter `x-fcs-endpoint-description`:
+
+* HTTP GET request: Client → Endpoint:
++
+----
+http://repos.example.org/fcs-endpoint?operation=explain&version=1.2&x-fcs-endpoint-description=true
+----
+
+* HTTP response: Endpoint → Client:
++
+[#op-explain-sru12-response,xml]
+----
+include::examples/op-explain-sru12-response.xml[]
+----
+
+
+== Operation _scan_
+
+The _scan_ operation of the SRU protocol is currently not used in the _Basic Search_ capability of CLARIN-FCS. Future capabilities may use this operation, therefore it `NOT RECOMMENDED` for Endpoints to define custom extensions that use this operation. 
+
+
+== Operation _searchRetrieve_
+
+The _searchRetrieve_ operation of the SRU protocol is used for searching in the Resources that are provided by the Endpoint. The SRU protocol defines the serialization of request and response formats in <<ref:OASIS-SRU12>>. In SRU, search result hits are encoded down to a record level, i.e. the `<sru:record>` element, and SRU allows records to be serialized in various formats, so called record schemas.
+
+Endpoints `MUST` support the CLARIN-FCS record schema (see section <<Result Format>>) and `MUST` use the value `\http://clarin.eu/fcs/resource` for the _responseItemType_ ("record schema identifier"). Endpoints `MUST` represent exactly _one hit_ within the Resource as one SRU record, i.e. `<sru:record>` element.
+
+The following example shows a request and response to a _searchRetrieve_ request with a _term-only_ query for "cat": 
+
+* HTTP GET request: Client → Endpoint:
++
+----
+http://repos.example.org/fcs-endpoint?operation=searchRetrieve&version=1.2&query=cat
+----
+
+* HTTP response: Endpoint → Client:
++
+[#op-searchretrieve-sru12-response,xml]
+----
+include::examples/op-searchretrieve-sru12-response.xml[]
+----
+
+In general, the Endpoint is `REQUIRED` to accept an _unrestricted search_ and SHOULD perform the search operation on _all_ Resources that are available at the Endpoint. If that is for some reason not feasible, e.g. performing an unrestricted search would allocate too many resources, the Endpoint `MAY` independently restrict the search to a scope that it can handle. If it does so, it `MUST` issue a non-fatal diagnostics `\http://clarin.eu/fcs/diagnostic/2` ("Resource set too large. Query context automatically adjusted."). The details field of diagnostics `MUST` contain the persistent identifier of the resources to which the query scope was limited to. If the Endpoint limits the query scope to more than one resource, it `MUST` generate a _separate_ non-fatal diagnostic `\http://clarin.eu/fcs/diagnostic/2` for each of the resources.
+
+The Client can request the Endpoint to _restrict the search_ to a sub-resource of these Resources. In this case, the Client `MUST` pass a comma-separated list of persistent identifiers in the `x-fcs-context` extra request parameter of the _searchRetrieve_ request. The Endpoint `MUST` then restrict the search to those Resources, which are identified by the persistent identifiers passed by the Client. If a Client requests too many resources for the Endpoint to handle with `x-fcs-context`, the Endpoint `MAY` issue a fatal diagnostic `\http://clarin.eu/fcs/diagnostic/3` ("Resource set too large. Cannot perform Query.") and terminate processing. Alternatively, the Endpoint `MAY` also automatically adjust the scope and issue a non-fatal diagnostic `\http://clarin.eu/fcs/diagnostic/2` (see above). And Endpoint `MUST NOT` issue a `\http://clarin.eu/fcs/diagnostic/3` diagnostic in response to a request, if a Client performed the request without the `x-fcs-context` extra request parameter.
+
+The Client can extract all valid persistent identifiers from the `@pid` attribute of the `<ed:Resource>` element, obtained by the _explain_ request (see section <<Operation _explain_,Operation "explain">> and section <<Endpoint Description>>). The list of persistent identifiers can get extensive, but a Client can use the HTTP POST method instead of HTTP GET method for submitting the request. 
+
+For example, to restrict the search to the Resource with the persistent identifier `\http://hdl.handle.net/4711/0815` the Client must issue the following request:
++
+----
+http://repos.example.org/fcs-endpoint?operation=searchRetrieve&version=1.2&query=cat&x-fcs-context=http://hdl.handle.net/4711/0815
+----
+
+To restrict the search to the Resources with the persistent identifier http://hdl.handle.net/4711/0815 and http://hdl.handle.net/4711/0816-2 the Client must issue the following request:
++
+----
+http://repos.example.org/fcs-endpoint?operation=searchRetrieve&version=1.2&query=cat&x-fcs-context=http://hdl.handle.net/4711/0815,http://hdl.handle.net/4711/0816-2
+----
+
+If an invalid persistent identifier is passed by the Client, the Endpoint `MUST` issue a `\http://clarin.eu/fcs/diagnostic/1` diagnostic, i.e. add the appropriate XML fragment to the `<sru:diagnostics>` element of the response. The Endpoint `MAY` treat this condition as fatal, i.e. just issue the diagnostic and perform no search, or it `MAY` treat it as non-fatal and perform the search.
+
+If a Client wants to request one or more Data Views, that are handled by Endpoint with the _need-to-request_ delivery policy, it `MUST` pass a comma-separated list of _Data View identifier_ in the `x-fcs-dataviews` extra request parameter of the 'searchRetrieve' request. A Client can extract valid values for the _Data View identifiers_ from the `@id` attribute of the `<ed:SupportedDataView>` elements in the Endpoint Description of the Endpoint (see section <<Operation _explain_,Operation "explain">> and section <<Endpoint Description>>).
+
+For example, to request the CMDI Data View from an Endpoint that has an Endpoint Description, as described in <<ed-simple-cmdi>>, a Client would need to use the _Data View identifier_ `cmdi` and submit the following request:
++
+----
+http://repos.example.org/fcs-endpoint?operation=searchRetrieve&version=1.2&query=cat&x-fcs-dataviews=cmdi
+----
+
+If an invalid _Data View identifier_ is passed by the Client, the Endpoint `MUST` issue a `\http://clarin.eu/fcs/diagnostic/4` diagnostic, i.e. add the appropriate XML fragment to the `<sru:diagnostics>` element of the response. The Endpoint `MAY` treat this condition as fatal, i.e. simply issue the diagnostic and perform no search, or it `MAY` treat it a non-fatal and perform the search. 

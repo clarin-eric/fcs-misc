@@ -1,0 +1,55 @@
+<ed:EndpointDescription xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="2">
+  <ed:Capabilities>
+    <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
+  </ed:Capabilities>
+  <ed:SupportedDataViews>
+    <ed:SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</ed:SupportedDataView>
+    <ed:SupportedDataView id="cmdi" delivery-policy="need-to-request">application/x-cmdi+xml</ed:SupportedDataView>
+  </ed:SupportedDataViews>
+  <ed:Resources>
+    <!-- top-level resource 1 -->
+    <ed:Resource pid="http://hdl.handle.net/4711/0815">
+      <ed:Title xml:lang="de">Goethe Korpus</ed:Title>
+      <ed:Title xml:lang="en">Goethe corpus</ed:Title>
+      <ed:Description xml:lang="de">Das Goethe-Korpus des IDS Mannheim.</ed:Description>
+      <ed:Description xml:lang="en">The Goethe corpus of IDS Mannheim.</ed:Description>
+      <ed:LandingPageURI>http://repos.example.org/corpus1.html</ed:LandingPageURI>
+      <ed:Languages>
+        <ed:Language>deu</ed:Language>
+      </ed:Languages>
+      <ed:AvailableDataViews ref="hits" />
+    </ed:Resource>
+    <!-- top-level resource 2 -->
+    <ed:Resource pid="http://hdl.handle.net/4711/0816">
+      <ed:Title xml:lang="de">Zeitungskorpus des Mannheimer Morgen</ed:Title>
+      <ed:Title xml:lang="en">Mannheimer Morgen newspaper corpus</ed:Title>
+      <ed:LandingPageURI>http://repos.example.org/corpus2.html</ed:LandingPageURI>
+      <ed:Languages>
+        <ed:Language>deu</ed:Language>
+      </ed:Languages>
+      <ed:AvailableDataViews ref="hits cmdi" />
+      <ed:Resources>
+        <!-- sub-resource 1 of top-level resource 2 -->
+        <ed:Resource pid="http://hdl.handle.net/4711/0816-1">
+          <ed:Title xml:lang="de">Zeitungskorpus des Mannheimer Morgen (vor 1990)</ed:Title>
+          <ed:Title xml:lang="en">Mannheimer Morgen newspaper corpus (before 1990)</ed:Title>
+          <ed:LandingPageURI>http://repos.example.org/corpus2.html#sub1</ed:LandingPageURI>
+          <ed:Languages>
+            <ed:Language>deu</ed:Language>
+          </ed:Languages>
+          <ed:AvailableDataViews ref="hits cmdi" />
+        </ed:Resource>
+        <!-- sub-resource 2 of top-level resource 2 -->
+        <ed:Resource pid="http://hdl.handle.net/4711/0816-2">
+          <ed:Title xml:lang="de">Zeitungskorpus des Mannheimer Morgen (nach 1990)</ed:Title>
+          <ed:Title xml:lang="en">Mannheimer Morgen newspaper corpus (after 1990)</ed:Title>
+          <ed:LandingPageURI>http://repos.example.org/corpus2.html#sub2</ed:LandingPageURI>
+          <ed:Languages>
+            <ed:Language>deu</ed:Language>
+          </ed:Languages>
+          <ed:AvailableDataViews ref="hits cmdi" />
+        </ed:Resource>
+      </ed:Resources>
+    </ed:Resource>
+  </ed:Resources>
+</ed:EndpointDescription>

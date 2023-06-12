@@ -1,0 +1,193 @@
+= Introduction
+
+The goal of the _CLARIN Federated Content Search (CLARIN-FCS) - Core_ specification is to introduce an _interface specification_ that decouples the _search engine_ functionality from its _exploitation_, i.e. user-interfaces, third-party applications, and to allow services to access heterogeneous search engines in a uniform way.
+
+
+== Terminology
+
+The key words `MUST`, `MUST NOT`, `REQUIRED`, `SHALL`, `SHALL NOT`, `SHOULD`, `SHOULD NOT`, `RECOMMENDED`, `MAY`, and `OPTIONAL` in this document are to be interpreted as in <<ref:RFC2119>>.
+
+
+== Glossary
+
+Aggregator::
+    A module or service to dispatch queries to repositories and collect results.
+
+CLARIN-FCS, FCS::
+    _CLARIN federated content search_, an interface specification to allow searching within resource content of repositories.
+
+Client::
+    A software component, which implements the interface specification to query Endpoints, i.e. an aggregator or a user-interface.
+
+CQL::
+    _Contextual Query Language_, previously known as Common Query Language, is a formal language for representing queries to information retrieval systems such as search engines, bibliographic catalogs and museum collection information.
+
+Data View::
+    A _Data View_ is a mechanism to support different representations of search results, e.g. a "hits with highlights" view, an image or a geolocation.
+
+Data View Payload, Payload::
+    The actual content encoded within a _Data View_, i.e. a CMDI metadata record or a KML encoded geolocation.
+
+Endpoint::
+    A software component, which implements the CLARIN-FCS interface specification and translates between CLARIN-FCS and a search engine.
+
+Hit::
+    A piece of data returned by a Search Engine that matches the search criterion. What is considered a Hit highly depends on Search Engine.
+
+Interface Specification::
+    Common harmonized interface and suite of protocols that repositories need to implement.
+
+PID::
+    A _Persistent identifier_ is a long-lasting reference to a digital object.
+
+Repository::
+    A software component at a CLARIN center that stores resources (= data) and information about these resources (= metadata).
+
+Repository Registry::
+    A separate service that allows registering Repositories and their Endpoints and provides information about these to other components, e.g. an Aggregator. The https://centres.clarin.eu/[CLARIN Center Registry] is an implementation of such a repository registry.
+
+Resource::
+    A searchable and addressable entity at an Endpoint, such as a text corpus or a multi-modal corpus.
+
+Resource Fragment::
+    A smaller unit in a Resource, i.e. a sentence in a text corpus or a time interval in an audio transcription.
+
+Result Set::
+    An (ordered) set of hits that match a search criterion produced by a search engine as the result of processing a query.
+
+Search Engine::
+    A software component within a repository that allows for searching within the repository contents.
+
+SRU::
+    Search and Retrieve via URL, is a protocol for Internet search queries. Originally introduced by Library of Congress <<ref:LOC-SRU12>>, later standardization process moved to OASIS <<ref:OASIS-SRU12>>.
+
+
+== Normative References
+
+[[ref:RFC2119,RFC2119]]RFC2119::
+    Key words for use in RFCs to Indicate Requirement Levels, IETF RFC 2119, March 1997,
+    https://www.ietf.org/rfc/rfc2119.html
+
+[[ref:XML-Namespaces]]XML-Namespaces::
+    Namespaces in XML 1.0 (Third Edition), W3C, 8 December 2009,
+    http://www.w3.org/TR/2009/REC-xml-names-20091208/
+
+[[ref:OASIS-SRU-Overview]]OASIS-SRU-Overview::
+    searchRetrieve: Part 0. Overview Version 1.0, OASIS, January 2013,
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part0-overview/searchRetrieve-v1.0-os-part0-overview.doc
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part0-overview/searchRetrieve-v1.0-os-part0-overview.html[(HTML)],
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part0-overview/searchRetrieve-v1.0-os-part0-overview.pdf[(PDF)]
+
+[[ref:OASIS-SRU-APD]]OASIS-SRU-APD::
+    searchRetrieve: Part 1. Abstract Protocol Definition Version 1.0, OASIS, January 2013,
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part1-apd/searchRetrieve-v1.0-os-part1-apd.doc
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part1-apd/searchRetrieve-v1.0-os-part1-apd.html[(HTML)],
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part1-apd/searchRetrieve-v1.0-os-part1-apd.pdf[(PDF)]
+
+[[ref:OASIS-SRU12]]OASIS-SRU12::
+    searchRetrieve: Part 2. SRU searchRetrieve Operation: APD Binding for SRU 1.2 Version 1.0, OASIS, January 2013,
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part2-sru1.2/searchRetrieve-v1.0-os-part2-sru1.2.doc
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part2-sru1.2/searchRetrieve-v1.0-os-part2-sru1.2.html[(HTML)],
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part2-sru1.2/searchRetrieve-v1.0-os-part2-sru1.2.pdf[(PDF)]
+
+[[ref:OASIS-CQL]]OASIS-CQL::
+    searchRetrieve: Part 5. CQL: The Contextual Query Language version 1.0, OASIS, January 2013,
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part5-cql/searchRetrieve-v1.0-os-part5-cql.doc
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part5-cql/searchRetrieve-v1.0-os-part5-cql.html[(HTML)],
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part5-cql/searchRetrieve-v1.0-os-part5-cql.pdf[(PDF)]
+
+[[ref:SRU-Explain]]SRU-Explain::
+    searchRetrieve: Part 7. SRU Explain Operation version 1.0, OASIS, January 2013,
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part7-explain/searchRetrieve-v1.0-os-part7-explain.doc
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part7-explain/searchRetrieve-v1.0-os-part7-explain.html[(HTML)],
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part7-explain/searchRetrieve-v1.0-os-part7-explain.pdf[(PDF)]
+
+[[ref:SRU-Scan]]SRU-Scan::
+    searchRetrieve: Part 6. SRU Scan Operation version 1.0, OASIS, January 2013,
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part6-scan/searchRetrieve-v1.0-os-part6-scan.doc
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part6-scan/searchRetrieve-v1.0-os-part6-scan.html[(HTML)],
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part6-scan/searchRetrieve-v1.0-os-part6-scan.pdf[(PDF)]
+
+[[ref:LOC-SRU12]]LOC-SRU12::
+    SRU Version 1.2: SRU Search/Retrieve Operation, Library of Congress,
+    http://www.loc.gov/standards/sru/sru-1-2.html
+
+[[ref:LOC-DIAG]]LOC-DIAG::
+    SRU Version 1.2: SRU Diagnostics List, Library of Congress,
+    http://www.loc.gov/standards/sru/diagnostics/diagnosticsList.html
+
+[[ref:CLARIN-FCS-DataViews]]CLARIN-FCS-DataViews::
+    CLARIN Federated Content Search (CLARIN-FCS) - Data Views, SCCTC FCS Task-Force, April 2014,
+    https://trac.clarin.eu/wiki/FCS/Dataviews,
+    https://www.clarin.eu/sites/default/files/CE-2014-0317-CLARIN_FCS_Specification_DataViews_1_0.pdf
+
+
+== Non-Normative References
+
+[[ref:RFC6838]]RFC6838::
+    Media Type Specifications and Registration Procedures, IETF RFC 6838, January 2013,
+    https://www.ietf.org/rfc/rfc6838.html
+
+[[ref:RFC3023]]RFC3023::
+    XML Media Types, IETF RFC 3023, January 2001,
+    https://www.ietf.org/rfc/rfc3023.html
+
+
+== Typographic and XML Namespace conventions
+
+The following typographic conventions for XML fragments will be used throughout this specification:
+
+* `<prefix:Element>`
++
+An XML element with the Generic Identifier _Element_ that is bound to an XML namespace denoted by the prefix _prefix_.
+
+* `@attr`
++
+An XML attribute with the name _attr_.
+
+* `string`
++
+The literal _string_ must be used either as element content or attribute value.
+
+Endpoints and Clients `MUST` adhere to the <<ref:XML-Namespaces>> specification. The CLARIN-FCS interface specification generally does not dictate whether XML elements should be serialized in their prefixed or non-prefixed syntax, but Endpoints `MUST` ensure that the correct XML namespace is used for elements and that XML namespaces are declared correctly. Clients `MUST` be agnostic regarding syntax for serializing the XML elements, i.e. if the prefixed or un-prefixed variant was used, and `SHOULD` operate solely on _expanded names_, i.e. pairs of _namespace name_ and _local name_.
+
+The following XML namespace names and prefixes are used throughout this specification. The column "Recommended Syntax" indicates which syntax variant `SHOULD` be used by the Endpoint to serialize the XML response.
+
+.XML Namespaces and prefixes
+[%header,cols="1m,6m,5,2"]
+|===
+|Prefix
+|Namespace Name
+|Comment
+|Recommended Syntax
+
+|fcs
+|http://clarin.eu/fcs/resource
+|CLARIN-FCS Resources
+|prefixed
+
+|ed
+|http://clarin.eu/fcs/endpoint-description
+|CLARIN-FCS Endpoint Description
+|prefixed
+
+|hits
+|http://clarin.eu/fcs/dataview/hits
+|CLARIN-FCS Generic Hits
+|prefixed
+
+|sru
+|http://www.loc.gov/zing/srw/
+|SRU
+|prefixed
+
+|diag
+|http://www.loc.gov/zing/srw/diagnostic/
+|SRU Diagnostics
+|prefixed
+
+|zr
+|http://explain.z3950.org/dtd/2.0/
+|SRU/ZeeRex Explain
+|prefixed
+|===

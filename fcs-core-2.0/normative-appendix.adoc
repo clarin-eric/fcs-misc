@@ -1,0 +1,102 @@
+= Normative Appendix
+
+== List of extra request parameters
+
+The following extra request parameters are used in CLARIN-FCS. The column _SRU operations_ lists the SRU operation, for which this extra request parameter is to be used. Clients `MUST NOT` use the parameter for an operation that is not listed in this column. However, if a Client sends an invalid parameter, an Endpoint `SHOULD` issue a fatal diagnostic "Unsupported Parameter" (`info:srw/diagnostic/1/8`) and stop processing the request. Alternatively, an Endpoint `MAY` silently ignore the invalid parameter.
+
+.SRU extra request parameters
+[%header,cols="1m,1,3,4"]
+|===
+|Parameter Name
+|SRU operations
+|Allowed values
+|Description
+
+|x-fcs-endpoint-description
+|explain
+|`true`; all other values are reserved and `MUST` not be used by Clients
+|If the parameter is given (with the value `true`), the Endpoint `MUST` include an Endpoint Description in the `<sru:extraResponseData>` element of the _explain_ response.
+
+|x-fcs-context
+|searchRetrieve
+|A comma-separated list of persistent identifiers
+|The Endpoint `MUST` restrict the search to the resources identified by the persistent identifiers.
+
+|x-fcs-dataviews
+|searchRetrieve
+|A comma-separated list of Data View identifiers
+|The Endpoint `SHOULD` include the additional _need-to-request_ type Data Views in the response.
+
+|x-fcs-rewrites-allowed
+|searchRetrieve
+|`true`; all other values are reserved and `MUST` not be used by Clients. Clients `MUST` only use this parameter when performing an Advanced Search request.
+|If the parameter is given (with the value `true`), the Endpoint `MAY` rewrite the query to a simpler query to allow for more recall.
+|===
+
+For SRU 2.0 the request parameter `queryType` `MUST` be used unless the query language is CQL which is the default. For using FCS-QL the value `MUST` be _fcs_.
+
+
+== List of diagnostics
+
+Apart from the SRU diagnostics defined in <<ref:OASIS-SRU12,OASIS-SRU12, Appendix C>> and <<ref:LOC-DIAG>>, the following diagnostics are used in CLARIN-FCS. The column "Details Format" specifies what `SHOULD` be returned in the details field. If this column is blank, the format is "undefined" and the Endpoint `MAY` return whatever it feels appropriate, including nothing. The column "Impact" specifies, if the endpoint should continue ("non-fatal") or should stop ("fatal") processing.
+
+.CLARIN-FCS diagnostics
+[%header,cols="2m,2,2,1,3"]
+|===
+|Identifier URI
+|Description
+|Details Format
+|Impact
+|Note
+
+|http://clarin.eu/fcs/diagnostic/1
+|Persistent identifier passed by the Client for restricting the search is invalid.
+|The offending persistent identifier.
+|non-fatal
+|If more than one invalid persistent identifiers were submitted by the Client, the Endpoint `MUST` generate a separate diagnostic for each invalid persistent identifier.
+
+|http://clarin.eu/fcs/diagnostic/2
+|Resource set too large. Query context automatically adjusted.
+|The persistent identifier of the resource to which the query context was adjusted.
+|non-fatal
+|If an Endpoint limited the query context to more than one resource, it `MUST` generate a separate diagnostic for each resource to which the query context was adjusted.
+
+|http://clarin.eu/fcs/diagnostic/3
+|Resource set too large. Cannot perform Query.
+|
+|fatal
+|
+
+|http://clarin.eu/fcs/diagnostic/4
+|Requested Data View not valid for this resource.
+|The Data View MIME type.
+|non-fatal
+|If more than one invalid Data View was requested, the Endpoint `MUST` generate a separate diagnostic for each invalid Data View.
+
+|http://clarin.eu/fcs/diagnostic/10
+|General query syntax error.
+|Detailed error message why the query could not be parsed.
+|fatal
+|Endpoints `MUST` use this diagnostic only if the Client performed an Advanced Search request.
+
+|http://clarin.eu/fcs/diagnostic/11
+|Query too complex. Cannot perform Query.
+|Details why could not be performed, e.g. unsupported layer or unsupported combination of operators.
+|fatal
+|Endpoints `MUST` use this diagnostic only if the Client performed an Advanced Search request.
+
+|http://clarin.eu/fcs/diagnostic/12
+|Query was rewritten.
+|Details how the query was rewritten.
+|non-fatal
+|Endpoints `MUST` use this diagnostic only if the Client performed an Advanced Search request with the `x-fcs-rewrites-allowed` request parameter.
+
+|http://clarin.eu/fcs/diagnostic/14
+|General processing hint.
+|E.g. "No matches, because layer 'XY' is not available in your selection of resources"
+|non-fatal
+|Endpoints `MUST` use this diagnostic only if the Client performed an Advanced Search request.
+|===
+
+
+include::fcsql-grammar.adoc[leveloffset=+1]

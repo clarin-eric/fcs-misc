@@ -1,0 +1,41 @@
+= CLARIN Federated Content Search (CLARIN-FCS) - Data Views 1.0
+Oliver Schonefeld <schonefeld@ids-mannheim.de>; Thomas Eckart <eckart@saw-leipzig.de>; Thomas Kisler <thomas@kisler.de>; Christoph Draxler <draxler@phonetik.uni-muenchen.de>; Kai Zimmer <zimmer@bbaw.de>; Matej Ďurčo <matej.durco@oeaw.ac.at>; Yana Panchenko <yana.panchenko@uni-tuebingen.de>; Hanna Hedeland <hedeland@ids-mannheim.de>; Andre Blessing <andre.blessing@ims.uni-stuttgart.de>; Olha Shkaravska <Olha.Shkaravska@mpi.nl>; Leif-Jöran Olsson <leif-joran.olsson@svenska.gu.se>; Erik Körner <koerner@saw-leipzig.de>
+v1.0, 2017-06-13
+// more metadata
+:description: This specification is a supplementary specification to the CLARIN-FCS Core specification and defines additional Data View to be used in CLARIN-FCS.
+:organization: CLARIN
+// settings
+:doctype: book
+// source code
+:source-highlighter: rouge
+:rouge-style: igor_pro
+// toc and heading
+:toc:
+:toclevels: 4
+:sectnums:
+:sectnumlevels: 4
+:appendix-caption!:
+// directory stuff
+:imagesdir: images
+// pdf
+ifdef::backend-pdf[]
+:pdf-theme: clarin
+:pdf-themesdir: {docdir}/themes
+:title-logo-image: image:{docdir}/themes/clarin-logo.svg[pdfwidth=5.75in,align=center]
+endif::[]
+
+//ifdef::backend-pdf[]
+//[%notitle]
+//--
+//[abstract]
+//{description}
+//--
+//endif::[]
+
+<<<
+
+include::introduction.adoc[leveloffset=+1]
+
+<<<
+
+include::dataviews.adoc[leveloffset=+1]

@@ -1,0 +1,22 @@
+<ed:EndpointDescription xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="1">
+  <ed:Capabilities>
+    <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
+  </ed:Capabilities>
+  <ed:SupportedDataViews>
+    <ed:SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</ed:SupportedDataView>
+  </ed:SupportedDataViews>
+  <ed:Resources>
+    <!-- just one top-level resource at the Endpoint -->
+    <ed:Resource pid="http://hdl.handle.net/4711/0815">
+      <ed:Title xml:lang="de">Goethe Korpus</ed:Title>
+      <ed:Title xml:lang="en">Goethe corpus</ed:Title>
+      <ed:Description xml:lang="de">Das Goethe-Korpus des IDS Mannheim.</ed:Description>
+      <ed:Description xml:lang="en">The Goethe corpus of IDS Mannheim.</ed:Description>
+      <ed:LandingPageURI>http://repos.example.org/corpus1.html</ed:LandingPageURI>
+      <ed:Languages>
+        <ed:Language>deu</ed:Language>
+      </ed:Languages>
+      <ed:AvailableDataViews ref="hits" />
+    </ed:Resource>
+  </ed:Resources>
+</ed:EndpointDescription>

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sru:explainResponse xmlns:sru="http://www.loc.gov/zing/srw/">
+  <sru:version>1.2</sru:version>
+  <sru:record>
+    <sru:recordSchema>http://explain.z3950.org/dtd/2.0/</sru:recordSchema>
+    <sru:recordPacking>xml</sru:recordPacking>
+    <sru:recordData>
+      <zr:explain xmlns:zr="http://explain.z3950.org/dtd/2.0/">
+        <!-- <zr:serverInfo > is REQUIRED -->
+        <zr:serverInfo protocol="SRU" version="1.2" transport="http">
+          <zr:host>repos.example.org</zr:host>
+          <zr:port>80</zr:port>
+          <zr:database>fcs-endpoint</zr:database>
+        </zr:serverInfo>
+        <!-- <zr:databaseInfo> is REQUIRED -->
+        <zr:databaseInfo>
+          <zr:title lang="de">Goethe Corpus</zr:title>
+          <zr:title lang="en" primary="true">Goethe Korpus</zr:title>
+          <zr:description lang="de">Das Goethe-Korpus des IDS Mannheim.</zr:description>
+          <zr:description lang="en" primary="true">The Goethe corpus of IDS Mannheim.</zr:description>
+        </zr:databaseInfo>
+        <!-- <zr:schemaInfo> is REQUIRED -->
+        <zr:schemaInfo>
+          <zr:schema identifier="http://clarin.eu/fcs/resource" name="fcs">
+            <zr:title lang="en" primary="true">CLARIN Federated Content Search</zr:title>
+          </zr:schema>
+        </zr:schemaInfo>
+        <!-- <zr:configInfo> is OPTIONAL -->
+        <zr:configInfo>
+          <zr:default type="numberOfRecords">250</zr:default>
+          <zr:setting type="maximumRecords">1000</zr:setting>
+        </zr:configInfo>
+      </zr:explain>
+    </sru:recordData>
+  </sru:record>
+  <!-- <sru:echoedExplainRequest> is OPTIONAL -->
+  <sru:echoedExplainRequest>
+    <sru:version>1.2</sru:version>
+    <sru:baseUrl>http://repos.example.org/fcs-endpoint</sru:baseUrl>
+  </sru:echoedExplainRequest>
+  <sru:extraResponseData>
+    <ed:EndpointDescription xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="1">
+      <ed:Capabilities>
+        <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
+      </ed:Capabilities>
+      <ed:SupportedDataViews>
+        <ed:SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</ed:SupportedDataView>
+      </ed:SupportedDataViews>
+      <ed:Resources>
+        <!-- just one top-level resource at the Endpoint -->
+        <ed:Resource pid="http://hdl.handle.net/4711/0815">
+          <ed:Title xml:lang="de">Goethe Corpus</ed:Title>
+          <ed:Title xml:lang="en">Goethe Korpus</ed:Title>
+          <ed:Description xml:lang="de">Das Goethe-Korpus des IDS Mannheim.</ed:Description>
+          <ed:Description xml:lang="en">The Goethe corpus of IDS Mannheim.</ed:Description>
+          <ed:LandingPageURI>http://repos.example.org/corpus1.html</ed:LandingPageURI>
+          <ed:Languages>
+            <ed:Language>deu</ed:Language>
+          </ed:Languages>
+          <ed:AvailableDataViews ref="hits"/>
+        </ed:Resource>
+      </ed:Resources>
+    </ed:EndpointDescription>
+  </sru:extraResponseData>
+</sru:explainResponse>

@@ -1,0 +1,12 @@
+<fcs:Resource xmlns:fcs="http://clarin.eu/fcs/resource"
+              pid="http://hdl.handle.net/4711/08-15" ref="http://repos.example.org/file/text_08_15.html">
+  <fcs:DataView type="application/x-cmdi+xml"
+                pid="http://hdl.handle.net/4711/08-15-1" ref="http://repos.example.org/file/08_15_1.cmdi">
+      <!-- data view payload omitted -->
+  </fcs:DataView>
+  <fcs:ResourceFragment pid="http://hdl.handle.net/4711/08-15-2" ref="http://repos.example.org/file/text_08_15.html#sentence2">
+    <fcs:DataView type="application/x-clarin-fcs-hits+xml">
+      <!-- data view payload omitted -->
+    </fcs:DataView>
+  </fcs:ResourceFragment>
+</fcs:Resource>

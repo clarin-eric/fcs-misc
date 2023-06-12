@@ -1,0 +1,102 @@
+= Introduction
+
+This specification is an extension specification to the <<ref:CLARIN-FCSCore20,CLARIN-FCS Core 2.0>> specification and describes an access mechanism for restricted resources.
+
+The Federated Content Search currently does not support the restriction of access to resources to specific user groups or users. There is no mechanism in the aggregator that limits access to announced resources and endpoints are typically accessible via the FCS protocol directly (omitting the use of the FCS aggregator). The goal is to allow restricting access to FCS resources to users that are authenticated using the established AAI infrastructure.
+
+This contains the following issues:
+
+. Shibbolizing the aggregator frontend so that 
+  * unauthenticated users still get access to all unrestricted endpoints
+  * authenticated users get access to all unrestricted endpoints and additionally to the restricted endpoints
+
+. Specifying (and implementing) changes for endpoints so that:
+  * endpoints can announce restricted resources to the aggregator
+  * endpoints can rely on authenticated FCS user requests
+
+
+== Terminology
+
+The key words `MUST`, `MUST NOT`, `REQUIRED`, `SHALL`, `SHALL NOT`, `SHOULD`, `SHOULD NOT`, `RECOMMENDED`, `MAY`, and `OPTIONAL` in this document are to be interpreted as in <<ref:RFC2119>>.
+
+
+== Glossary
+
+[[ref:AAI]]AAI::
+    _Authentication & Authorization Infrastructure_. A service and a procedure that enables members of different institutions to access protected information that is distributed on different web servers. See <<ref:Shibboleth>>.
+
+IdP::
+    _Identity Provider_, a system entity that issues authentication assertions, see <<ref:SAML>> and <<ref:AAI>>.
+
+JWT::
+    _JSON Web Token_, see <<ref:RFC7519>>.
+
+RSA::
+    Asymmetric public-key cryptography system by _Rivest-Shamir-Adleman_ for digital signatures and encryption.
+
+[[ref:SAML]]SAML::
+    _Security Assertion Markup Language_, an open standard for exchanging authentication and authorization data.
+
+[[ref:Shibboleth]]Shibboleth::
+    Shibboleth is a single sign-on log-in system for computer networks and the Internet. See also <<ref:SAML>>.
+
+SP::
+    _Service Provider_, a system entity that receives and accepts authentication assertions, see <<ref:SAML>> and <<ref:AAI>>.
+
+
+== Normative References
+
+[[ref:RFC2119]]RFC2119::
+    Key words for use in RFCs to Indicate Requirement Levels, IETF RFC 2119, March 1997,
+    https://www.ietf.org/rfc/rfc2119.html
+
+[[ref:RFC7519]]RFC7519::
+    JSON Web Token (JWT), IETF RFC 7519, May 2015,
+    https://www.ietf.org/rfc/rfc7519.html
+
+[[ref:XML-Namespaces]]XML-Namespaces::
+    Namespaces in XML 1.0 (Third Edition), W3C, 8 December 2009,
+    http://www.w3.org/TR/2009/REC-xml-names-20091208/
+
+[[ref:LOC-DIAG]]LOC-DIAG::
+    SRU Version 1.2: SRU Diagnostics List, Library of Congress,
+    http://www.loc.gov/standards/sru/diagnostics/diagnosticsList.html
+
+[[ref:CLARIN-FCSCore20]]CLARIN-FCS-Core 2.0::
+    CLARIN Federated Content Search (CLARIN-FCS) - Core 2.0, SCCTC FCS Task-Force, May 2017,
+    https://trac.clarin.eu/wiki/FCS/Specification,
+    https://office.clarin.eu/v/CE-2017-1046-FCS-Specification-v89.pdf
+
+
+== Non-Normative References
+
+RFC6838::
+    Media Type Specifications and Registration Procedures, IETF RFC 6838, January 2013,
+    https://www.ietf.org/rfc/rfc6838.txt
+
+RFC3023::
+    XML Media Types, IETF RFC 3023, January 2001,
+    https://www.ietf.org/rfc/rfc3023.txt
+
+RFC8017::
+    PKCS #1: RSA Cryptography Specifications Version 2.2, IETF RFC 8017, November 2016,
+    https://www.ietf.org/rfc/rfc8017.txt
+
+
+== Typographic and XML Namespace conventions
+
+The following typographic conventions for XML fragments will be used throughout this specification:
+
+* `<prefix:Element>`
++
+An XML element with the Generic Identifier _Element_ that is bound to an XML namespace denoted by the prefix _prefix_.
+
+* `@attr`
++
+An XML attribute with the name _attr_.
+
+* `string`
++
+The literal _string_ must be used either as element content or attribute value.
+
+Endpoints and Clients `MUST` adhere to the XML-Namespaces specification. The CLARIN-FCS interface specification generally does not dictate whether XML elements should be serialized in their prefixed or non-prefixed syntax, but Endpoints `MUST` ensure that the correct XML namespace is used for elements and that XML namespaces are declared correctly. Clients `MUST` be agnostic regarding syntax for serializing the XML elements, i.e. if the prefixed or un-prefixed variant was used, and `SHOULD` operate solely on expanded names, i.e. pairs of namespace name and local name.

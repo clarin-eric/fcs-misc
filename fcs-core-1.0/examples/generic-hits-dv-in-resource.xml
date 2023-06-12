@@ -1,0 +1,5 @@
+<fcs:Resource xmlns:fcs="http://clarin.eu/fcs/resource" pid="http://hdl.handle.net/4711/00-15">
+  <fcs:DataView type="application/x-clarin-fcs-hits+xml">
+    <!-- data view payload omitted -->
+  </fcs:DataView>
+</fcs:Resource>

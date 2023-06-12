@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sruResponse:searchRetrieveResponse>
+  <sruResponse:version>2.0</sruResponse:version>
+  <sruResponse:numberOfRecords>33260</sruResponse:numberOfRecords>
+  <sruResponse:records>
+    <sruResponse:record>
+      <sruResponse:recordSchema>http://clarin.eu/fcs/resource</sruResponse:recordSchema>
+      <sruResponse:recordXMLEscaping>xml</sruResponse:recordXMLEscaping>
+      <sruResponse:recordData>
+        <fcs:Resource pid="ABOUNDERRATTELSER2012-32245">
+          <fcs:ResourceFragment>
+            <fcs:DataView type="application/x-clarin-fcs-hits+xml">
+              <hits:Result>Youtube-videon har väckt debatt om polisernas <hits:Hit>användning</hits:Hit> av våld .</hits:Result>
+            </fcs:DataView>
+          </fcs:ResourceFragment>
+        </fcs:Resource>
+      </sruResponse:recordData>
+      <sruResponse:recordPosition>1</sruResponse:recordPosition>
+    </sruResponse:record>
+    <!-- 249 records not shown -->
+  </sruResponse:records>
+  <sruResponse:nextRecordPosition>251</sruResponse:nextRecordPosition>
+  <sruResponse:echoedSearchRetrieveRequest>
+    <sruResponse:version>2.0</sruResponse:version>
+    <sruResponse:query>"användning"</sruResponse:query>
+    <sruResponse:xQuery>
+      <searchClause>
+        <index>cql.serverChoice</index>
+        <relation><value>=</value></relation>
+        <term>användning</term>
+      </searchClause>
+    </sruResponse:xQuery>
+    <sruResponse:startRecord>1</sruResponse:startRecord>
+  </sruResponse:echoedSearchRetrieveRequest>
+  <sruResponse:resultCountPrecision>info:srw/vocabulary/resultCountPrecision/1/exact</sruResponse:resultCountPrecision>
+</sruResponse:searchRetrieveResponse>

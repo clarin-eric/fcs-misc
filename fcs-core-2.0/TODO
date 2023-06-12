@@ -1,0 +1,13 @@
+- [ ] formatting does not seem always consistent
+  - e.g. `fcs-to-sru-cql-binding.adoc`: `value is _fcs_` instead of using backticks
+- [ ] missing links/pages in original spec to TREC
+  - https://trac.clarin.eu/wiki/Taskforces/FCS/FCS%20POS%20tag%20set
+- [ ] move all TREC specs to ASCIIDoc + update references in specs
+- [x] consistent example URLs in SRU/CQL `fcs-to-sru-cql-binding.adoc`
+- [x] `the Client must issue`, `MUST`? in `fcs-to-sru-cql-binding.adoc`
+
+---
+
+- https://trac.clarin.eu/wiki/FCS-Specification-ScrapBook
+- https://trac.clarin.eu/wiki/FCS/Specification
+- https://trac.clarin.eu/wiki/FCS/Dataviews

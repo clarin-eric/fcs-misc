@@ -1,0 +1,43 @@
+= Restricted Access to Resources
+
+The FCS supports restriction of access to resources to specific user groups or users that are authenticated using the established AAI infrastructure while still allowing unauthenticated access to all unrestricted resources. This mechanism limits access to announced resources that are typically accessible via the FCS protocol directly (omitting the use of the FCS aggregator).
+
+
+== Technical Description
+
+The aggregator allows an optional login via Shibboleth. Authentication of search queries which are sent to an FCS endpoint is implemented using authentication headers with <<ref:RFC7519,JSON Web Token (JWT)>>. User information (e.g. mail address or similar) is encoded in the token as claims.
+
+JWTs include an RSA signed token which `SHOULD` be checked by the respective endpoint. In case of missing or insufficient authorization when accessing restricted resources, the endpoint `MUST` rise an error using <<ref:LOC-DIAG,SRU diagnostic>> "Authentication error" (`info:srw/diagnostic/1/3`).
+
+The aggregator owns a single common RSA key for all endpoints. For all endpoints with restricted resources its public key has to be manually transferred and included in their configuration. Communication between aggregator and endpoints is only allowed via SSL. Claims _iss_, _sub_ and _aud_ `SHOULD` be encoded in the JWT. The endpoint `MUST` check _aud_ to see if it is the correct recipient and `MAY` check the fields _iss_ and _exp_.
+
+The availability and nature of a personal identifier attribute in the aggregator itself, is not guaranteed for a successful login. In SAML this is limited by the configuration of the external IdP selected by the user.
+When available, one of three SAML attributes is used as user personal identifier: _email_, _eduPersonPrincipalName_ or _eduPersonTargetedID_. These attributes are mapped by the aggregator to _userID_ in the same order of preference. _userID_ is then passed to the endpoint. The aggregator issues this information to JWTs and sends it to the appropriate endpoints.
+The endpoints alone announces which authentication information is required (see next section) and decides at runtime whether the information provided is sufficient for access. While the aggregator front end can inform and guide the user in advance, in case authentication information is still missing.
+
+== Announcing Restricted Resources by the Endpoint
+
+In order to announce restricted resources the endpoint needs to explain in the `<Resources>` section of the `<EndpointDescription>` that it does support the aforementioned procedure for a resource. This is done via a dedicated element `<AvailabilityRestriction>`:
+
+.Example of AvailabilityRestriction in Endpoint Description for a Resource
+[source,xml]
+----
+<Resources>
+  <Resource>
+    <!-- ... -->
+    <Languages>
+      <Language>swe</Language>
+      <Language>deu</Language>
+    </Languages>
+    <AvailabilityRestriction>
+      <RestrictionRequirement>requirementName</RestrictionRequirement>
+    <!-- ... -->
+    </AvailabilityRestriction>
+    <!-- ... -->
+  </Resource>
+</Resources>
+----
+
+The `<AvailabilityRestriction>` is defined in the top-level `<Resource>` element and the restriction is valid for its complete sub-tree hierarchy of `<Resource>` elements. From the backwards compatibility perspective this means that if you do not define the `<AvailabilityRestriction>` element all resources will be available for searching through the endpoint.
+
+The text node `requirementName` in `<RestrictionRequirement>` is either of `authOnly` or `personalIdentifier`. `authOnly` does not require any attributes except for the authentication via home institution. If `personalIdentifier` is stated _eduPersonPrincipalName_ or _eduPersonTargetedID_ or _email_ is passed to the endpoint as `userID` using the procedure described above.

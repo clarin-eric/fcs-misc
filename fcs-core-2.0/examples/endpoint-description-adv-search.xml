@@ -1,0 +1,38 @@
+<ed:EndpointDescription xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="2">
+  <ed:Capabilities>
+    <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
+    <ed:Capability>http://clarin.eu/fcs/capability/advanced-search</ed:Capability>
+  </ed:Capabilities>
+  <ed:SupportedDataViews>
+    <ed:SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</ed:SupportedDataView>
+    <ed:SupportedDataView id="adv" delivery-policy="send-by-default">application/x-clarin-fcs-adv+xml</ed:SupportedDataView>
+  </ed:SupportedDataViews>
+  <ed:SupportedLayers>
+    <ed:SupportedLayer id="word" result-id="http://spraakbanken.gu.se/ns/fcs/layer/word">text</ed:SupportedLayer>
+    <ed:SupportedLayer id="orth" result-id="http://endpoint.example.org/Layers/orth" type="empty">orth</ed:SupportedLayer>
+    <ed:SupportedLayer id="lemma" result-id="http://spraakbanken.gu.se/ns/fcs/layer/lemma">lemma</ed:SupportedLayer>
+    <ed:SupportedLayer id="pos" result-id="http://spraakbanken.gu.se/ns/fcs/layer/pos"
+                       alt-value-info="SUC tagset"
+                       alt-value-info-uri="https://spraakbanken.gu.se/parole/Docs/SUC2.0-manual.pdf"
+                       qualifier="suc">pos</ed:SupportedLayer>
+    <ed:SupportedLayer id="pos2" result-id="http://spraakbanken.gu.se/ns/fcs/layer/pos2"
+                       alt-value-info="2nd tagset"
+                       qualifier="t2">pos</ed:SupportedLayer>
+  </ed:SupportedLayers>
+
+  <ed:Resources>
+    <!-- just one top-level resource at the Endpoint -->
+    <ed:Resource pid="hdl:10794/suc">
+      <ed:Title xml:lang="sv">SUC-korpusen</ed:Title>
+      <ed:Title xml:lang="en">The SUC corpus</ed:Title>
+      <ed:Description xml:lang="sv">Stockholm-Umeå-korpusen hos Språkbanken.</ed:Description>
+      <ed:Description xml:lang="en">The Stockholm-Umeå corpus at Språkbanken.</ed:Description>
+      <ed:LandingPageURI>https://spraakbanken.gu.se/resurser/suc</ed:LandingPageURI>
+      <ed:Languages>
+        <ed:Language>swe</ed:Language>
+      </ed:Languages>
+      <ed:AvailableDataViews ref="hits adv" />
+      <ed:AvailableLayers ref="word lemma pos pos2" />
+    </ed:Resource>
+  </ed:Resources>
+</ed:EndpointDescription>

@@ -1,0 +1,32 @@
+<fcs:Resource xmlns:fcs="http://clarin.eu/fcs/resource" pid="http://hdl.handle.net/4711/0815">
+  <fcs:DataView type="application/x-clarin-fcs-hits+xml">
+    <hits:Result xmlns:hits="http://clarin.eu/fcs/dataview/hits">
+      The quick brown <hits:Hit>fox</hits:Hit> jumps over the lazy <hits:Hit>dog</hits:Hit>.
+    </hits:Result>
+  </fcs:DataView>
+    
+  <!--
+      NOTE: this is purely fictional and only serves to demonstrate how
+            to add custom extensions to the result representation
+            within CLARIN-FCS.
+  -->
+
+  <!--
+      Example 1: a hypothetical Endpoint extension for navigation in a result
+      set: it basically provides a set of hrefs that a GUI can convert into
+      navigation buttions.    
+  -->
+  <nav:navigation xmlns:nav="http://repos.example.org/navigation">
+    <nav:curr href="http://repos.example.org/resultset/4711/4611" />
+    <nav:prev href="http://repos.example.org/resultset/4711/4610" />
+    <nav:next href="http://repos.example.org/resultset/4711/4612" />
+  </nav:navigation>
+
+  <!--
+      Example 2: a hypothetical Endpoint extension for directly referencing parent
+      resources: it basically provides a link to the parent resource that can be
+      exploited by a GUI (e.g. build on XSLT/XQuery).
+  -->
+  <parent:Parent xmlns:parent="http://repos.example.org/parent"
+                 ref="http://repos.example.org/path/to/parent/1235.cmdi" />
+</fcs:Resource>

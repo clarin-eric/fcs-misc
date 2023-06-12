@@ -1,0 +1,266 @@
+= CLARIN-FCS Interface Specification
+
+The CLARIN-FCS Interface Specification defines a set of capabilities, an extensible result format and a set of required operations. CLARIN-FCS is built on the SRU/CQL standard and additional functionality required for CLARIN-FCS is added through SRU/CQL's extension mechanisms.
+
+Specifically, the CLARIN-FCS Interface Specification consists of two _components_, a set of _formats_ and a _transport protocol_. The _Endpoint_ component is a software component that acts as a bridge between the formats that are sent by a _Client_ using the _Transport Protocol_, and a _Search Engine_. The _Search Engine_ is a custom software component that allows the search of language resources in a Repository. The _Endpoint_ basically implements the _transport protocol_ and acts as a mediator between the CLARIN-FCS specific formats and the idiosyncrasies of _Search Engines_ of the individual Repositories. The following figure illustrates the overall architecture:
+
+.CLARIN-FCS Overall Architecture
+----
+                 +---------+
+                 |  Client |
+                 +---------+
+                     /|\
+                      |
+          -------------------------
+         |        SRU / CQL        |
+         | w/CLARIN-FCS extensions |
+          -------------------------
+                      |
+                     \|/
+ +-----------------------------------------+
+ |        |      Endpoint     /|\          |
+ |        |                    |           |
+ |  ---------------    ------------------  |
+ | | Translate CQL |  | Translate Result | |
+ |  ---------------    ------------------  |
+ |        |                    |           |
+ |       \|/                   |           |
+ +-----------------------------------------+
+                     /|\
+                      |
+                     \|/
+        +---------------------------+
+        |       Search Engine       |
+        +---------------------------+
+----
+
+In general, the work flow in CLARIN-FCS is as follows: a Client submits a query to an Endpoint. The Endpoint translates the query from CQL to the query dialect used by the Search Engine and submits the translated query to the Search Engine. The Search Engine processes the query and generates a result set, i.e. it compiles a set of hits that match the search criterion. The Endpoint then translates the results from the Search Engine-specific result set format to the CLARIN-FCS result format and sends it to the Client.
+
+The following sections describe the CLARIN-FCS capabilities, the query and result formats, how SRU/CQL is used as a transport protocol in the context of CLARIN-FCS and the required CLARIN-FCS specific extensions to SRU.
+
+
+== Capabilities
+
+Because CLARIN-FCS aims to integrate several heterogeneous Search Engines it needs to support the different features of the Search Engines, e.g. some only allow simple search while other support wild-cards or regular expressions. Also, the available resources have different properties, e.g. some resources provide Part-Of-Speech annotations, while others are transcripts of an audio signal or lexicographic resources consisting of entries. To accommodate for these different features, CLARIN-FCS defines several _Capabilities_. A Capability defines a certain feature that is part of CLARIN-FCS, e.g. what kind of queries are supported. Each Endpoint implements some (or all) of these Capabilities. The Endpoint will announce the capabilities it provides to allow a Client to auto-tune itself (see section <<Endpoint Description>>). Each Capability is identified by a _Capability Identifier_, which uses the URI syntax.
+
+The following Capabilities are defined by CLARIN-FCS:
+
+_Basic Search_ (Capability Identifier: `\http://clarin.eu/fcs/capability/basic-search`)::
++
+Endpoints `MUST` support _term-only_ queries.
++
+Endpoints `SHOULD` support _terms_ combined with boolean operator queries (_AND_ and _OR_), including sub-queries. Endpoints `MAY` also support _NOT_ or _PROX_ operator queries. If the Endpoint does not support a query, i.e. the used operators are not supported by the Endpoint, it `MUST` return an appropriate error message using the appropriate SRU diagnostic (<<ref:LOC-DIAG>>).
++
+.Examples of valid CQL queries for _Basic Search_
+----
+cat
+"cat"
+cat AND dog
+"grumpy cat"
+"grumpy cat" AND dog
+"grumpy cat" OR "lazy dog"
+cat AND (mouse OR "lazy dog")
+----
++
+The Endpoint `MUST` perform the query on an annotation tier that makes the most sense for the user, i.e. the textual content for a text corpus resource or the orthographic transcription of a spoken language corpus. Endpoints `SHOULD` perform the query case-sensitive.
++
+NOTE: In CQL, a _term_ can be a single token or a phrase, i.e. tokens separated by spaces. If a _term_ contains spaces, it needs to be quoted.
++
+NOTE: CLARIN-FCS requires Endpoints to be able to parse all of CQL and, if they don't support a certain CQL feature, to generate the appropriate error message (see section <<SRU/CQL>>). Especially, if an Endpoint _only_ supports _Basic Search_, it `MUST NOT` silently accept queries that include CQL features besides _term-only_ and _terms_ combined with boolean operator queries, i.e. queries involving context sets, etc. 
+
+Endpoints `MUST` implement the _Basic Search_ Capability.
+
+Endpoints `MUST NOT` invent custom Capability Identifiers and `MUST` only use the values defined above.
+
+NOTE: The current CLARIN-FCS specification only defines the _Basic Search_ Capability. Future versions of the CLARIN-FCS specification will support more sophisticated queries such as selecting annotation tiers, expanding of tags, or mapping of data categories and thus define more Capabilities. A future CLARIN-FCS specification my also introduce the term "Profile" as a simple way to refer to a certain sub-set of Capabilities.
+
+
+== Result Format
+
+The Search Engine will produce a result set containing several hits as the outcome of processing a query. The Endpoint `MUST` serialize these hits in the CLARIN-FCS result format. Endpoints are `REQUIRED` to adhere to the principle, that _one_ hit `MUST` be serialized as _one_ CLARIN-FCS result record and `MUST NOT` combine several hits in one CLARIN-FCS result record. E.g., if a query matches five different sentences within one text (= the resource), the Endpoint must serialize them as five SRU records each with one Hit each referencing the same containing Resource (see section <<Operation _searchRetrieve_,Operation "searchRetrieve">>).
+
+CLARIN-FCS uses a customized format for returning results. _Resource_ and _Resource Fragments_ serve as containers for hit results, which are presented in one or more _Data View_. The following section describes the Resource format and Data View format and section <<Operation _searchRetrieve_,Operation "searchRetrieve">> will describe, how hits are embedded within SRU responses.
+
+
+=== Resource and ResourceFragment
+
+To encode search results, CLARIN-FCS supports two building blocks: 
+
+Resources::
+    A _Resource_ is a _searchable_ and _addressable_ entity at the Endpoint, such as a text corpus or a multi-modal corpus. A resource `SHOULD` be a self-contained unit, i.e. not a single sentence in a text corpus or a time interval in an audio transcription, but rather a complete document from a text corpus or a complete audio transcription.
+
+Resource Fragments::
+    A _Resource Fragment_ is a smaller unit in a _Resource_, i.e. a sentence in a text corpus or a time interval in an audio transcription.
+
+A Resource `SHOULD` be the most precise unit of data that is directly addressable as a "whole". A Resource `SHOULD` contain a Resource Fragment, if the hit consists of just a part of the Resource unit (for example if the hit is a sentence within a large text). A Resource Fragment `SHOULD` be addressable within a resource, i.e. it has an offset or a resource-internal identifier. Using Resource Fragments is `OPTIONAL`, but Endpoints are encouraged to use them. If the Endpoint encodes a hit with a Resource Fragment, the actual hit `SHOULD` be encoded as a Data View that within the Resource Fragment.
+
+Endpoints `SHOULD` always provide a link to the resource itself, i.e. each Resource or Resource Fragment `SHOULD` be identified by a persistent identifier or providing a URI, that is unique for Endpoint. Even if direct linking is not possible, i.e. due to licensing issues, the Endpoints `SHOULD` provide a URI to link to a web-page describing the corpus or collection, including instruction on how to obtain it. Endpoints `SHOULD` provide links that are as specific as possible (and logical), i.e. if a sentence within a resource cannot be addressed directly, the Resource Fragment `SHOULD NOT` contain a persistent identifier or a URI.
+
+If the Endpoint can provide both, a persistent identifier as well as a URI, for either Resource or Resource Fragment, they `SHOULD` provide both. When working with results, Clients `SHOULD` prefer persistent identifiers over regular URIs.
+
+Resource and Resource Fragment are serialized in XML and Endpoints `MUST` generate responses that are valid according to the XML schema link:attachments/Resource.xsd["Resource.xsd"]. A Resource is encoded in the form of a `<fcs:Resource>` element, a _Resource Fragment_ in the form of a `<fcs:ResourceFragment>` element. The content of a Data View is wrapped in a `<fcs:DataView>` element. `<fcs:Resource>` is the top-level element and `MAY` contain zero or more `<fcs:DataView>` elements and `MAY` contain zero or more `<fcs:ResourceFragment>` elements. A `<fcs:ResourceFragment>` element `MUST` contain one or more `<fcs:DataView>` elements.
+
+The elements `<fcs:Resource>`, `<fcs:ResourceFragment>` and `<fcs:DataView>` `MAY` carry a `@pid` and/or a `@ref` attribute, which allows linking to the original data represented by the Resource, Resource Fragment, or Data View. A `@pid` attribute `MUST` contain a valid persistent identifier, a `@ref` `MUST` contain valid URI, i.e. a "plain" URI without the additional semantics of being a persistent reference. If the Endpoint cannot provide a `@pid` attribute for a `<fcs:Resource>`, they `SHOULD` provide a `@ref` attribute. Endpoint `SHOULD` add either a `@pid` or `@ref` attribute to either the `<fcs:Resource>` or the `<fcs:ResourceFragment>` element, if possible to both elements. Endpoints are `RECOMMENDED` to give `@pid` attributes, if they can provide them.
+
+Endpoints `MUST` use the identifier `\http://clarin.eu/fcs/resource` for the _responseItemType_ (= content for the `<sru:recordSchema>` element) in SRU responses.
+
+Endpoints `MAY` serialize hits as multiple Data Views, however they `MUST` provide the Generic Hits (HITS) Data View either encoded as a Resource Fragment (if applicable), or otherwise within the Resource (if there is no reasonable Resource Fragment). Other Data Views `SHOULD` be put in a place that is logical for their content (as is to be determined by the Endpoint), e.g. a metadata Data View would most likely be put directly below Resource and a Data View representing some annotation layers directly around the hit is more likely to belong within a Resource Fragment.
+
+.Example of _Generic Hits_ embedded in _Resource_
+[#gh-dv-resource,xml]
+----
+include::examples/generic-hits-dv-in-resource.xml[]
+----
+
+<<gh-dv-resource>> shows a simple hit, which is encoded in one Data View of type _Generic Hits_ embedded within a Resource. The type of the Data View is identified by the MIME type `application/x-clarin-fcs-hits+xml`. The Resource is referenceable by the persistent identifier `\http://hdl.handle.net/4711/08-15`.
+
+.Example of _Generic Hits_ embedded in _Resource Fragment_
+[#gh-dv-resource-fragment,xml]
+----
+include::examples/generic-hits-dv-in-resource-fragment.xml[]
+----
+
+<<gh-dv-resource-fragment>> shows a hit encoded as a Resource Fragment embedded within a Resource. The actual hit is again encoded as one Data View of type _Generic Hits_. The hit is not directly referenceable, but the Resource, in which the hit occurred, is referenceable by the persistent identifier `\http://hdl.handle.net/4711/08-15`. In contrast to <<gh-dv-resource>>, the Endpoint decided to provide a "semantically richer" encoding and embedded the hit using a Resource Fragment within the Resource to indicate that the hit is a part of a larger resource, e.g. a sentence in a text document.
+
+.Example of _Generic Hits_ embedded in _Resource Fragment_ with CMDI Data View
+[#gh-dv-cmdi-resource,xml]
+----
+include::examples/generic-hits-dv-in-resource-with-cmdi.xml[]
+----
+
+The more complex <<gh-dv-cmdi-resource>> is similar to <<gh-dv-resource-fragment>>, i.e. it shows a hit is encoded as one _Generic Hits_ Data View in a Resource Fragment, which is embedded in a Resource. In contrast to <<gh-dv-resource-fragment>>, another Data View of type CMDI is embedded directly within the Resource. The Endpoint can use this type of Data View to directly provide CMDI metadata about the Resource to Clients. All entities of the Hit can be referenced by a persistent identifier and a URI. The complete Resource is referenceable by either the persistent identifier `\http://hdl.handle.net/4711/08-15` or the URI `\http://repos.example.org/file/text_08_15.html` and the CMDI metadata record in the CMDI Data View is referenceable either by the persistent identifier `\http://hdl.handle.net/4711/08-15-1` or the URI `\http://repos.example.org/file/08_15_1.cmdi`. The actual hit in the Resource Fragment is also directly referenceable by either the persistent identifier `\http://hdl.handle.net/4711/00-15-2` or the URI `\http://repos.example.org/file/text_08_15.html#sentence2`.
+
+
+=== Data View
+
+A _Data View_ serves as a container for encoding the actual search results (the data fragments relevant to search) within CLARIN-FCS. Data Views are designed to allow for different representations of results, i.e. they are deliberately kept open to allow further extensions with more supported Data View formats. This specification only defines a most basic Data View for representing search results, called Generic Hits (see below). More Data Views are defined in the supplementary specification <<ref:CLARIN-FCS-DataViews>>.
+
+The content of a Data View is called _Payload_. Each Payload is typed and the type of the Payload is recorded in the `@type` attribute of the `<fcs:DataView>` element. The Payload type is identified by a MIME type (<<ref:RFC6838>>, <<ref:RFC3023>>). If no existing MIME type can be used, implementers `SHOULD` define a proper private mime type.
+
+The Payload of a Data View can either be deposited _inline_ or by _reference_. In the case of _inline_, it MUST be serialized as an XML fragment below the `<fcs:DataView>` element. This is the preferred method for payloads that can easily be serialized in XML. Deposition by _reference_ is meant for content that cannot easily be deposited inline, i.e. binary content (like images). In this case, the Data View MUST include a `@ref` or `@pid` attribute that links location for Clients to download the payload. This location `SHOULD` be _openly accessible_, i.e. data can be downloaded freely without any need to perform a login.
+
+Data Views are classified into a _send-by-default_ and a _need-to-request_ delivery policy. In case of the _send-by-default_ delivery policy, the Endpoint `MUST` send the Data View automatically, i.e. Endpoints `MUST` unconditionally include the Data View when they serialize a response to a search request. In the case of _need-to-request_, the Client must explicitly request the Endpoint to include this Data View in the response. This enables the Endpoint to not generate and serialize Data Views that are "expensive" in terms of computational power or bandwidth for every response. To request such a Data View, a Client `MUST` submit a comma separated list of Data View identifiers (see section <<Endpoint Description>>) in the `x-fcs-dataviews` extra request parameter with the _searchRetrieve_ request. If a Client requests a Data View that is not valid for the search context, the Endpoint `MUST` generate a non-fatal diagnostic `\http://clarin.eu/fcs/diagnostic/4` ("Requested Data View not valid for this resource"). The details field of the diagnostic `MUST` contain the MIME type of the Data View that was not valid. If more than one requested Data View is invalid, the Endpoint `MUST` generate a _separate_ non-fatal diagnostic `\http://clarin.eu/fcs/diagnostic/4` for each of the requested Data Views.
+
+The description of every Data View contains a recommendation as to how the Endpoint should handle the payload delivery, i.e. if a Data View is by default considered _send-by-default_ or _need-to-request_. Endpoint `MAY` choose to implement different policy. The relevant information which policy is implemented by an Endpoint for a specific Data View is part of the Endpoint Description (see section <<Endpoint Description>>). For each Data View, a _Recommended Short Identifier_ is defined, that Endpoint `SHOULD` use for an identifier of the Data View in the list of supported Data Views in the _Endpoint Description_.
+
+The _Generic Hits_ Data View is mandatory, thus all Endpoints `MUST` implement this it and provide search results represented in the _Generic Hits_ Data View. Endpoints `MUST` implement the _Generic Hits_ Data View with the _send-by-default_ delivery policy.
+
+NOTE: The examples in the following sections _show only_ the payload with the enclosing `<fcs:DataView>` element of a Data View. Of course, the Data View must be embedded either in a `<fcs:Resource>` or a `<fcs:ResourceFragment>` element. The `@pid` and `@ref` attributes have been omitted for all _inline_ payload types. 
+
+
+==== Generic Hits (HITS)
+
+[%noheader,cols="1h,2"]
+|===
+|Description
+|The representation of the hit
+
+|MIME type
+|`application/x-clarin-fcs-hits+xml`
+
+|Payload Disposition
+|_inline_
+
+|Payload Delivery
+|_send-by-default_ (`REQUIRED`)
+
+|Recommended Short Identifier
+|`hits` (`RECOMMENDED`)
+
+|XML Schema
+|link:attachments/DataView-Hits.xsd[DataView-Hits.xsd]
+|===
+
+The _Generic Hits_ Data View serves as the _most basic_ agreement in CLARIN-FCS for serialization of search results and `MUST` be implemented by all Endpoints. In many cases, this Data View can only serve as an (lossy) approximation, because resources at Endpoints are very heterogeneous. For instance, the Generic Hits Data View is probably not the best representation for a hit result in a corpus of spoken language, but an architecture like CLARIN-FCS requires one common representation to be implemented by all Endpoints, therefore this Data View was defined. The Generic Hits Data View supports multiple markers for supplying highlighting for an individual hit, e.g. if a query contains a (boolean) conjunction, the Endpoint can use multiple markers to provide individual highlights for the matching terms. An Endpoint `MUST NOT` use this Data View to aggregate several hits within one resource. Each hit `SHOULD` be presented within the context of a complete sentence. If that is not possible due to the nature of the type of the resource, the Endpoint `MUST` provide an equivalent reasonable unit of context (e.g. within a phrase of an orthographic transcription of an utterance). The `<hits:Hit>` element within the `<hits:Result>` element is not enforced by the XML schema, but Endpoints are `RECOMMENDED` to use it. The XML fragment of the Generic Hits payload `MUST` be valid according to the XML schema link:attachments/DataView-Hits.xsd["DataView-Hits.xsd"].
+
+.Example (single hit marker)
+[#gh-dv-single-hit,xml]
+----
+include::examples/generic-hits-dv-single-hit-marker.xml[]
+----
+
+.Example (multiple hit markers)
+[#gh-dv-multi-hit,xml]
+----
+include::examples/generic-hits-dv-multiple-hit-marker.xml[]
+----
+
+
+== Endpoint Description
+
+Endpoints need to provide information about their capabilities to support auto-configuration of Clients. The _Endpoint Description_ mechanism provides the necessary facility to provide this information to the Clients. Endpoints `MUST` encode their capabilities using an XML format and embed this information into the SRU/CQL protocol as described in section <<Operation _explain_,Operation "explain">>. The XML fragment generated by the Endpoint for the Endpoint Description `MUST` be valid according to the XML schema link:attachments/Endpoint-Description.xsd["Endpoint-Description.xsd"].
+
+The XML fragment for _Endpoint Description_ is encoded as an `<ed:EndpointDescription>` element, that contains the following attributes and children:
+
+* one `@version` attribute (`REQUIRED`) on the `<ed:EndpointDescription>` element. The value of the `@version` attribute `MUST` be `1`.
+
+* one `<ed:Capabilities>` element (`REQUIRED`) that contains one or more `<ed:Capability>` elements
++
+The content of the `<ed:Capability>` element is a Capability Identifier, that indicates the capabilities, that are supported by the Endpoint. For valid values for the Capability Identifier, see section <<Capabilities>>. This list `MUST NOT` include duplicate values.
+
+* one `<ed:SupportedDataViews>` (`REQUIRED`)
++
+A list of Data Views that are supported by this Endpoint. This list is composed of one or more `<ed:SupportedDataView>` elements. The content of a `<ed:SupportedDataView>` `MUST` be the MIME type of a supported Data View, e.g. `application/x-clarin-fcs-hits+xml`. Each `<ed:SupportedDataView>` element `MUST` carry a `@id` and a `@delivery-policy` attribute. The value of the `@id` attribute is later used in the `<ed:Resource>` element to indicate, which Data View is supported by a resource (see below). Endpoints `SHOULD` use the recommended short identifier for the Data View. The `@delivery-policy` indicates, the Endpoint's delivery policy, for that Data View. Valid values are `send-by-default` for the _send-by-default_ and `need-to-request` for the _need-to-request_ delivery policy.
++
+This list `MUST NOT` include duplicate entries, i.e. no MIME type must appear more than once.
++
+The value of the `@id` attribute `MUST NOT` contain the characters `,` (comma) or `;` (semicolon).
+
+* one `<ed:Resources>` element (`REQUIRED`)
++
+A list of (top-level) resources that are available, i.e. searchable, at the Endpoint. The `<ed:Resources>` element contains one or more `<ed:Resource>` elements (see below). The Endpoint `MUST` declare at least one (top-level) resource. 
+
+The `<ed:Resource>` element contains a basic description of a resource that is available at the Endpoint. A resource is a searchable entity, e.g. a single corpus. The `<ed:Resources>` has a mandatory `@pid` attribute that contains persistent identifier of the resource. This value `MUST` be the same as the _MdSelfLink_ of the CMDI record describing the resource. The `<ed:Resources>` element contains the following children:
+
+* one or more `<ed:Title>` elements (`REQUIRED`)
++
+A human readable title for the resource. A `REQUIRED` `@xml:lang` attribute indicates the language of the title. An English version of the title is `REQUIRED`. The list of titles `MUST NOT` contain duplicate entries for the same language.
+
+* zero or more `<ed:Description>` elements (`OPTIONAL`)
++
+An optional human-readable description of the resource. It `SHOULD` be at most one sentence. A `REQUIRED` `@xml:lang` attribute indicates the language of the description. If supplied, an English version of the description is `REQUIRED`. The list of descriptions `MUST NOT` contain duplicate entries for the same language.
+
+* zero or one `<ed:LandingPageURI>` element (`OPTIONAL`)
++
+A link to a website for the resource, e.g. a landing page for a resource, i.e. a web-site that describes a corpus.
+
+* one `<ed:Languages>` element (`REQUIRED`)
++
+The (relevant) languages available within the resource. The `<ed:Languages>` element contains one or more `<ed:Language>` elements. The content of a `<ed:Language>` element `MUST` be a ISO 639-3 three letter language code. This element `should` be repeated for all languages (relevant) available _within_ the resource, however this list `MUST NOT` contain duplicate entries.
+
+* one `<ed:AvailableDataViews>` element (`REQUIRED`)
++
+The Data Views that are available for the resource. The `<ed:AvailableDataViews>` `MUST` carry a `@ref` attribute, that contains a whitespace separated list of id values, that correspond to value of `@id` attribute on `<ed:SupportedDataView>` elements.
++
+In case of sub-resources, each Resource `SHOULD` support all Data Views that are supported by the parent resource. However, every resource `MUST` declare all available Data Views independently, i.e. there is no implicit inheritance semantic.
+
+* zero or one `<ed:Resources>` element (`OPTIONAL`)
++
+If a resource has searchable sub-resources, the Endpoint `MUST` supply additional finer grained resource elements, which are wrapped in a `<ed:Resources>` element. A sub-resource is a searchable entity within a resource, e.g. a sub-corpus.
+
+.Example of simple Endpoint Description
+[#ed-simple,xml]
+----
+include::examples/endpoint-description-basic-search.xml[]
+----
+
+<<ed-simple,Example simple Endpoint Description>> shows a simple Endpoint Description for an Endpoint that only supports the _Basic Search_ Capability and only provides the Generic Hits Data View, which is indicated by a `<ed:SupportedDataView>` element. This element carries an `@id` attribute with a value of `hits`, the recommended value for the short identifier, and indicates a delivery policy of _send-by-default_ by the `@delivery-policy` attribute. It only provides one top-level resource identified by the persistent identifier `\http://hdl.handle.net/4711/0815`. The resource has a title as well as a description in German and English. A landing page is located at `\http://repos.example.org/corpus1.html`. The predominant language in the resource contents is German. Only the Generic Hits Data View is supported for this resource, because the `<ed:AvailableDataViews>` element only references the `<ed:SupporedDataView>` element with the `@id` with a value of hits.
+
+.Example of simple Endpoint Description with optional CMDI Data View
+[#ed-simple-cmdi,xml]
+----
+include::examples/endpoint-description-basic-search-cmdi.xml[]
+----
+
+The more complex <<ed-simple-cmdi,Example CMDI Endpoint Description>> show an Endpoint Description for an Endpoint that, similar to <<ed-simple,Example simple Endpoint Description>>, supports the _Basic Search_ capability. In addition to the Generic Hits Data View, it also supports the CMDI Data View. The delivery polices are _send-by-default_ for the Generic Hits Data View and _need-to-request_ for the CMDI Data View. The Endpoint has two top-level resources (identified by the persistent identifiers `\http://hdl.handle.net/4711/0815` and `\http://hdl.handle.net/4711/0816`. The second top-level resource has two independently searchable sub-resources, identified by the persistent identifier `\http://hdl.handle.net/4711/0816-1` and `\http://hdl.handle.net/4711/0816-2`. All resources are described using several properties, like title, description, etc. The first top-level resource provides only the Generic Hits Data View, while the other top-level resource including its children provide the Generic Hits and the CMDI Data Views.
+
+
+== Endpoint Custom Extension
+
+Endpoints can add custom extensions, i.e. custom data, to the Result Format. This extension mechanism can for example be used to provide hints for an (XSLT/XQuery) application that works directly on CLARIN-FCS, e.g. to allow it to generate back and forward links to navigate in a result set.
+
+An Endpoint `MAY` add arbitrary XML fragments to the extension hooks provided in the <fcs:Resource> element (see the XML schema for link:attachments/Resource.xsd["Resource.xsd"]). The XML fragment for the extension `MUST` use a custom XML namespace name for the extension. Endpoints `MUST NOT` use XML namespace names that start with the prefixes `\http://clarin.eu`, `\http://www.clarin.eu/`, `\https://clarin.eu` or `\https://www.clarin.eu/`.
+
+A Client `MUST` ignore any custom extensions it does not understand and skip over these XML fragments when parsing the Endpoint's response.
+
+The appendix contains an <<Endpoint custom extensions,example>>, how an extension could be implemented.

@@ -1,0 +1,29 @@
+= CLARIN FCS-QL Grammar Specification
+
+The version of the CLARIN FCS-QL is tied to the FCS Core version starting with version 2.0.
+
+FCS-QL was developed to bridge the extension of powerfulness in searching, familiarity of query language and ease of use. The grammar specification for the FCS-QL is heavily based on Poliqarp but also with inspiration from other query languages' grammars. Building on the annotation layer metaphor with positional and structural attributes. Positional attributes can be seen as key-value pairs. Structural attributes can also have key-value pairs attached. Structural attributes themselves have the restrictions to be non-overlapping and non-recursive. The positional attributes depend on tokenization or segmentation of some kind being performed to produce _tokens_. A _token_ is thus a subjective unit defined by a Repository manager and might vary in the same way values in other layers can.
+
+An unqualified or qualified "attribute" denotes the annotation layer to be used, e.g. unqualified "word", "lemma", "pos" or qualified "ssts:pos". The default attribute is "text" for compatibility with FCS 1.0 where simple wordforms in a pair of single or double quotes can be matched. Qualifiers and other identifiers `MUST` start with a character `a-z` or `A-Z`.
+
+Character literals are unescaped to Unicode Normalization Form C (NFC). Regular expressions are passed on as such for interpretation by the Endpoint.
+
+Tokens are limited by `[` and `]` except for when using default attribute "text". Within a token disjunctive or conjunctive positional attribute expressions referring any layer can be joined. These can also be grouped by `(` and `)`. Token sequences address consecutive tokens unless matchall, i.e. `[]` and quantifiers are used.
+
+
+== FCS-QL EBNF
+
+[,text]
+----
+include::fcsql-grammar.ebnf[]
+----
+
+
+== Notes
+
+* "simple-within-scope": possible values for scope
+** "sentence", "s", "utterance", "u": denote a matching scope of something like a sentence or utterance. provides compatibility with FCS 1.0 ("Generic Hits", "Each hit SHOULD be presented within the context of a complete sentence.")
+** "paragraph" | "p" | "turn" | "t": denote the next larger unit, e.g. something like a paragraph
+** "text" | "session": something like a whole document
+* `[25]` and `[26]` "any $SOMETING codepoint" are a pain to get easily done in at least ANTLR and JavaCC. Especially in combination with `[27]`
+* regex are not defined/guarded by this grammar

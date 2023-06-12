@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sru:searchRetrieveResponse xmlns:sru="http://www.loc.gov/zing/srw/">
+  <sru:version>1.2</sru:version>
+  <sru:numberOfRecords>6</sru:numberOfRecords>
+  <sru:records>
+    <sru:record>
+      <sru:recordSchema>http://clarin.eu/fcs/resource</sru:recordSchema>
+      <sru:recordPacking>xml</sru:recordPacking>
+      <sru:recordData>
+        <fcs:Resource xmlns:fcs="http://clarin.eu/fcs/resource" pid="http://hdl.handle.net/4711/08-15">
+          <fcs:ResourceFragment>
+            <fcs:DataView type="application/x-clarin-fcs-hits+xml">
+              <hits:Result xmlns:hits="http://clarin.eu/fcs/dataview/hits">
+                The quick brown <hits:Hit>cat</hits:Hit> jumps over the lazy dog.
+              </hits:Result>
+            </fcs:DataView>
+          </fcs:ResourceFragment>
+        </fcs:Resource>
+      </sru:recordData>
+      <sru:recordPosition>1</sru:recordPosition>
+    </sru:record>
+    <!-- more <sru:records> omitted for brevity -->
+  </sru:records>
+  <!-- <sru:echoedSearchRetrieveRequest> is OPTIONAL -->
+  <sru:echoedSearchRetrieveRequest>
+    <sru:version>1.2</sru:version>
+    <sru:query>cat</sru:query>
+    <sru:xQuery xmlns="http://www.loc.gov/zing/cql/xcql/">
+      <searchClause>
+        <index>cql.serverChoice</index>
+        <relation>
+          <value>=</value>
+        </relation>
+        <term>cat</term>
+      </searchClause>
+    </sru:xQuery>
+    <sru:startRecord>1</sru:startRecord>
+    <sru:baseUrl>http://repos.example.org/fcs-endpoint</sru:baseUrl>
+  </sru:echoedSearchRetrieveRequest>
+</sru:searchRetrieveResponse>

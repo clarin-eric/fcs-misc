@@ -1,0 +1,104 @@
+ [1] query                 ::= main-query within-part? 
+
+ [2] main-query            ::= simple-query
+                             | simple-query "|" main-query     /* or */
+                             | simple-query main-query         /* sequence */
+                             | simple-query quantifier         /* quantification */
+ 	
+ [3] simple-query          ::= '(' main_query ')'              /* grouping */
+                             | implicit-query
+                             | segment-query 	
+ 
+ [4] implicit-query        ::= flagged-regexp 	 
+ 
+ [5] segment-query         ::= "[" expression? "]" 	 
+
+ [6] within-part           ::= simple-within-part
+
+ [7] simple-within-part    ::= "within" simple-within-scope
+
+ [8] simple-within-scope   ::= "sentence"
+                             | "s"
+                             | "utterance"
+                             | "u"
+                             | "paragraph"
+                             | "p"
+                             | "turn"
+                             | "t"
+                             | "text"
+                             | "session"  	 
+
+ [9] expression            ::= basic-expression
+                             | expression "|" expression     /* or */
+                             | expression "&" expression     /* and */
+                          	
+[10] basic-expression      ::= '(' expression ')'            /* grouping */
+                             | "!" expression                /* not */
+                             | attribute operator flagged-regexp 
+
+[11] operator	           ::= "="                           /* equals */
+                             | "!="                          /* non-equals */
+
+[12] quantifier            ::= "+"                           /* one-or-more */
+                             | "*"                           /* zero-or-more */
+                             | "?"                           /* zero-or-one */
+                             | "{" integer "}"               /* exactly n-times */
+                             | "{" integer? "," integer "}"  /* at most */
+                             | "{" integer "," integer? "}"  /* min-max */	 
+
+[13] flagged-regexp        ::= regexp
+                             | regexp "/" regexp-flag+ 	 
+
+[14] regexp-flag           ::= "i"  /* case-insensitive; Poliqarp/Perl compat */
+                             | "I"  /* case-sensitive; Poliqarp compat */
+                             | "c"  /* case-insensitive, CQP compat */
+                             | "C"  /* case-sensitive */
+                             | "l"  /* literal matching, CQP compat*/
+                             | "d"  /* diacritic agnostic matching, CQP compat */ 
+       
+[15] regexp                ::= quoted-string
+
+[16] attribute             ::= simple-attribute
+                             | qualified-attribute
+
+[17] simple-attribute      ::= identifier
+
+[18] qualified-attribute   ::= identifier ":" identifier  
+
+[19] identifier            ::= identifier-first-char identifier-char*
+
+[20] identifier-first-char ::= [a-zA-Z]
+
+[21] identifier-char       ::= [a-zA-Z0-9\-]
+
+[22] integer               ::= [0-9]+ 
+
+[23] quoted-string         ::= "'" (char | ws)* "'"  /* single-quotes */
+                             | """ (char | ws)* """  /* double-quotes */
+
+[24] char                  ::= <any unicode codepoint excluding whitespace codepoints>
+                             | "\" escaped-char
+
+[25] ws                    ::= <any whitespace codepoint>
+
+[26] escaped-char          ::= "\"                                  /* backslash (\) */
+                             | "'"                                  /* single quote (') */
+                             | """                                  /* double quote (") */
+                             | "n"                                  /* generic newline, i.e "\n", "\r", etc */
+                             | "t"                                  /* character tabulation (U+0009) */
+                             | '.'                                  /* regex: dot (= any character) */
+                             | '^'                                  /* regex: caret (= beginning of string) */
+                             | '$'                                  /* regex: dollar (= end of string) */
+                             | '*'                                  /* regex: asterisk (= zero or more) */
+                             | '+'                                  /* regex: plus (= one or more) */
+                             | '?'                                  /* regex: question mark (= zero or one) */
+                             | '('                                  /* regex: opening parenthesis */
+                             | ')'                                  /* regex: closing parenthesis */
+                             | '{'                                  /* regex: opening curly brace */
+                             | '['                                  /* regex: opening square bracket */
+                             | '|'                                  /* regex: vertical bar */
+                             | "x" hex hex                          /* Unicode codepoint with hex value hh */
+                             | "u" hex hex hex hex                  /* Unicode codepoint with hex value hhhh */
+                             | "U" hex hex hex hex hex hex hex hex  /* Unicode codepoint with hex value hhhhhhhh */ 
+
+[27] hex                   ::= [0-9a-fA-F]

@@ -1,0 +1,6 @@
+<!-- potential @pid and @ref attributes omitted -->
+<fcs:DataView type="application/x-cmdi+xml">
+  <cmdi:CMD xmlns:cmdi="http://www.clarin.eu/cmd/" CMDVersion="1.1">
+    <!-- content omitted -->
+  </cmdi:CMD>
+</fcs:DataView>

@@ -1,0 +1,38 @@
+name: build <fcs-core-1.0> adocs 
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+    paths:
+      - 'fcs-core-1.0/**'
+      - '.github/workflows/build-fcs-core-1.0-adoc.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: asciidoctor/docker-asciidoctor
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build HTML
+        run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-core-1.0.html fcs-core-1.0/index.adoc
+
+      - name: Build PDF
+        run: asciidoctor-pdf -v -D docs -o fcs-core-1.0.pdf fcs-core-1.0/index.adoc
+
+      - name: Copy attachments
+        run: cp -R fcs-core-1.0/attachments docs/
+
+      - name: Store results
+        uses: actions/upload-artifact@v3
+        with:
+          name: fcs-core-1.0-specs
+          path: docs/*

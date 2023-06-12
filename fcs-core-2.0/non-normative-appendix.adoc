@@ -1,0 +1,42 @@
+= Non-normative Appendix
+
+== Syntax variant for Handle system Persistent Identifier URIs
+
+Persistent Identifiers from the Handle system are defined in two syntax variants: a regular URI format for the Handle protocol, i.e. with a `hdl:` prefix, or _actionable_ URIs with a `http://hdl.handle.net/` prefix. Generally, CLARIN software should support both syntax variants, therefore the CLARIN-FCS Interface Specification does not endorse a specific syntax variant. However, Endpoints are recommended to use the _actionable_ syntax variant.
+
+
+== Referring to an Endpoint from a CMDI record
+
+Centers are encouraged to provide links to their CLARIN-FCS Endpoints in the metadata records for their resources. Other services, like the VLO, can use this information for automatically configuring an Aggregator for searching resources at the Endpoint. To refer to an Endpoint, a `<cmdi:ResourceProxy>` element with child-element `<cmdi:ResourceType>` set to the value `SearchService` and a `@mimetype` attribute with a value of `application/sru+xml` need to be added to the CMDI record. The content of the `<cmdi:ResourceRef>` element must contain a URI that points to the Endpoint web service.
+
+.Example of referring to an Endpoint from a CMDI record
+[source,xml]
+----
+include::examples/appendix-endpoint-record-in-cmdi.xml[]
+----
+
+
+== Endpoint custom extensions
+
+The CLARIN-FCS protocol specification allows Endpoints to add custom data to their responses, e.g. to provide hints to an (XSLT/XQuery) application that works directly on CLARIN-FCS. It could use the custom data to generate back and forward links for a GUI to navigate in a result set.
+
+The following example illustrates how extensions can be embedded into the Result Format:
+
+.Example of Endpoint custom extensions
+[source,xml]
+----
+include::examples/appendix-endpoint-custom-extensions.xml[]
+----
+
+
+== Endpoint highlight hints for repositories
+
+An Aggregator can use the `@ref` attributes of the `<fcs:Resource>`, `<fcs:ResourceFragment>` or `<fcs:DataView>` elements to provide a link for the user to directly jump to the resource at a Repository. To support hit highlighting, an Endpoint can augment the URI in the `@ref` attribute with query parameters to implement hit highlighting in the Repository.
+
+In the following example, the URI `+http://repos.example.org/resource.cgi/<pid>+` is a CGI script that displays a given resource at the Repository in HTML format and uses the `highlight` query parameter to add highlights to the resource. Of course, it's up to the Endpoint and the Repository, if and how they implement such a feature.
+
+.Example of Endpoint highlight hints for repositories
+[source,xml]
+----
+include::examples/appendix-endpoint-highlight-hints.xml[]
+----
