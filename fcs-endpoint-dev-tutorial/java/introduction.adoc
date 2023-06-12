@@ -1,0 +1,80 @@
+== Requirements
+
+* Reference libraries: <<ref:SRUServer>>, <<ref:SRUClient>>, <<ref:FCS-QL>> or your own selected FCS 2.0 and 
+SRU 2.0 compatible libraries.
+* Endpoint reference library: <<ref:FCSSimpleEndpoint>> or you own from scratch.
+* Translation library (optional)
+
+
+== Resources
+
+Specifications::
+    * FCS 2.0 specification -- <<ref:CLARIN-FCSCore20>>
+    * SRU 2.0 specification -- <<ref:OASIS-SRU20>>
+
+Maven dependencies::
+    Reference libraries: <<ref:SRUServer,server>>, <<ref:SRUClient,client>>, and <<ref:FCSSimpleEndpoint,endpoint>> (simple as well as other ones). See <<Configuration>> section.
+
+Implementations::
+    * http://clarin.ids-mannheim.de/downloads/clarin/DigiBibSRU-source-2016-02-08.zip
+    * https://github.com/clarin-eric/fcs-korp-endpoint/[Korp Endpoint]
+
+
+== References
+
+[[ref:SRUServer]]SRUServer::
+    SRU/CQL server implementation, conforming to SRU/CQL protocol version 1.1 and 1.2 and (partially) 2.0, June 2023,
+    https://github.com/clarin-eric/fcs-sru-server/
+
+[[ref:SRUClient]]SRUClient::
+    SRU/CQL client implementation, conforming to SRU/CQL protocol version 1.1, 1.2 and (partially) 2.0, June 2023,
+    https://github.com/clarin-eric/fcs-sru-client/
+
+[[ref:FCS-QL]]FCS-QL::
+    CLARIN-FCS Core 2.0 query language grammar and parser, June 2023,
+    https://github.com/clarin-eric/fcs-ql/
+
+[[ref:FCSSimpleEndpoint]]FCSSimpleEndpoint::
+    A simple CLARIN FCS endpoint, June 2023,
+    https://github.com/clarin-eric/fcs-simple-endpoint/
+
+[[ref:FCSAggregator]]FCSAggregator::
+    Federated Content Search Aggregator, June 2023,
+    https://github.com/clarin-eric/fcs-sur-aggregator/,
+    https://contentsearch.clarin.eu/
+
+[[ref:CLARIN-FCSCore20]]CLARIN-FCS-Core 2.0::
+    CLARIN Federated Content Search (CLARIN-FCS) - Core 2.0, SCCTC FCS Task-Force, June 2023,
+    https://office.clarin.eu/v/CE-2017-1046-FCS-Specification-v20230426.pdf[PDF],
+    https://github.com/clarin-eric/fcs-misc/tree/main/fcs-core-2.0[sources (asciidoc, examples, xml schema)]
+
+[[ref:OASIS-SRU20]]OASIS-SRU20::
+    searchRetrieve: Part 3. SRU searchRetrieve Operation: APD Binding for SRU 2.0 Version 1.0, OASIS, January 2013,
+    http://www.loc.gov/standards/sru/sru-2-0.html,
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.doc
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html[(HTML)],
+    http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.pdf[(PDF)]
+
+[[ref:UD-POS]]UD-POS::
+    Universal Dependencies, Universal POS tags v2.0,
+    https://universaldependencies.github.io/u/pos/index.html
+
+[[ref:SAMPA]]SAMPA::
+    Dafydd Gibbon, Inge Mertins, Roger Moore (Eds.): Handbook of Multimodal and Spoken Language Systems. Resources, Terminology and Product Evaluation, Kluwer Academic Publishers, Boston MA, 2000, ISBN 0-7923-7904-7
+
+
+== Typographic and XML Namespace conventions
+
+The following typographic conventions for XML fragments will be used throughout this specification:
+
+* `<prefix:Element>`
++
+An XML element with the Generic Identifier _Element_ that is bound to an XML namespace denoted by the prefix _prefix_.
+
+* `@attr`
++
+An XML attribute with the name _attr_.
+
+* `string`
++
+The literal _string_ must be used either as element content or attribute value.

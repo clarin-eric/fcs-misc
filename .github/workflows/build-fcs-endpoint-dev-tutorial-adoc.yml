@@ -1,0 +1,36 @@
+name: build <fcs-endpoint-dev-tutorial> adocs 
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - feature/fcs-endpoint-dev-tutorial
+    paths:
+      - 'fcs-endpoint-dev-tutorial/**'
+      - '.github/workflows/build-fcs-endpoint-dev-tutorial-adoc.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: asciidoctor/docker-asciidoctor
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build HTML
+        run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-endpoint-dev-tutorial.html fcs-endpoint-dev-tutorial/index.adoc
+
+      - name: Build PDF
+        run: asciidoctor-pdf -v -D docs -o fcs-endpoint-dev-tutorial.pdf fcs-endpoint-dev-tutorial/index.adoc
+
+      - name: Store results
+        uses: actions/upload-artifact@v3
+        with:
+          name: fcs-endpoint-dev-tutorial
+          path: docs/*

@@ -1,0 +1,58 @@
+= Adaptation
+
+The easiest way to get started is to adapt the <<ref:FCSSimpleEndpoint>>.
+
+
+== SRUSearchEngine/SRUSearchEngineBase
+
+By extending the `SimpleEndpointSearchEngineBase`, or if it suits your search engine's needs better 
+the `SRUSearchEngineBase` directly, you adapt the behaviour to your search engine. A few notes:
+
+* do not override `init()` use `doInit()`.
+* If you need to do cleanup do not override `destroy()` use `doDestroy()`. 
+* Implementing the scan method is optional. If you want to provide custom scan behavior for a different index, override the `doScan()` method. 
+* Implementing the explain method is optional. Only needed if you need to fill  `writeExtraResponseData` block of the SRU response. The implementation of this method must be thread-safe. The `SimpleEndpointSearchEngineBase` implementation has a on request parameter only response of `SRUExplainResult` with diagnostics.
+
+
+=== Initialize the search engine
+
+The initialization should be tailored towards your environment and needs. You need to provide the context (`ServletContext`), config (`SRUServerConfig`) and a query parser builder `SRUQueryParserRegistry.Builder` if you want to register additional query parsers. In addition you can provide parameters gathered from servlet configuration and the servlet context.
+
+
+== EndpointDescription
+
+`SimpleEndpointDescription` is an implementtion of an endpoint description that is initialized from static information supplied at construction time. You will probably use the `SimpleEndpointDescriptionParser` to provide the endpoint description, but you can generate the list of resource info records in any way suitable to your situation. Though probably this is not the first behaviour you need to adapt since it supports both URL or w3 Document instantiation.
+
+
+== EndpointDescriptionParser
+
+The `SimpleEndpointDescriptionParser` is able to do the heavy lifting for you by parsing and extracting the information from the endpoint description including everything needed for basic and required FCS 2.0 features like capabilities, supported layers and dataviews, resource enumeration etc. It also already provide simpe consistency checks like checking unique IDs and that the declared capabilities and dataviews match. See <<Configuration>> section for further details.
+
+
+== SRUSearchResultSet
+
+This class needs to be implemented to support your search engine's behaviour. Implement these methods:
+
+* `writeRecord()`,
+* `getResultCountPrecision()`,
+* `getRecordIdentifier()`,
+* `nextRecord()`,
+* `getRecordSchemaIdentifier()`,
+* `getRecordCount()`, and
+* `getTotalRecordCount()`.
+
+
+== SRUScanResultSet
+
+This class needs to be implemented to support your search engine's beahviour. Implement these methods:
+
+* `getWhereInList()`,
+* `getNumberOfRecords()`,
+* `getDisplayTerm()`,
+* `getValue()`, and
+* `getNextTerm()`.
+
+
+== SRUExplainResult
+
+This class needs to be implemented to support your search engine's data source.
