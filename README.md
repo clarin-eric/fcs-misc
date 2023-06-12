@@ -9,20 +9,22 @@ This repo contains AsciiDoc sources, images, examples and schema files for the C
 * [CLARIN Federated Content Search - FCS **Data Views 1.0**: `fcs-dataviews-1.0/index.adoc`](fcs-dataviews-1.0/index.adoc)
 * _WIP_ [CLARIN Federated Content Search - FCS **AAI 1.0**: `fcs-aai/index.adoc`](fcs-aai/index.adoc)
 
+### Folder structure
+
+All the specification documents are structured as follows in their sub folders:
+- `index.adoc` -- AsciiDoc entrypoint document that bundles and includes single chapters into one
+- `attachments/` -- (optional) with schema files or similar
+- `examples/` -- (optional) examples (or fragments) that are included in the specification document
+- `images/` -- (optional) for images that will be in the specification
+- `themes/` -- links to the global [`themes/`](themes/) folder with the `clarin` theme
+
 ### AsciiDoc
 
-* [`themes/`](themes/) for CLARIN
+* global [`themes/`](themes/) folder for CLARIN
 
 ### How to build
 
 Please take a look at the [Github Actions workflow definitions in `.github/workflows`](.github/workflows). All the specification documents will be built automatically when their source files change. (_NOTE: changes to theme files may require manually triggering the build._)
-
-All the specification documents are structured as follows in their sub folders:
-- `index.adoc` entrypoint document that bundles and includes single chapters into one
-- `attachments/` (optional) with schema files or similar
-- `examples/` (optional) examples (or fragments) that are included in the specification document
-- `images/` (optional) for images that will be in the specification
-- `themes/` links to the global [`themes/`](themes/) folder with the `clarin` theme
 
 You can build the specifications documents yourself with:
 
