@@ -30,6 +30,10 @@ toc::[]
 
 include::fcs-intro.adoc[leveloffset=+1]
 
+<<<
+
+include::fcs-development-guide.adoc[leveloffset=+1]
+
 
 
 // for faster development, should not be enabled in production/if publicised

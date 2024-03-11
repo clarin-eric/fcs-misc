@@ -1,0 +1,101 @@
+= Guide to endpoint development
+
+[.notes]
+--
+* Important preliminary questions
+* Existing implementations, resources for new development
+* Prerequisites
+--
+
+
+== Development Decisions
+
+❓ Can I host the endpoint myself?
+[.ms-5.mb-5]
+❗ No → HelpDesk: CLARIN, Text+
+
+❓ What type of data do I have?
+[.mds-5.mb-5]
+❗ Raw text, Vertical/CONLL, TEI, …
+
+❓ Which search engine do I use / can I use?
+[.ms-5.mb-5]
+❗ KorAP, Korp/CWB, Lucene/Solr/ElasticSearch, BlackLab, (No)SketchEngine, …
+
+
+ifdef::backend-revealjs[]
+== Development Decisions (2)
+endif::[]
+
+❓ Customization or new development?
+[.ms-5.mb-5]
+❗ List of existing endpoint implementations  (https://github.com/clarin-eric/awesome-fcs#endpoint-implementations[Awesome List])
+
+❓ Programming language?
+[.ms-5.mb-5]
+❗ Java, Python, (PHP, XQuery)
+
+❓ In-house development: Use of the reference libraries (Java, Python)
+[.ms-5]
+❗ Maven Archetype, Korp
+[.ms-5]
+❗ SRU + FCS specifications …
+
+
+== Endpoint Implementations
+
+* https://github.com/clarin-eric/fcs-korp-endpoint[Korp FCS 2.0] - reference implementation, https://www.kielipankki.fi/support/korp-advanced/[Korp corpus search]
+* https://github.com/clarin-eric/fcs-sru-cqi-bridge[CQP/SRU bridge] - Corpus Workbench (CWB)
+* https://github.com/czcorpus/kontext[KonText], https://github.com/Leipzig-Corpora-Collection/fcs-noske-endpoint[fcs-noske-endpoint] - (No)SketchEngine (CONLL/Vertical)
+* https://github.com/OCLC-Research/oclcsrw[oclcsrw] - SRW/SRU server for DSpace, Lucene and/or Pears/Newton
+* https://github.com/vronk/corpus_shell[corpus_shell], https://github.com/vronk/SADE/tree/cr-xq[SADE] - MySQL PHP/DDC Perl, eXist/XQuery
+* https://github.com/acdh-oeaw/arche-fcs/[arche-fcs] - ARCHE Suite, php
+* https://github.com/INL/clariah-fcs-endpoints[Blacklab / MTAS] - corpus search engines using Lucene/Solr
+* https://github.com/KorAP/KorapSRU[KorapSRU] - KorAP (IDS)
+
+[.refs]
+--
+Sources: https://www.clarin.eu/content/federated-content-search-clarin-fcs-technical-details[clarin], https://github.com/clarin-eric/awesome-fcs[awesome-fcs]
+--
+
+
+== New Endpoint Development
+
+* Customization of reference implementation (Korp)
+** Java: https://github.com/clarin-eric/fcs-korp-endpoint[github.com/clarin-eric/fcs-korp-endpoint]
+** Python: https://github.com/Querela/fcs-korp-endpoint-python/[github.com/Querela/fcs-korp-endpoint-python]
+
+* Development using CLARIN SRU/FCS libraries
+** Java: https://github.com/clarin-eric/fcs-endpoint-archetype[github.com/clarin-eric/fcs-endpoint-archetype]
+** Docs:
+*** Java SRU: https://clarin-eric.github.io/fcs-sru-server/apidocs/index.html[clarin-eric.github.io/fcs-sru-server/apidocs/index.html]
+*** Java FCS: https://clarin-eric.github.io/fcs-simple-endpoint/apidocs/index.html[clarin-eric.github.io/fcs-simple-endpoint/apidocs/index.html]
+*** Python SRU: https://fcs-sru-server-python.readthedocs.io/en/latest/[fcs-sru-server-python.readthedocs.io]
+*** Python FCS: https://fcs-simple-endpoint-python.readthedocs.io/en/latest/[fcs-simple-endpoint-python.readthedocs.io]
+
+
+ifdef::backend-revealjs[]
+== New Endpoint Development (2)
+endif::[]
+
+* “New” development specifications (for other languages)
+** SRU: http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part0-overview/searchRetrieve-v1.0-os-part0-overview.html[OASIS SRU Overview],  https://www.loc.gov/standards/sru/[Library of Congress SRU]
+** FCS: https://github.com/clarin-eric/fcs-misc[github.com/clarin-eric/fcs-misc] → “FCS Core 2.0”
+
+* Awesome List: https://github.com/clarin-eric/awesome-fcs[github.com/clarin-eric/awesome-fcs] 
+
+
+== Prerequisite for local search engine
+
+❗ Full text search
+[.ms-5]
+❓ with Hit markers
+[.mb-5]
+❓ Corpus search (segmented text with annotations)
+
+[.mb-5]
+❕ Pagination (total number of hits)
+
+❗ Resource PID
+
+❓ Linking to result pages
