@@ -1,5 +1,5 @@
 = FCS 2.0 Endpoint Developer's Tutorial
-Oliver Schonefeld <schonefeld@ids-mannheim.de>; Erik Körner <koerner@saw-leipzig.de>
+Oliver Schonefeld <schonefeld@ids-mannheim.de>; Leif-Jöran Olsson <leif-joran.olsson@svenska.gu.se>; Erik Körner <koerner@saw-leipzig.de>
 v1.0, 2016-01
 // more metadata
 :description: This is a tutorial on how to develop CLARIN FCS endpoints.

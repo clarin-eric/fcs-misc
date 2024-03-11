@@ -65,7 +65,7 @@ Makes sure capabilities and declared dataviews actually match otherwise it will 
 * Supported Layers, checks that `<SupportedLayer>` elements have:
 
 ** a proper `@id` attribute and that the value is unique.
-** a proper `@result-id` attribute and that is is encoded as a proper URI, ant that the child text node is "text", "lemma", "pos", "orth", "norm", "phonetic", or other value starting with "x-".
+** a proper `@result-id` attribute and that is is encoded as a proper URI, and that the child text node is "text", "lemma", "pos", "orth", "norm", "phonetic", or other value starting with "x-".
 ** if a `@alt-value-info-uri` attribute that is encoded as proper URI, e.g. tag description
 ** if _advanced search_ is given in capabilities that it is also available.
 
