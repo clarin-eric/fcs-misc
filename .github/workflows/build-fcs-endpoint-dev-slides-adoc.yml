@@ -38,12 +38,12 @@ jobs:
           cp highlight.js/src/styles/magula.css slides/reveal.js/plugin/highlight/
 
       - name: Build slides
-        run: asciidoctor-revealjs -v -D slides index.adoc
+        run: asciidoctor-revealjs -v -D slides fcs-endpoint-dev-slides/index.adoc
   
       - name: Copy slide resources
         run: |
-          mv -v images slides/
-          mv -v css slides/
+          mv -v fcs-endpoint-dev-slides/images slides/
+          mv -v fcs-endpoint-dev-slides/css slides/
 
       - name: Store results
         uses: actions/upload-artifact@v3
