@@ -8,6 +8,7 @@
 --
 
 
+[.left]
 == Development Decisions
 
 ❓ Can I host the endpoint myself?
@@ -24,6 +25,7 @@
 
 
 ifdef::backend-revealjs[]
+[.left]
 == Development Decisions (2)
 endif::[]
 
@@ -85,6 +87,7 @@ endif::[]
 * Awesome List: https://github.com/clarin-eric/awesome-fcs[github.com/clarin-eric/awesome-fcs] 
 
 
+[.left]
 == Prerequisite for local search engine
 
 ❗ Full text search

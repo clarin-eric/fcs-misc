@@ -8,6 +8,7 @@
 --
 
 
+[.left]
 == Disclaimer
 
 Main focus on:
@@ -130,6 +131,7 @@ For the SRU protocol model, three operations are defined as part of its *Process
 --
 
 
+[.left]
 == searchRetrieve – APD Abstract Models
 
 *Data Model* +
