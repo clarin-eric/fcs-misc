@@ -1,0 +1,9 @@
+= Java FCS-SRU Endpoint
+
+include::introduction.adoc[]
+
+include::adaption.adoc[leveloffset=+1]
+
+include::code-examples.adoc[leveloffset=+1]
+
+include::configuration.adoc[leveloffset=+1]

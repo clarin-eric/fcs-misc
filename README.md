@@ -2,14 +2,18 @@
 
 This repo contains AsciiDoc sources, images, examples and schema files for the CLARIN Federated Content Search (FCS) specification documents found at [clarin.eu](https://www.clarin.eu/content/federated-content-search-clarin-fcs-technical-details). Prior versions of the specification documents with examples and schema files are also backed up [here](historical/).
 
+Jump to: [[Specification Documents](#specification-documents)]
+| [[Tutorial Documents](#tutorial-documents)]
+| [[Historical Resources](#historical-resources)]
+
 ## Specification Documents
 
-* [CLARIN Federated Content Search - FCS **Core 2.0**: `fcs-core-2.0/index.adoc`](fcs-core-2.0/index.adoc)
-* [CLARIN Federated Content Search - FCS **Core 1.0**: `fcs-core-1.0/index.adoc`](fcs-core-1.0/index.adoc)
-* [CLARIN Federated Content Search - FCS **Data Views 1.0**: `fcs-dataviews-1.0/index.adoc`](fcs-dataviews-1.0/index.adoc)
-* _WIP_ [CLARIN Federated Content Search - FCS **AAI 1.0**: `fcs-aai/index.adoc`](fcs-aai/index.adoc)
+- [CLARIN Federated Content Search - FCS **Core 2.0**: `fcs-core-2.0/index.adoc`](fcs-core-2.0/index.adoc)
+- [CLARIN Federated Content Search - FCS **Core 1.0**: `fcs-core-1.0/index.adoc`](fcs-core-1.0/index.adoc)
+- [CLARIN Federated Content Search - FCS **Data Views 1.0**: `fcs-dataviews-1.0/index.adoc`](fcs-dataviews-1.0/index.adoc)
+- _WIP_ [CLARIN Federated Content Search - FCS **AAI 1.0**: `fcs-aai/index.adoc`](fcs-aai/index.adoc)
 
-### Folder structure
+### Folder Structure
 
 All the specification documents are structured as follows in their sub folders:
 - `index.adoc` -- AsciiDoc entrypoint document that bundles and includes single chapters into one
@@ -54,6 +58,12 @@ You can use the [`asciidoctor/docker-asciidoctor` docker image](https://github.c
 docker run --rm -it -v $(pwd):/documents asciidoctor/docker-asciidoctor
 # then run your build commands
 ```
+
+## Tutorial Documents
+
+* [CLARIN Federated Content Search - FCS **Endpoint Developer's Tutorial**: `fcs-endpoint-dev-tutorial/index.adoc`](fcs-endpoint-dev-tutorial/index.adoc)
+
+For build instructions, see section [Specification Documents "How to build"](#how-to-build).
 
 ## Historical Resources
 
