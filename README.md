@@ -65,6 +65,10 @@ docker run --rm -it -v $(pwd):/documents asciidoctor/docker-asciidoctor
 
 For build instructions, see section [Specification Documents "How to build"](#how-to-build).
 
+* [CLARIN Federated Content Search - FCS **Endpoint Development** Slides: `fcs-endpoint-dev-slides`](fcs-endpoint-dev-slides/index.adoc)
+
+This is a RevealJS slide deck based on AsciiDoc and needs slightly different build steps. Those are currently only listed in the [GitHub Actions Workflow](.github/workflows/build-fcs-endpoint-dev-slides-adoc.yml).
+
 ## Historical Resources
 
 To be found under [`historical/`](historical/):
