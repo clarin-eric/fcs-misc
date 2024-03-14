@@ -1,0 +1,29 @@
+= FCS 2.0 Endpoint Developer's Tutorial
+Oliver Schonefeld <schonefeld@ids-mannheim.de>; Leif-Jöran Olsson <leif-joran.olsson@svenska.gu.se>; Erik Körner <koerner@saw-leipzig.de>
+v1.0, 2016-01
+// more metadata
+:description: This is a tutorial on how to develop CLARIN FCS endpoints.
+:organization: CLARIN
+// settings
+:doctype: book
+// source code
+:source-highlighter: rouge
+:rouge-style: igor_pro
+// toc and heading
+:toc:
+:toclevels: 4
+:sectnums:
+:sectnumlevels: 4
+:appendix-caption!:
+// directory stuff
+:imagesdir: images
+// pdf
+ifdef::backend-pdf[]
+:pdf-theme: clarin
+:pdf-themesdir: {docdir}/themes
+:title-logo-image: image:{docdir}/themes/clarin-logo.svg[pdfwidth=5.75in,align=center]
+endif::[]
+
+<<<
+
+include::java/index.adoc[leveloffset=+1]

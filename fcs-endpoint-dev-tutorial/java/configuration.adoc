@@ -1,0 +1,127 @@
+= Configuration
+
+== Maven
+
+To include <<ref:FCSSimpleEndpoint>> these are the dependencies:
+
+[source,xml]
+----
+<dependencies>
+  <dependency>
+    <groupId>eu.clarin.sru.fcs</groupId>
+    <artifactId>fcs-simple-endpoint</artifactId>
+    <version>1.3.0</version>
+  </dependency>
+  <dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>servlet-api</artifactId>
+    <version>2.5</version>
+    <type>jar</type>
+    <scope>provided</scope>
+  </dependency>
+</dependencies>
+----
+
+The version is currently `1.4-SNAPSHOT` if you want and enable the Clarin snapshots repository.
+
+
+== Endpoint
+
+To enable SRU 2.0 which is required for FCS 2.0 functionality you need to provide the following 
+initialization parameters to the servlet context:
+
+[source,xml]
+----
+<init-param>
+    <param-name>eu.clarin.sru.server.sruSupportedVersionMax</param-name>
+    <param-value>2.0</param-value>
+</init-param>
+<init-param>
+    <param-name>eu.clarin.sru.server.legacyNamespaceMode</param-name>
+    <param-value>loc</param-value>
+</init-param>
+----
+
+The endpoint configurations consists of the already mentionend context (`ServletContext`), a config (`SRUServerConfig`) and if you want further query parsers (`SRUQueryParserRegistry.Builder`). Also additional parameters gathered from servlet configuration and the servlet context are available.
+
+
+== EndpointDescriptionParser
+
+You probably start out using the provided `EndpointdescriptionParser`. It will parse and make available what is required and also do some sanity checkning.
+
+* `Capabilities`, _basic search_ capability is required and _advanced search_ is available for FCS 2.0, checks that any given capability is encoded as a proper URI and that the IDs are unique.
+* Supported Data views, checks  that `<SupportedDataView>` elements have:
++
+--
+** a proper `@id` attribute and that the value is unique. 
+** a `@delivery-policy` attribute, e.g. `DeliveryPolicy.SEND_BY_DEFAULT`, `DeliveryPolicy.NEED_TO_REQUEST`.
+** a child text node with a MIME-type as its content, e.g. for _basics search (hits)_: `application/x-clarin-fcs-hits+xml` and for _advanced search_: `application/x-clarin-fcs-adv+xml`
+--
++
+Sample: `<SupportedDataView id="adv" delivery-policy="send-by-default">application/x-clarin-fcs-adv+xml</SupportedDataView>`
+
+Makes sure capabilities and declared dataviews actually match otherwise it will warn you.
+
+* Supported Layers, checks that `<SupportedLayer>` elements have:
+
+** a proper `@id` attribute and that the value is unique.
+** a proper `@result-id` attribute and that is is encoded as a proper URI, and that the child text node is "text", "lemma", "pos", "orth", "norm", "phonetic", or other value starting with "x-".
+** if a `@alt-value-info-uri` attribute that is encoded as proper URI, e.g. tag description
+** if _advanced search_ is given in capabilities that it is also available.
+
+* Resources, checks that some resources are actually defined, and have:
+
+** a proper `@xml:lang` attribute on its `<Description>` elelement.
+** a child `<LandingPageURI>` element
+** a child `<Language>` element and that is must use ISO-639-3 three letter language codes
+
+
+== Translation library
+
+For the current version of the translation library a mapping for <<ref:UD-POS,UD-17>> to your used word classes for the word class layer is needed. It currently also does <<ref:SAMPA,X-SAMPA>> conversion for the phonetic layer. The mappings are specified in one configuration file, an XML document. This will mostly be 1-to-1, but might require lossy translation either way. To guide you in this we walk through configuration and mapping examples from the reference implemetations.
+
+
+=== Part-of-Speech (PoS)
+
+The PoS translation configuration is expressed in a TranslationTable element with the attributes `@fromResourceLayer`, `@toResourceLayer` and `@translationType`:
+
+[source,xml]
+----
+<!-- ... -->
+<TranslationTable fromResourceLayer="FCSAggregator/PoS" toResourceLayer="Korp/PoS" translationType="replaceWhole">
+<!-- ... -->
+----
+
+`@translationType` is currently a closed set of two values, but could be extended by any definition on how to replace something in to. The values are _replaceWhole_ and _replaceSegments_, but _replaceSegments_ require further defintions of trellis segment translations which will not be 
+addressed by this tutorial.
+
+The values of `@fromResourceLayer` and `@toResourceLayer` only depends on these being declared 
+by `<ResourceLayer>` elements under `/<AnnotationTranslation>/<Resources>`:
+
+[source,xml]
+----
+<ResourceLayer resource="FCSAggregator" layer="phonetic" formalism="X-SAMPA" />
+----
+
+The attributes of `<ResourceLayer>` are `@resource`, `@layer` and `@formalism`. The value of `@layer` is (most easily) the identifier which is used for the layer in the FCS 2.0 specification. `@formalism` is (most easily) the namespace value prefix or an URI. E.g. for PoS this can be _SUC-PoS_ for the 
+already mentionend SUC PoS tagset, _CGN_ or _UD-17_. These tag sets often also includes morphosyntactic descriptions _MSD_ in its original form, but since MSD is not part of the FCS 2.0 specification we are only dealing with the PoS tags here.
+
+Going from UD-17's _VERB_ tag to Stockholm Umeå Corpus (SUC) Part-of-Speech you get two tags 
+VB and PC:
+
+[source,xml]
+----
+      <Pair from="VERB"   to="VB" />
+      <Pair from="VERB"   to="PC" />
+----
+
+Adding the translation of the UD-17 AUX tag which gives VB in SUC-PoS too, but this is a 1-to-1 translation this way.
+
+[source,xml]
+----
+      <Pair from="AUX"    to="VB" />
+----
+
+As you can see from this the precision is varying and could become too bad to be useful going both ways from the <<ref:FCSAggregator>> to the endpoint and then back. For this you can use the available alerting methods given in the FCS 2.0 specification.
+
+With non-1-to-1 translations you need to know how alternatives are expressed in the endpoints query language. This is where the not yet available conversion library would use the translation library adding rule-based knowledge on how to translate to e.g. CQP `[pos = "VB" | pos = "PC"]`.

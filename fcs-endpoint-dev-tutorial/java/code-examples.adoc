@@ -1,0 +1,105 @@
+= Code examples
+
+In this section the most probable classes or methods to override or implement are walked through with code examples from one or more of the reference implementations.
+
+.Extract FCS-QL query from request
+[source,java]
+----
+if (request.isQueryType(Constants.FCS_QUERY_TYPE_FCS)) {
+    /*
+     * Got a FCS query (SRU 2.0).
+     * Translate to a proper Lucene query
+     */
+    final FCSQueryParser.FCSQuery q = request.getQuery(FCSQueryParser.FCSQuery.class);
+    query = makeSpanQueryFromFCS(q);
+}
+----
+
+.Translate FCS-QL query to `SpanTermQuery`
+[source,java]
+----
+private SpanQuery makeSpanQueryFromFCS(FCSQueryParser.FCSQuery query) throws SRUException {
+    QueryNode tree = query.getParsedQuery();
+    logger.debug("FCS-Query: {}", tree.toString());
+    // crude query translator
+    if (tree instanceof QuerySegment) {
+        QuerySegment segment = (QuerySegment) tree;
+        if ((segment.getMinOccurs() == 1) && (segment.getMaxOccurs() == 1)) {
+            QueryNode child = segment.getExpression();
+            if (child instanceof Expression) {
+                Expression expression = (Expression) child;
+                if (expression.getLayerIdentifier().equals("text") &&
+                        (expression.getLayerQualifier() == null) &&
+                        (expression.getOperator() == Operator.EQUALS) &&
+                        (expression.getRegexFlags() == null)) {
+                    return new SpanTermQuery(new Term("text", expression.getRegexValue().toLowerCase()));
+                } else {
+                    throw new SRUException(
+                            Constants.FCS_DIAGNOSTIC_GENERAL_QUERY_TOO_COMPLEX_CANNOT_PERFORM_QUERY,
+                            "Endpoint only supports 'text' layer, the '=' operator and no regex flags");
+                }
+            } else {
+                throw new SRUException(
+                        Constants.FCS_DIAGNOSTIC_GENERAL_QUERY_TOO_COMPLEX_CANNOT_PERFORM_QUERY,
+                        "Endpoint only supports simple expressions");
+            }
+        } else {
+            throw new SRUException(
+                    Constants.FCS_DIAGNOSTIC_GENERAL_QUERY_TOO_COMPLEX_CANNOT_PERFORM_QUERY,
+                    "Endpoint only supports default occurances in segments");
+        }
+    } else {
+        throw new SRUException(
+                Constants.FCS_DIAGNOSTIC_GENERAL_QUERY_TOO_COMPLEX_CANNOT_PERFORM_QUERY,
+                "Endpoint only supports single segment queries");
+    }
+}
+----
+
+.Serialize a single XML record as Data Views
+[source,java]
+----
+@Override
+public void writeRecord(XMLStreamWriter writer) throws XMLStreamException {
+    XMLStreamWriterHelper.writeStartResource(writer, idno, null);
+    XMLStreamWriterHelper.writeStartResourceFragment(writer, null, null);
+    /*
+        * NOTE: use only AdvancedDataViewWriter, even if we are only doing
+        * legacy/simple FCS.
+        * The AdvancedDataViewWriter instance could also be
+        * reused, by calling reset(), if it was used in a smarter fashion.
+        */
+    AdvancedDataViewWriter helper = new AdvancedDataViewWriter(AdvancedDataViewWriter.Unit.ITEM);
+    URI layerId = URI.create("http://endpoint.example.org/Layers/orth1");
+    String[] words;
+    long start = 1;
+    if ((left != null) && !left.isEmpty()) {
+        words = left.split("\\s+");
+        for (int i = 0; i < words.length; i++) {
+            long end = start + words[i].length();
+            helper.addSpan(layerId, start, end, words[i]);
+            start = end + 1;
+        }
+    }
+    words = keyword.split("\\s+");
+    for (int i = 0; i < words.length; i++) {
+        long end = start + words[i].length();
+        helper.addSpan(layerId, start, end, words[i], 1);
+        start = end + 1;
+    }
+    if ((right != null) && !right.isEmpty()) {
+        words = right.split("\\s+");
+        for (int i = 0; i < words.length; i++) {
+            long end = start + words[i].length();
+            helper.addSpan(layerId, start, end, words[i]);
+            start = end + 1;
+        }
+    }
+    helper.writeHitsDataView(writer, layerId);
+    if (advancedFCS) {
+        helper.writeAdvancedDataView(writer);
+    }
+    XMLStreamWriterHelper.writeEndResourceFragment(writer);
+    XMLStreamWriterHelper.writeEndResource(writer);
+}
+----
