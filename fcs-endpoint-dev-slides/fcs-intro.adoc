@@ -1,3 +1,4 @@
+[background-image="fcs-render-uk.png",background-opacity="0.5"]
 = Introducing the Federated Content Search (FCS)
 
 [.notes]
@@ -20,7 +21,7 @@ Also: Federated “Corpus Query Platform”
 * Usage of _established standards_ and _extensibility_!
 
 
-[.left]
+[.text-left]
 == What is included in the FCS?
 
 *Interface Spezification*
@@ -39,7 +40,7 @@ Also: Federated “Corpus Query Platform”
 
 
 ifdef::backend-revealjs[]
-[.left]
+[.text-left]
 == What is included in the FCS? (2)
 endif::[]
 
@@ -308,7 +309,7 @@ endif::[]
 
 
 ifdef::backend-revealjs[]
-[%notitle]
+// [%notitle]
 == Current Work (2)
 endif::[]
 
@@ -339,7 +340,7 @@ endif::[]
 ** Aggregator: https://fcs.text-plus.org/?&queryType=lex[fcs.text-plus.org/?queryType=lex]
 
 
-[.left]
+[.text-left]
 == Current status of participants
 
 *CLARIN* (https://contentsearch.clarin.eu/[contentsearch.clarin.eu], https://centres.clarin.eu/fcs[Registry])
@@ -359,7 +360,7 @@ in 6 Languages
 from 9 Institutions in Germany
 
 
-[.left]
+[.text-left]
 == Integration in FCS Infrastructure
 
 *CLARIN*

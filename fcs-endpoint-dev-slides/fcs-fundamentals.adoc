@@ -1,3 +1,4 @@
+[background-image="fcs-render-uk.png",background-opacity="0.5"]
 = Fundamentals
 
 [.notes]
@@ -8,7 +9,7 @@
 --
 
 
-[.left]
+[.text-left]
 == Disclaimer
 
 Main focus on:
@@ -30,6 +31,7 @@ No:
 (e.g. in other languages)
 
 
+[.text-left]
 == SRU – History
 
 SRU: **Search/Retrieve via URL** → https://www.loc.gov/standards/sru/[LOC]
@@ -131,7 +133,7 @@ For the SRU protocol model, three operations are defined as part of its *Process
 --
 
 
-[.left]
+[.text-left]
 == searchRetrieve – APD Abstract Models
 
 *Data Model* +
@@ -559,5 +561,440 @@ endif::[]
 * http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#Extensions
 --
 
+
+== SRU 2.0 – Backwards Compatibility
+
+[.notes]
+--
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#_Toc324162498
 --
 
+
+== SRU 2.0 – Diagnostics
+
+* “Error handling”
+* Difference between (non-)fatal, (non-)surrogate → <<SRU 2.0 – Diagnostic Model,SRU 2.0 – Diagnostic Model>>
+* Schema: `info:srw/schema/1/diagnostics-v1.1`
++
+Prefix: `info:srw/diagnostic/1/`
+
+** `uri` (ID), `details` (additional information, depending on Diagnostic), message
+
+* Information:
+
+** General information and notes (https://www.loc.gov/standards/sru/diagnostics/[LOC], http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#_Toc324162462[OASIS SRU 2.0])
+** List of Diagnostics (https://www.loc.gov/standards/sru/diagnostics/diagnosticsList.html[LOC], http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#_Toc324162491[OASIS SRU 2.0]) 
+
+* Categories: General (1-9), CQL (10-49), Result Sets (50-60), Records (61-74), Sorting (80-96), Explain (100-102), Stylesheets (110-111), Scan (120-121)
+* Not limited to this list only, custom diagnostics possible
+
+[.notes]
+--
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#_Toc324162462
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#diagnosticsList
+* https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/normative-appendix.adoc#list-of-diagnostics
+--
+
+
+ifdef::backend-revealjs[]
+[.columns]
+== SRU 2.0 – Diagnostics (Table)
+endif::[]
+
+[.column]
+--
+[.xxx-small,%noheader,cols="1,6,6"] 
+|===
+|{set:cellbgcolor:#b16c2b88}1
+|General system error
+|Debugging information (traceback)
+
+|{set:cellbgcolor}2
+2+|System temporarily unavailable
+
+|3
+2+|Authentication error
+
+|4
+2+|Unsupported operation
+
+|5
+|Unsupported version
+|Highest version supported
+
+|6
+|Unsupported parameter value
+|Name of parameter
+
+|7
+|Mandatory parameter not supplied
+|Name of missing parameter
+
+|8
+|Unsupported parameter
+|Name of the unsupported parameter
+
+|9
+2+|Unsupported combination of parameters
+
+|10
+2+|Query syntax error
+
+|23
+|Too many characters in term
+|Length of longest term
+
+|26
+|Non special character escaped in term
+|Character incorrectly escaped
+
+|35
+|Term contains only stopwords
+|Value
+
+|37
+|Unsupported boolean operator
+|Value
+
+|38
+|Too many boolean operators in query
+|Maximum number supported
+
+ifdef::backend-revealjs[]
+|===
+--
+[.column]
+--
+[.xxx-small,%noheader,cols="1,6,6"] 
+|===
+endif::[]
+
+|{set:cellbgcolor:#b16c2b88}47
+2+|Cannot *process* query; reason unknown
+
+|{set:cellbgcolor:#b16c2b88}48
+|Query feature unsupported
+|Feature
+
+|{set:cellbgcolor}60
+|Result set not created: too many matching records
+|Maximum number
+
+|61
+2+|First record position out of range
+
+|64
+2+|Record temporarily unavailable
+
+|65
+2+|Record does not exist
+
+|66
+|Unknown schema for retrieval
+|Schema URI or short name
+
+|67
+|Record not available in this schema
+|Schema URI or short name
+
+|68
+2+|Not authorized to send record
+
+|69
+2+|Not authorized to send record in this schema
+
+|70
+|Record too large to send
+|Maximum record size
+
+|71
+2+|Unsupported recordXMLEscaping value
+
+|80
+2+|Sort not supported
+
+|110
+2+|Stylesheets not supported
+
+|111
+|Unsupported stylesheet
+|URL of stylesheet
+|===
+--
+
+
+== FCS Interface Specification
+
+* Discovery and Search mechanism
+
+== FCS – Discovery
+
+* SRU Explain
+
+[.notes]
+--
+* FCS 2.0 §3 https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/fcs-to-sru-cql-binding.adoc[CLARIN-FCS to SRU/CQL binding]
+--
+
+
+== FCS – Endpoint Description
+
+
+
+ifdef::backend-revealjs[]
+== FCS – Endpoint Description (2)
+endif::[]
+
+* *`<ed:Capability>`*
+
+ifdef::backend-revealjs[]
+== FCS – Endpoint Description (3)
+endif::[]
+
+* *`<ed:SupportedDataView>`*
+
+ifdef::backend-revealjs[]
+== FCS – Endpoint Description (4)
+endif::[]
+
+* *`<ed:SupportedLayer>`*
+ifdef::backend-revealjs[]
+[.small]
+== FCS – Endpoint Description (5)
+endif::[]
+
+* *`<ed:Resource>`*
+
+ifdef::backend-revealjs[]
+[.small]
+== FCS – Endpoint Description (Examples)
+endif::[]
+
+.Minimal Endpoint Description for BASIC Search
+[source,xml]
+----
+<ed:EndpointDescription xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="2">
+  <ed:Capabilities>
+    <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
+  </ed:Capabilities>
+  <ed:SupportedDataViews>
+    <ed:SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</ed:SupportedDataView>
+  </ed:SupportedDataViews>
+  <ed:Resources>
+    <!-- just one top-level resource at the Endpoint -->
+    <ed:Resource pid="http://hdl.handle.net/4711/0815">
+      <ed:Title xml:lang="de">Goethe Korpus</ed:Title>
+      <ed:Title xml:lang="en">Goethe corpus</ed:Title>
+      <ed:Description xml:lang="de">Das Goethe-Korpus des IDS Mannheim.</ed:Description>
+      <ed:Description xml:lang="en">The Goethe corpus of IDS Mannheim.</ed:Description>
+      <ed:LandingPageURI>http://repos.example.org/corpus1.html</ed:LandingPageURI>
+      <ed:Languages>
+        <ed:Language>deu</ed:Language>
+      </ed:Languages>
+      <ed:AvailableDataViews ref="hits" />
+    </ed:Resource>
+  </ed:Resources>
+</ed:EndpointDescription>
+----
+
+
+ifdef::backend-revealjs[]
+[.small]
+== FCS – Endpoint Description (Examples 2)
+endif::[]
+
+.Endpoint Description with CMDI Data View and Sub-Resources
+[source,xml,highlight="7,30,31..43"]
+----
+<ed:EndpointDescription xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="2">
+  <ed:Capabilities>
+    <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
+  </ed:Capabilities>
+  <ed:SupportedDataViews>
+    <ed:SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</ed:SupportedDataView>
+    <ed:SupportedDataView id="cmdi" delivery-policy="need-to-request">application/x-cmdi+xml</ed:SupportedDataView>
+  </ed:SupportedDataViews>
+  <ed:Resources>
+    <!-- top-level resource 1 -->
+    <ed:Resource pid="http://hdl.handle.net/4711/0815">
+      <ed:Title xml:lang="de">Goethe Korpus</ed:Title>
+      <ed:Title xml:lang="en">Goethe corpus</ed:Title>
+      <ed:Description xml:lang="de">Das Goethe-Korpus des IDS Mannheim.</ed:Description>
+      <ed:Description xml:lang="en">The Goethe corpus of IDS Mannheim.</ed:Description>
+      <ed:LandingPageURI>http://repos.example.org/corpus1.html</ed:LandingPageURI>
+      <ed:Languages>
+        <ed:Language>deu</ed:Language>
+      </ed:Languages>
+      <ed:AvailableDataViews ref="hits" />
+    </ed:Resource>
+    <!-- top-level resource 2 -->
+    <ed:Resource pid="http://hdl.handle.net/4711/0816">
+      <ed:Title xml:lang="de">Zeitungskorpus des Mannheimer Morgen</ed:Title>
+      <ed:Title xml:lang="en">Mannheimer Morgen newspaper corpus</ed:Title>
+      <ed:LandingPageURI>http://repos.example.org/corpus2.html</ed:LandingPageURI>
+      <ed:Languages>
+        <ed:Language>deu</ed:Language>
+      </ed:Languages>
+      <ed:AvailableDataViews ref="hits cmdi" />
+      <ed:Resources>
+        <!-- sub-resource 1 of top-level resource 2 -->
+        <ed:Resource pid="http://hdl.handle.net/4711/0816-1">
+          <ed:Title xml:lang="de">Zeitungskorpus des Mannheimer Morgen (vor 1990)</ed:Title>
+          <ed:Title xml:lang="en">Mannheimer Morgen newspaper corpus (before 1990)</ed:Title>
+          <ed:LandingPageURI>http://repos.example.org/corpus2.html#sub1</ed:LandingPageURI>
+          <ed:Languages>
+            <ed:Language>deu</ed:Language>
+          </ed:Languages>
+          <ed:AvailableDataViews ref="hits cmdi" />
+        </ed:Resource>
+        <!-- sub-resource 2 of top-level resource 2 ... -->
+      </ed:Resources>
+    </ed:Resource>
+  </ed:Resources>
+</ed:EndpointDescription>
+----
+
+
+ifdef::backend-revealjs[]
+[.small]
+== FCS – Endpoint Description (Examples 3)
+endif::[]
+
+.Endpoint Description with ADVANCED Search Capability
+[source,xml,highlight="4,8,10..21,34,35"]
+----
+<ed:EndpointDescription xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="2">
+  <ed:Capabilities>
+    <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
+    <ed:Capability>http://clarin.eu/fcs/capability/advanced-search</ed:Capability>
+  </ed:Capabilities>
+  <ed:SupportedDataViews>
+    <ed:SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</ed:SupportedDataView>
+    <ed:SupportedDataView id="adv" delivery-policy="send-by-default">application/x-clarin-fcs-adv+xml</ed:SupportedDataView>
+  </ed:SupportedDataViews>
+  <ed:SupportedLayers>
+    <ed:SupportedLayer id="word" result-id="http://spraakbanken.gu.se/ns/fcs/layer/word">text</ed:SupportedLayer>
+    <ed:SupportedLayer id="orth" result-id="http://endpoint.example.org/Layers/orth" type="empty">orth</ed:SupportedLayer>
+    <ed:SupportedLayer id="lemma" result-id="http://spraakbanken.gu.se/ns/fcs/layer/lemma">lemma</ed:SupportedLayer>
+    <ed:SupportedLayer id="pos" result-id="http://spraakbanken.gu.se/ns/fcs/layer/pos"
+                       alt-value-info="SUC tagset"
+                       alt-value-info-uri="https://spraakbanken.gu.se/parole/Docs/SUC2.0-manual.pdf"
+                       qualifier="suc">pos</ed:SupportedLayer>
+    <ed:SupportedLayer id="pos2" result-id="http://spraakbanken.gu.se/ns/fcs/layer/pos2"
+                       alt-value-info="2nd tagset"
+                       qualifier="t2">pos</ed:SupportedLayer>
+  </ed:SupportedLayers>
+
+  <ed:Resources>
+    <!-- just one top-level resource at the Endpoint -->
+    <ed:Resource pid="hdl:10794/suc">
+      <ed:Title xml:lang="sv">SUC-korpusen</ed:Title>
+      <ed:Title xml:lang="en">The SUC corpus</ed:Title>
+      <ed:Description xml:lang="sv">Stockholm-Umeå-korpusen hos Språkbanken.</ed:Description>
+      <ed:Description xml:lang="en">The Stockholm-Umeå corpus at Språkbanken.</ed:Description>
+      <ed:LandingPageURI>https://spraakbanken.gu.se/resurser/suc</ed:LandingPageURI>
+      <ed:Languages>
+        <ed:Language>swe</ed:Language>
+      </ed:Languages>
+      <ed:AvailableDataViews ref="hits adv" />
+      <ed:AvailableLayers ref="word lemma pos pos2" />
+    </ed:Resource>
+  </ed:Resources>
+</ed:EndpointDescription>
+----
+
+
+== FCS – Search
+
+* SRU SearchRetreive
+* actual “Search”
+
+** *Basic Search* with CQL
+** *Advanced Search* with FCS-QL
+
+* search results are serialized in _Resource (Fragment)_ and in _Data View_ formats
+* implementation details → <<Resources and Data Views,Chapter _Resources and Data Views_>>
+
+
+== FCS – SRU Extension Parameter
+
+* *`x-fcs-endpoint-description`* (explain)
+
+
+* *`x-fcs-context`* (searchRetrieve)
+
+
+* *`x-fcs-dataviews`* (searchRetrieve)
+
+
+* *`x-fcs-rewrites-allowed`* (searchRetrieve)
+
+
+[.notes]
+--
+* https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/normative-appendix.adoc#list-of-extra-request-parameters
+--
+
+
+== FCS – Diagnostics
+
+
+ifdef::backend-revealjs[]
+== FCS – Diagnostics (Table)
+endif::[]
+
+[.xx-small%header,cols="3m,4,1"] 
+|===
+|Identifier URI
+|Description
+|Impact
+
+|{set:cellbgcolor:#b16c2b88}\http://clarin.eu/fcs/diagnostic/1
+|Persistent identifier passed by the Client for restricting the search is invalid.
+|non-fatal
+
+|{set:cellbgcolor}\http://clarin.eu/fcs/diagnostic/2
+|Resource set too large. Query context automatically adjusted.
+|non-fatal
+
+|\http://clarin.eu/fcs/diagnostic/3
+|Resource set too large. Cannot perform Query.
+|fatal
+
+|{set:cellbgcolor:#b16c2b88}\http://clarin.eu/fcs/diagnostic/4
+|Requested Data View not valid for this resource.
+|non-fatal
+
+|{set:cellbgcolor}\http://clarin.eu/fcs/diagnostic/10
+|General query syntax error.
+|fatal
+
+|{set:cellbgcolor:#b16c2b88}\http://clarin.eu/fcs/diagnostic/11
+|Query too complex. Cannot perform Query.
+|fatal
+
+|{set:cellbgcolor}\http://clarin.eu/fcs/diagnostic/12
+|Query was rewritten.
+|non-fatal
+
+|{set:cellbgcolor:#b16c2b88}\http://clarin.eu/fcs/diagnostic/14
+|General processing hint.
+|non-fatal
+|===
+
+[.notes]
+--
+* https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/normative-appendix.adoc#list-of-diagnostics
+--
+
+
+== Versions and Backwards Compatibility
+
+* “Clients MUST be compatible to CLARIN-FCS 1.0” (https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/interface-specification.adoc#backwards-compatibility[Quelle])
+
+
+[.notes]
+--
+* https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/fcs-to-sru-cql-binding.adoc#operation-scan
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part6-scan/searchRetrieve-v1.0-os-part6-scan.html
+--

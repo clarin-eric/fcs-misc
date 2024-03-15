@@ -16,7 +16,7 @@ ifdef::backend-revealjs[]
 endif::[]
 :imagesdir: images
 :customcss: css/presentation.css
-:title-slide-background-image: textplus-fcs.002.png
+:title-slide-background-image: fcs-render-uk.png
 :title-slide-background-opacity: 0.5
 :toclevels: 1
 :icons: font

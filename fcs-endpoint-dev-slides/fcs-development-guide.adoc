@@ -1,3 +1,4 @@
+[background-image="fcs-render-uk.png",background-opacity="0.5"]
 = Guide to endpoint development
 
 [.notes]
@@ -8,7 +9,7 @@
 --
 
 
-[.left]
+[.text-left]
 == Development Decisions
 
 ❓ Can I host the endpoint myself?
@@ -25,7 +26,7 @@
 
 
 ifdef::backend-revealjs[]
-[.left]
+[.text-left]
 == Development Decisions (2)
 endif::[]
 
@@ -87,7 +88,7 @@ endif::[]
 * Awesome List: https://github.com/clarin-eric/awesome-fcs[github.com/clarin-eric/awesome-fcs] 
 
 
-[.left]
+[.text-left]
 == Prerequisite for local search engine
 
 ❗ Full text search
