@@ -63,7 +63,41 @@ docker run --rm -it -v $(pwd):/documents asciidoctor/docker-asciidoctor
 
 * [CLARIN Federated Content Search - FCS **Endpoint Developer's Tutorial**: `fcs-endpoint-dev-tutorial/index.adoc`](fcs-endpoint-dev-tutorial/index.adoc)
 
-For build instructions, see section [Specification Documents "How to build"](#how-to-build).
+  For build instructions, see section [Specification Documents "How to build"](#how-to-build).
+
+* [CLARIN Federated Content Search - FCS **Endpoint Development** Slides: `fcs-endpoint-dev-slides`](fcs-endpoint-dev-slides/index.adoc)
+
+  This is a RevealJS slide deck based on AsciiDoc and needs slightly different build steps. Those are currently only listed in the [GitHub Actions Workflow](.github/workflows/build-fcs-endpoint-dev-slides-adoc.yml). The following are a copy:
+
+  ```bash
+  # Output will be placed in `slides/`
+
+  # Setup "dependencies"
+  git clone -b 4.1.2 --depth 1 https://github.com/hakimel/reveal.js.git
+  mkdir -p slides/reveal.js
+  mv reveal.js/dist slides/reveal.js/
+  mv reveal.js/plugin slides/reveal.js/
+  rm -rf reveal.js/
+
+  git clone -b 10.7.3 --depth 1 https://github.com/highlightjs/highlight.js.git
+  mv highlight.js/src/styles/github.css slides/reveal.js/plugin/highlight/
+  mv highlight.js/src/styles/idea.css slides/reveal.js/plugin/highlight/
+  mv highlight.js/src/styles/magula.css slides/reveal.js/plugin/highlight/
+  rm -rf highlight.js/
+
+  # Build Slides
+  asciidoctor-revealjs -v -D slides fcs-endpoint-dev-slides/index.adoc
+
+  # Copy images/styles/...
+  cp -R -v fcs-endpoint-dev-slides/images slides/
+  cp -R -v fcs-endpoint-dev-slides/css slides/
+  cp -R -v fcs-endpoint-dev-slides/js slides/
+
+  # Display slides, visit "localhost:8000"
+  cd slides/
+  python3 -m http.server 8000
+  # or simply open the "index.html"
+  ```
 
 ## Historical Resources
 

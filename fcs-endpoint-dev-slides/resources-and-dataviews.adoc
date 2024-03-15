@@ -1,0 +1,130 @@
+[background-image="fcs-render-uk.png",background-opacity="0.5"]
+= Resources and Data Views
+
+[.notes]
+--
+* Endpoint Capabilities, BASIC/ADVANCED Search, FCS-QL
+* Resource, Resource Fragment, Data View (Hits, Advanced)
+* Result serialization, query languages
+--
+
+
+[.text-left]
+== Endpoint Description – Capabilities
+
+*\http://clarin.eu/fcs/capability/basic-search*
+
+* Mandatory
+* DataView: HITS
+
+[.mt-5]
+*\http://clarin.eu/fcs/capability/advanced-search*
+
+* Optional
+* DataView: HITS and Advanced
+
+
+ifdef::backend-revealjs[]
+== Endpoint Description – Capabilities (2)
+endif::[]
+
+
+
+[.text-left]
+== BASIC Search
+
+[.position-absolute.right--30.width-50.opacity-50,x86asm]
+----
+cat
+"cat"
+cat AND dog
+"grumpy cat"
+"grumpy cat" AND dog
+"grumpy cat" OR "lazy dog"
+cat AND (mouse OR "lazy dog")
+----
+
+*``\http://clarin.eu/fcs/capability/basic-search``*
+
+
+[.text-left]
+== ADVANCED Search
+
+[.position-absolute.right--30.width-50.opacity-50,x86asm]
+----
+"walking"
+[token = "walking"]
+"Dog" /c
+[word = "Dog" /c]
+[pos = "NOUN"]
+[pos != "NOUN"]
+[lemma = "walk"]
+"blaue|grüne" [pos = "NOUN"]
+"dogs" []{3,} "cats" within s
+[z:pos = "ADJ"]
+[z:pos = "ADJ" & q:pos = "ADJ"]
+----
+
+
+*``\http://clarin.eu/fcs/capability/advanced-search``*
+
+
+== FCS-QL
+
+
+
+== FCS-QL – Notes
+
+
+
+== FCS-QL – Layer Types
+
+// ._Advanced Search_ Layer types with description and examples
+[.x-small%header,cols="1m,5,1,3"]
+|===
+|{set:cellbgcolor}Layer Type Identifier
+|Annotation Layer Description
+|Syntax
+|Examples (without quotes)
+
+|text
+|Textual representation of resource, also the layer that is used in Basic Search
+|String
+|"Dog", "cat" "walking", "better"
+
+|lemma
+|Lemmatisation
+|String
+|"good", "walk", "dog"
+
+|pos
+|Part-of-Speech annotations
+|<<ref:UD-POS,Universal POS>> tags
+|"NOUN", "VERB", "ADJ"
+
+|orth
+|Orthographic transcription of (mostly) spoken resources
+|String
+|"dug", "cat", "wolking"
+
+|norm
+|Orthographic normalization of (mostly) spoken resources
+|String
+|"dog", "cat", "walking", "best"
+
+|phonetic
+|Phonetic transcription
+|<<ref:SAMPA,SAMPA>>
+|"'du:", "'vi:-d6 'ha:-b@n" 
+|===
+
+[.refs.xx-small]
+--
+* [[ref:UD-POS]]Universal Dependencies, https://universaldependencies.github.io/u/pos/index.html[Universal POS tags v2.0]
+* [[ref:SAMPA]]Dafydd Gibbon, Inge Mertins, Roger Moore (Eds.): Handbook of Multimodal and Spoken Language Systems. Resources, Terminology and Product Evaluation, Kluwer Academic Publishers, Boston MA, 2000, ISBN 0-7923-7904-7
+--
+
+
+== FCS-QL – Layer Type Identifier
+
+
