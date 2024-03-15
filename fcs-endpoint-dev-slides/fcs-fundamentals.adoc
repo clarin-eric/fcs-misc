@@ -564,6 +564,20 @@ endif::[]
 
 == SRU 2.0 – Backwards Compatibility
 
+* Parameters “`operation`” and “`version`” only in SRU 1.1/SRU 1.2, removed in SRU 2.0 → Assumption of a separate endpoint for each SRU version  
+* Heuristic for detecting the SRU version
+
+** `searchRetrieve` = `query` or `queryType` parameter
+** `scan` = `scanClause` parameter
+** `explain`
+
+* Interoperability with older versions:
+
+** Use of `operation`/`version` parameters → SRU < 2.0
+** Caution with parameters with changed semantics
++
+especially `recordPacking`
+
 [.notes]
 --
 * http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#_Toc324162498
@@ -725,11 +739,36 @@ endif::[]
 
 == FCS Interface Specification
 
+[.position-absolute.right-0.width-50]
+image::FCS_architecture.png[FCS Architecture]
+
+[.pt-5]
+* FCS = Description of capabilities, +
+Extensions according to SRU +
+and operations
++
+→ Use of SRU/CQL and +
+Erweiterungen nach SRU
+* Interface specification = formats and transport protocol
+
+** Endpoint = bridge between client (FCS formats) and local search engine
+** Client = user interface, query input and result presentation
+
 * Discovery and Search mechanism
 
 == FCS – Discovery
 
 * SRU Explain
+** _Help and information for the client on accessing, requesting and processing results from the server_
+
+* Information about endpoint
++
+--
+** Capabilities: Basic Search, Advanced Search?
+** Resources for search
+--
++
+→ Endpoint Description (XML) via _explain SRU Operation_
 
 [.notes]
 --
@@ -739,6 +778,13 @@ endif::[]
 
 == FCS – Endpoint Description
 
+* XML according to the schema https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/attachments/Endpoint-Description.xsd[Endpoint-Description.xsd] 
+* *`<ed:EndpointDescription>`*
+** [.blue]`@version` mit “`2`”
+** [.blue]`<ed:Capabilities>` (1)
+** [.blue]`<ed:SupportedDataViews>` (1)
+** [.blue]`<ed:SupportedLayers>` (1) (if Advanced Search Capability)
+** [.blue]`<ed:Resources>` (1)
 
 
 ifdef::backend-revealjs[]
@@ -746,24 +792,53 @@ ifdef::backend-revealjs[]
 endif::[]
 
 * *`<ed:Capability>`*
+** Content: Capability Identifier, URI
+*** `\http://clarin.eu/fcs/capability/basic-search`
+*** `\http://clarin.eu/fcs/capability/advanced-search`
+
 
 ifdef::backend-revealjs[]
 == FCS – Endpoint Description (3)
 endif::[]
 
 * *`<ed:SupportedDataView>`*
+** Content: MIME type, e.g. `application/x-clarin-fcs-hits+xml`
+** [.blue]`@id` → for referencing in `<ed:Resource>`
+** [.blue]`@delivery-policy`: `send-by-default` / `need-to-request`
+** no duplicates (based on MIME type) allowed
+
 
 ifdef::backend-revealjs[]
 == FCS – Endpoint Description (4)
 endif::[]
 
 * *`<ed:SupportedLayer>`*
+** (only for Advanced Search)
+** Content: Layer Identifier, e.g. “`orth`”
+** [.blue]`@id` → for referencing in `<ed:Resource>`
+** [.blue]`@result-id` → Referencing the layer in the Advanced Data View
+** [.blue]`@qualifier` → Identifier in FCS-QL Search Term for the layer
+** [.blue]`@alt-value-info`,[.blue]` @alt-value-info-uri`: short description of the layer, e.g. for tagset, + URL with further information
+** no duplicates allowed based on `@result-id` MIME type
+
+
 ifdef::backend-revealjs[]
 [.small]
 == FCS – Endpoint Description (5)
 endif::[]
 
 * *`<ed:Resource>`*
+** [.blue]`@pid`: Persistent Identifier (e.g. `MdSelfLink` from CMDI Record)
+** [.blue]`<ed:Title>` (1+) with `@xml:lang`, no duplicates, English required
+** [.blue]`<ed:Description>` (0+) with `@xml:lang`, English required, should be at most 1 sentence
+** [.blue]`<ed:Institution>` (0+) with `@xml:lang`, English required
+** [.blue]`<ed:LandingPageURI>` (0/1) – link to the website of the resource (or institution) with more information 
+** [.blue]`<ed:Languages>` (1) with `<ed:Language>` content according to ISO 639-3 language codes
+** [.blue]`<ed:AvailableDataViews>` (1) with `@ref` = list of IDs of the `<ed:SupportedDataView>` elements, e.g. “`hits adv`”
+** [.blue]`<ed:AvailableLayers>` (1) (if Advanced Search Capability), with `@ref` = list of IDs of the `<ed:SupportedLayer>` elements, e.g. “`word lemma pos`”
+** [.blue]`<ed:Resources>` (0/1) for sub resources
+** for `<ed:AvailableDataViews>` and `<ed:AvailableLayers>` sub-resources should support the same lists, a new declaration is still required
+
 
 ifdef::backend-revealjs[]
 [.small]
@@ -920,15 +995,21 @@ endif::[]
 
 * *`x-fcs-endpoint-description`* (explain)
 
+** “`true`” - `<sru:extraResponseData>` of the Explain Response contains the Endpoint Description document
 
 * *`x-fcs-context`* (searchRetrieve)
 
+** Comma-separated list of PIDs
+** Restrict the search to resources identified by these PIDs
 
 * *`x-fcs-dataviews`* (searchRetrieve)
 
+** Comma-separated list of Data View identifiers
+** Endpoints should also deliver these _``need-to-request``_ Data Views if requested
 
 * *`x-fcs-rewrites-allowed`* (searchRetrieve)
 
+** “`true`” - Endpoint can simplify query for higher recall
 
 [.notes]
 --
@@ -937,6 +1018,10 @@ endif::[]
 
 
 == FCS – Diagnostics
+
+* Complements to the SRU Diagnostics → <<SRU 2.0 – Diagnostics,SRU 2.0 – Diagnostics>>
+* Prefix: `\http://clarin.eu/fcs/diagnostic/`
+* Refer to the <<FCS – SRU Extension Parameter,Extra Request Parameters>>
 
 
 ifdef::backend-revealjs[]
@@ -992,6 +1077,51 @@ endif::[]
 
 * “Clients MUST be compatible to CLARIN-FCS 1.0” (https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/interface-specification.adoc#backwards-compatibility[Quelle])
 
+** thus implementation of SRU 1.2 still required (?)
+** Restriction to _Basic Search_ Capability
+** Processing of legacy XML namespaces (SRU Response, Diagnostics)
+
+* *Heuristic for version detection* (of endpoints)
+
+** Client: `Explain` request without `version` and `operation` parameters
+** Endpoint: SRU Response `<sru:explainResponse>`/`<sru:version>` with default SRU version
+
+* Versions
+
+** FCS 2.0 ↔ SRU 2.0
+** FCS 1.0 ↔ SRU 1.2 (SRU 1.1)
+
+[.notes]
+--
+* https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/interface-specification.adoc#versioning-and-extensions
+--
+
+
+== Notes on FCS SRU Aggregator
+
+* currently no (?) support for FCS 2.0 only endpoints
++
+--
+** for compatibility reasons support of _Legacy FCS_ and _FCS 1.0_
+** Assumption that endpoints in _FCS 2.0_ also support earlier FCS Versions… [.lightgrey]+pass:q[_(no issue with CLARIN SRU/FCS libraries)_]+
+--
++
+→ _FCS 2.0 only_ endpoints _may_ therefore still receive  _FCS 1.0 (SRU 1.2)_ requests!
+
+* Aggregator sends `searchRetrieve` requests with only one resource PID in the `x-fcs-context` parameter for each resource requested
+
+** i.e. search across `N` resources of an endpoint → `N` separate search queries
+
+
+[.hidden]
+== Note on Scan Operation
+
+* Usage _only_ in Legacy FCS,
++
+originally for listing the available resources
+
+* Reserved for possible future use
+* Please ignore!
 
 [.notes]
 --

@@ -1,0 +1,100 @@
+[background-image="fcs-render-uk.png",background-opacity="0.5"]
+= FCS Endpoint Development
+
+[.notes]
+--
+* VSCode settings, kickstart a project
+* Minimal FCS endpoint, search engine connection, result serialization
+* Deployment, Embedding, Extensibility
+--
+
+
+[.small]
+== Visual Studio Code _(suggestion)_
+
+[.position-absolute.right--10.width-20.zindex--1]
+image::vscode-logo.png[CQL-JS Demo]
+
+* Download & Installation: https://code.visualstudio.com/[code.visualstudio.com]
+* Extensions:
+
+** *Java*
+*** https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack[vscjava.vscode-java-pack]
+*** https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml[redhat.vscode-xml] (optional)
+
+** *Python*
+*** https://marketplace.visualstudio.com/items?itemName=ms-python.python[ms-python.python]
+*** https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance[ms-python.vscode-pylance], https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter[ms-python.black-formatter] (optional)
+
+** *Quality of Life*
+*** https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens[eamodio.gitlens]
+*** https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack[ms-vscode-remote.vscode-remote-extensionpack], https://marketplace.visualstudio.com/items?itemName=ms-vscode.remote-explorer[ms-vscode.remote-explorer] (for WSL or remote via SSH)
+
+[.notes]
+--
+* QoL = Quality of Life
+--
+
+
+== Visual Studio Code – Debugging (Java)
+
+* for `*.war`/Jetty web application testing
+* No hot code swapping / do not make any changes between compilation and debugging!
+
+* VSCode Debug Setting:
+** _Run and Debug > Add Configuration … > “Java: Attach by Process ID”_
+
+* Run application with Maven:
++
+[.code-width-full,bash]
+----
+MAVEN_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -agentlib:jdwp=transport=dt_socket,server=y,address=5005" \
+    mvn [jetty:run-war|...]
+----
+
+
+[.columns]
+== Visual Studio Code – Debugging (Python)
+
+[.column]
+--
+* `launch.json`
+
+** *pytest*: no predefined configuration in “Run and Debug” menu
+** file/module: as required
+
+* `settings.json`
+
+** *pytest*: coverage must be deactivated here!
+--
+[.column]
+--
+[source,json]
+----
+{
+    "name": "Python: pytest",
+    "type": "python",
+    "request": "launch",
+    "console": "integratedTerminal",
+    "purpose": [
+        "debug-test"
+    ],
+    "justMyCode": false
+}
+----
+[source,json]
+----
+"python.testing.pytestArgs": [
+    ".",
+    // disable coverage for debugging
+    "--no-cov",
+    // disable ansi color output (-vv)
+    "-q",
+],
+----
+--
+
+
+== Kickstart FCS Endpoint Project
+
+[.notes]
