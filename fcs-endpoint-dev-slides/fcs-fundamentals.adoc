@@ -36,13 +36,13 @@ No:
 
 SRU: **Search/Retrieve via URL** → https://www.loc.gov/standards/sru/[LOC]
 
-* originally developed by the _Library of Congress (LOC)_
+* Originally developed by the _Library of Congress (LOC)_
 +
 2004: *SRU 1.1* - https://www.loc.gov/standards/sru/sru-1-1.html[LOC]
 +
 2007: *SRU 1.2* - https://www.loc.gov/standards/sru/sru-1-2.html[LOC]
 
-* as of SRU 2.0 standardized by _OASIS_ footnote:[OASIS: Organization for the Advancement of Structured Information Standards] as _“searchRetrieve Version 1.0 OASIS Standard”_
+* As of SRU 2.0 standardized by _OASIS_ footnote:[OASIS: Organization for the Advancement of Structured Information Standards] as _“searchRetrieve Version 1.0 OASIS Standard”_
 +
 2013: SRU 2.0 - https://www.loc.gov/standards/sru/sru-2-0.html[LOC], http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part0-overview/searchRetrieve-v1.0-os-part0-overview.html[OASIS] (https://www.oasis-open.org/news/announcements/searchretrieve-version-1-0-oasis-standard-published/[OASIS Announcement])
 +
@@ -115,12 +115,12 @@ For the SRU protocol model, three operations are defined as part of its *Process
 * *Abstract Protocol Definition (APD)* für _“searchRetrieve operation”_
 
 ** Model for _SearchRetrieve Operation_
-** describes _Capabilities_ and  _General Characteristics_ of a Server or Search Engine, as well as how access should take place
-** defines abstract Request parameters and Response elements
+** Describes _Capabilities_ and  _General Characteristics_ of a Server or Search Engine, as well as how access should take place
+** Defines abstract Request parameters and Response elements
 
 * *Binding*
 
-** describes corresponding names of the parameters and elements
+** Describes corresponding names of the parameters and elements
 ** _static_ (for human), _dynamic_ (for machine), …
 ** Bindings: SRU 1.2, *SRU 2.0*, (OpenSearch)
 ** Examples: “startPosition” (APD) → “startRecord” (SRU 2.0)
@@ -197,8 +197,8 @@ Description, for the discovery of the “Search Service”, self-description of 
 * *HTTP POST*
 
 ** `application/x-www-form-urlencoded`
-** no character encoding necessary
-** no length restriction
+** No character encoding necessary
+** No length restriction
 
 * [.darkgrey]+HTTP SOAP (?)+
 
@@ -225,7 +225,7 @@ image::sru-protocol-model.gif[SRU Protocol,float=right]
 
 == SRU 2.0 – Query Model
 
-* any “appropriate query language” can be used
+* Any “appropriate query language” can be used
 * Mandatory support of
 +
 “Contextual Query Language” (CQL)
@@ -251,9 +251,9 @@ image::sru-protocol-model.gif[SRU Protocol,float=right]
 
 * for Client:
 
-** set of abstract Records, counting starts with `1`
-** each record _can_ be requested in its own format
-** individual records can _“disappear”_, no reordering in the Result Set by the Server, but Diagnostic to inform
+** Set of abstract Records, counting starts with `1`
+** Each record _can_ be requested in its own format
+** Individual records can _“disappear”_, no reordering in the Result Set by the Server, but Diagnostic to inform
 
 
 [.small]
@@ -275,35 +275,35 @@ image::sru-protocol-model.gif[SRU Protocol,float=right]
 --
 *surrogate*
 --
-*** for single Records
+*** For single Records
 
 ** *non-surrogate*
-*** all records are available, but something went wrong, e.g. sorting
-*** or simply a warning
+*** All records are available, but something went wrong, e.g. sorting
+*** Or simply a warning
 
 
 == SRU 2.0 – Explain Model
 
-* must be available for HTTP GET via the *base URL* of the SRU server
+* Must be available for HTTP GET via the *base URL* of the SRU server
 * → Server Capabilities
-* in the client for self-configuration and to provide the corresponding user interface
+* In the client for self-configuration and to provide the corresponding user interface
 * Details on supported Query Types, CQL Context Sets, Diagnostic Sets, Records Schemas, Sorting options, defaults, …
 
 
 == SRU 2.0 – Serialization Model
 
-* no restriction on the serialization of responses
+* No restriction on the serialization of responses
 +
 (for the entire message or single records)
 
-* non-XML serialization is allowed
+* Non-XML serialization is allowed
 
 
 == searchRetrieve 2.0 – Request Parameter
 
-* all parameters are optional, non-repeatable
+* All parameters are optional, non-repeatable
 * [.blue]+pass:q[*query*, *startRecord*, *maximumRecords*, recordXMLEscaping, recordSchema, resultSetTTL, stylesheet; Extension parameters]+
-* new in 2.0: [.blue]+pass:q[*queryType*, sortKeys, renderedBy, httpAccept, responseType, recordPacking; Facet  Parameters]+
+* New in 2.0: [.blue]+pass:q[*queryType*, sortKeys, renderedBy, httpAccept, responseType, recordPacking; Facet  Parameters]+
 
 [.mt-5]
 * Spec: “link:http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#_Toc324162435[Actual Request Parameters for this Binding]”
@@ -311,9 +311,9 @@ image::sru-protocol-model.gif[SRU Protocol,float=right]
 
 == searchRetrieve 2.0 – Response Elements
 
-* all elements are optional, non-repeatable by default
+* All elements are optional, non-repeatable by default
 * [.blue]+pass:q[*numberOfRecords*, resultSetId, *records*, *nextRecordPosition*, echoedSearchRetrieveRequest, *diagnostics*, extraResponseDataⓇ]+
-* new in 2.0: [.blue]+pass:q[resultSetTTL, resultCountPrecisionⓇ, facetedResultsⓇ, searchResultAnalysisⓇ]+
+* New in 2.0: [.blue]+pass:q[resultSetTTL, resultCountPrecisionⓇ, facetedResultsⓇ, searchResultAnalysisⓇ]+
 +
 (Ⓡ = repeatable)
 
@@ -367,11 +367,11 @@ image::sru-protocol-model.gif[SRU Protocol,float=right]
 * Query for result range of _``startRecord``_ with maximum _``maximumRecords``_
 * *`startRecord`* (Parameter)
 
-** optional, positive integer, starting with `1`
+** Optional, positive integer, starting with `1`
 
 * *`maximumRecords`* (Parameter)
 
-** optional, non-negative integer
+** Optional, non-negative integer
 ** Server selects default if not specified
 ** Server can respond with fewer records, never more
 
@@ -384,25 +384,25 @@ endif::[]
 * *`numberOfRecords`* (Element)
 
 ** Number of results in the Result Set
-** if query fails, it must be “`0`”
+** If query fails, it must be “`0`”
 
 * *`nextRecordPosition`* (Element)
 
 ** Counter for next result set, if last record in the response is not last in the result set
-** if no further records, then this element must not appear
+** If no further records, then this element must not appear
 
 
 == searchRetrieve 2.0 – Result Set
 
 * *`resultSetId`* (Element)
 
-** optional, identifier for the Result Set, for referencing in the subsequent requests
+** Optional, identifier for the Result Set, for referencing in the subsequent requests
 
 * *`resultSetTTL`* (Parameter / Element, Element in SRU 2.0 only)
 
-** optional, in seconds
-** in request from Client when Result Set is no longer used
-** in response from Server, how long Result Set is available (“good-faith estimate”, → can be longer or shorter)
+** Optional, in seconds
+** In request from Client when Result Set is no longer used
+** In response from Server, how long Result Set is available (“good-faith estimate”, → can be longer or shorter)
 
 * *`resultCountPrecision`* (Element, SRU 2.0)
 
@@ -421,30 +421,30 @@ image::fcs-sru-results-xml.png[Response XML for CQL search for "cat"]
 
 * https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=cat&startRecord=300&maximumRecords=10[pass:q[spraakbanken.gu.se/…/sru?query=cat&*startRecord=300*&*maximumRecords=10*]]
 +
-→ more from 310
+→ More from 310
 
 * https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=cat&startRecord=10000&maximumRecords=10[pass:q[spraakbanken.gu.se/…/sru?query=cat&*startRecord=10000*&maximumRecords=10]]
 +
-→ error, because “out of range”
+→ Error, because “out of range”
 
 * https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=catsss[pass:q[spraakbanken.gu.se/…/sru?*query=catsss*]]
 +
-→ no results
+→ No results
 
 * https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=cat&maximumRecords=100000[pass:q[spraakbanken.gu.se/…/sru?query=cat&*maximumRecords=100000*]]
 +
-→ restricted to 1000 Records
+→ Restricted to 1000 Records
 
 
 == searchRetrieve 2.0 – Serialization
 
 * *`recordXMLEscaping`* (Parameter, SRU 2.0)
 
-** if records are serialized as XML, “`string`” of the Records can be escaped (“`<`”, “`>`”, “`&`”); default is “`xml`” as direct embedding of the Records in the Response, e.g. for Stylesheets
+** If records are serialized as XML, “`string`” of the Records can be escaped (“`<`”, “`>`”, “`&`”); default is “`xml`” as direct embedding of the Records in the Response, e.g. for Stylesheets
 
 * *`recordPacking`* (Parameter, SRU 2.0)
 
-** in SRU 1.2 used to have the semantic of `recordXMLEscaping`
+** In SRU 1.2 used to have the semantic of `recordXMLEscaping`
 ** “`packed`” (default), Server should deliver Records with requested schema; “`unpacked`”, Server can determine the location of the application data in the Records itself (?)
 
 // NOTE: hint, in Java impl some errors still
@@ -489,8 +489,8 @@ Schema for Response (in combination with `httpAccept` parameter)
 
 * *`records`* (Element)
 
-** contains Records / Surrogate Diagnostics
-** according to http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#sruplusxml[default Schema] a list of “`<record>`” elements
+** Contains Records / Surrogate Diagnostics
+** According to http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#sruplusxml[default Schema] a list of “`<record>`” elements
 
 [.notes]
 --
@@ -508,7 +508,7 @@ endif::[]
 
 ** *`renderedBy`* (Parameter, SRU 2.0)
 
-** where is stylesheet for Response rendered
+** Where is stylesheet for Response rendered
 ** “`client`” (default), URL of _``stylesheet``_ parameter is simply echoed → “thin client” (in Web Browser)
 ** {empty}
 +
@@ -524,7 +524,7 @@ endif::[]
 
 * https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=cat&recordXMLEscaping=string[pass:q[spraakbanken.gu.se/…/sru?query=cat&*recordXMLEscaping=string*]]
 +
-→ possible serialization error in Java library
+→ Possible serialization error in Java library
 
 * https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?operation=searchRetrieve&version=1.2&query=cat&version=1.2&recordPacking=string[pass:q[spraakbanken.gu.se/…/sru?*operation=searchRetrieve*&version=1.2&query=cat&*version=1.2*&*recordPacking=string*]]
 +
@@ -532,7 +532,7 @@ endif::[]
 
 * https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=cat&recordPacking=unpacked[pass:q[spraakbanken.gu.se/…/sru?query=cat&*recordPacking=unpacked*]]
 +
-→ no noticeable change here
+→ No noticeable change here
 
 * …
 
@@ -554,7 +554,7 @@ endif::[]
 
 ** Server can ignore the request, no obligation
 
-* unknown extension parameters are to be ignored
+* Unknown extension parameters are to be ignored
 
 [.notes]
 --
@@ -805,7 +805,7 @@ endif::[]
 ** Content: MIME type, e.g. `application/x-clarin-fcs-hits+xml`
 ** [.blue]`@id` → for referencing in `<ed:Resource>`
 ** [.blue]`@delivery-policy`: `send-by-default` / `need-to-request`
-** no duplicates (based on MIME type) allowed
+** No duplicates (based on MIME type) allowed
 
 
 ifdef::backend-revealjs[]
@@ -819,7 +819,7 @@ endif::[]
 ** [.blue]`@result-id` → Referencing the layer in the Advanced Data View
 ** [.blue]`@qualifier` → Identifier in FCS-QL Search Term for the layer
 ** [.blue]`@alt-value-info`,[.blue]` @alt-value-info-uri`: short description of the layer, e.g. for tagset, + URL with further information
-** no duplicates allowed based on `@result-id` MIME type
+** No duplicates allowed based on `@result-id` MIME type
 
 
 ifdef::backend-revealjs[]
@@ -837,7 +837,7 @@ endif::[]
 ** [.blue]`<ed:AvailableDataViews>` (1) with `@ref` = list of IDs of the `<ed:SupportedDataView>` elements, e.g. “`hits adv`”
 ** [.blue]`<ed:AvailableLayers>` (1) (if Advanced Search Capability), with `@ref` = list of IDs of the `<ed:SupportedLayer>` elements, e.g. “`word lemma pos`”
 ** [.blue]`<ed:Resources>` (0/1) for sub resources
-** for `<ed:AvailableDataViews>` and `<ed:AvailableLayers>` sub-resources should support the same lists, a new declaration is still required
+** For `<ed:AvailableDataViews>` and `<ed:AvailableLayers>` sub-resources should support the same lists, a new declaration is still required
 
 
 ifdef::backend-revealjs[]
@@ -982,13 +982,13 @@ endif::[]
 == FCS – Search
 
 * SRU SearchRetreive
-* actual “Search”
+* Actual “Search”
 
 ** *Basic Search* with CQL
 ** *Advanced Search* with FCS-QL
 
-* search results are serialized in _Resource (Fragment)_ and in _Data View_ formats
-* implementation details → <<Resources and Data Views,Chapter _Resources and Data Views_>>
+* Search results are serialized in _Resource (Fragment)_ and in _Data View_ formats
+* Implementation details → <<Resources and Data Views,Chapter _Resources and Data Views_>>
 
 
 == FCS – SRU Extension Parameter
@@ -1077,7 +1077,7 @@ endif::[]
 
 * “Clients MUST be compatible to CLARIN-FCS 1.0” (https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/interface-specification.adoc#backwards-compatibility[Quelle])
 
-** thus implementation of SRU 1.2 still required (?)
+** Thus implementation of SRU 1.2 still required (?)
 ** Restriction to _Basic Search_ Capability
 ** Processing of legacy XML namespaces (SRU Response, Diagnostics)
 
@@ -1099,10 +1099,10 @@ endif::[]
 
 == Notes on FCS SRU Aggregator
 
-* currently no (?) support for FCS 2.0 only endpoints
+* Currently no (?) support for FCS 2.0 only endpoints
 +
 --
-** for compatibility reasons support of _Legacy FCS_ and _FCS 1.0_
+** For compatibility reasons support of _Legacy FCS_ and _FCS 1.0_
 ** Assumption that endpoints in _FCS 2.0_ also support earlier FCS Versions… [.lightgrey]+pass:q[_(no issue with CLARIN SRU/FCS libraries)_]+
 --
 +

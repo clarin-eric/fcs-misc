@@ -340,10 +340,10 @@ endif::[]
 
 
 ifdef::backend-revealjs[]
-== Current status regarding **Lexical Resources**
+== Current status regarding **Lexical Resources** (2)
 endif::[]
 
-* * First specification and implementation in Text+
+* First specification and implementation in Text+
 ** Specification on Zenodo: https://zenodo.org/records/7849754[zenodo.org/records/7849754]
 ** Presentation at eLex 2023: https://elex.link/elex2023/wp-content/uploads/69.pdf[“A Federated Search and Retrieval Platform for Lexical Resources in Text+ and CLARIN”]
 ** Aggregator: https://fcs.text-plus.org/?&queryType=lex[fcs.text-plus.org/?queryType=lex]
@@ -377,7 +377,7 @@ from 9 Institutions in Germany
 * Alpha/Beta using Side-Loading in Aggregator
 * Stable/Long-Term: Entry in Centre Registry
 ** CLARIN Account + https://www.clarin.eu/webform/registration-form-centre-registry[Formular] as a Centre
-** including monitoring etc.
+** Including monitoring etc.
 
 *Text+*
 

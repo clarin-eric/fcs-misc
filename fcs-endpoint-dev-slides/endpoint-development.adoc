@@ -38,7 +38,7 @@ image::vscode-logo.png[CQL-JS Demo]
 
 == Visual Studio Code – Debugging (Java)
 
-* for `*.war`/Jetty web application testing
+* For `*.war`/Jetty web application testing
 * No hot code swapping / do not make any changes between compilation and debugging!
 
 * VSCode Debug Setting:

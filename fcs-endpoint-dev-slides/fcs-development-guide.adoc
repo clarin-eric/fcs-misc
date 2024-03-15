@@ -93,7 +93,7 @@ endif::[]
 
 ❗ Full text search
 [.ms-5]
-❓ with Hit markers
+❓ With Hit markers
 [.mb-5]
 ❓ Corpus search (segmented text with annotations)
 
