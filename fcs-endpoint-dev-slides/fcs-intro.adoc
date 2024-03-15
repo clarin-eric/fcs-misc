@@ -236,14 +236,23 @@ s|fast
 
 == Explain: Resource Discovery
 
+image::epdesc-components.png[Endpoint Description]
 
 
 == Explain: Resource Discovery (2)
 
+image::epdesc-components-extensible.png[Endpoint Description, extensible]
 
 
+//[background-image="epdesc-sub-resources-sprakbanken.png",background-size="contain"]
 == Explain: Resource Structure
 
+image::epdesc-sub-resources-sprakbanken.png[Endpoint Description, Resource structure]
+
+[.notes]
+--
+* Source: https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?operation=explain&version=1.2&x-fcs-endpoint-description=true
+--
 
 
 == Query Language FCS-QL
