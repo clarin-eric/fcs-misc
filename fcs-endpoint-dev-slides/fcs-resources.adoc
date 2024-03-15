@@ -1,0 +1,26 @@
+[background-image="fcs-render-uk.png",background-opacity="0.5"]
+= Resources
+
+== Links
+
+* Comprehensive collections of FCS related links: +
+https://github.com/clarin-eric/awesome-fcs[github.com/clarin-eric/awesome-fcs], +
+https://gitlab.gwdg.de/textplus/ag-fcs-documents/-/blob/main/awesome-fcs.md[gitlab.gwdg.de/textplus/ag-fcs-documents/-/blob/main/awesome-fcs.md]
+
+* CLARIN overview page: +
+https://www.clarin.eu/content/federated-content-search-clarin-fcs-technical-details[www.clarin.eu/content/federated-content-search-clarin-fcs-technical-details]
+
+* CLARIN Code Github/Gitlab: +
+https://github.com/clarin-eric/?q=fcs[github.com/clarin-eric/?q=fcs], +
+https://gitlab.com/CLARIN-ERIC/?filter=fcs[gitlab.com/CLARIN-ERIC/?filter=fcs], +
+https://github.com/clarin-eric/fcs-misc/[github.com/clarin-eric/fcs-misc/] (specs, docs, etc.)
+
+== Publications
+
+* as part of Text+ → see https://www.zotero.org/groups/4533881/textplus/tags/FCS/library[Zotero.org] tagged “FCS”
+* Listing in https://gitlab.gwdg.de/textplus/ag-fcs-documents/-/blob/main/awesome-fcs.md?ref_type=heads#publications[Text+ Awesome FCS] list
+* in the context of CLARIN? → no dedicated bibliography
+
+** CLARIN Federated Content Search (CLARIN-FCS) – Core Specification, 2014, Oliver Schonefeld et al.
+** Federated Search: Towards a Common Search Infrastructure, 2012, Herman Stehouwer et al.
+** several workshops
