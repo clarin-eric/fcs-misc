@@ -57,6 +57,10 @@
   text-align: left;
 }
 
+.reveal .text-left h2 {
+  text-align: center !important;
+}
+
 .small p,
 .small li,
 .small code,
