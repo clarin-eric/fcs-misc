@@ -11,3 +11,61 @@
 
 [.small]
 == Query Languages
+
+[.position-absolute.right--20.zindex--1]
+image::cql-js-screenshot.png[CQL-JS Demo]
+
+
+[.text-left]
+== FCS-QL – Visualization
+
+[.position-absolute.right--20.width-50.zindex--1]
+image::fcsql-parse-tree-java.png[FCS-QL parse tree]
+
+* Installation
++
+[.code-width-full,bash]
+----
+pip install antlr4-tools
+git clone https://github.com/clarin-eric/fcs-ql.git
+cd fcs-ql/src/main/antlr4/eu/clarin/sru/fcs/qlparser
+----
+
+[.mt-5]
+* Visualization according to https://github.com/antlr/antlr4/blob/master/doc/getting-started.md[ANTLR4 > Getting Started]
++
+[.code-width-full,bash]
+----
+antlr4-parse src/fcsql/FCSParser.g4 src/fcsql/FCSLexer.g4 query -gui
+[ word = "her.*" ] [ lemma = "Artznei" ] [ pos = "VERB" ]
+^D
+----
+
+
+[.text-left.small]
+== FCS-QL Query Nodes
+
+
+[.text-left.small]
+== FCS-QL Query Nodes – Aggregator
+
+[.position-absolute.width-50.right--20.opacity-50.zindex--1]
+image::fcsql-querybuilder-complex.png[FCS-QL Query Builder]
+
+
+== FCS-QL – Remarks
+
+
+[.small]
+== Query-Mapping
+
+
+ifdef::backend-revealjs[]
+[.small]
+== Query-Mapping (2)
+endif::[]
+
+* ElasticSearch
+
+* Solr
+

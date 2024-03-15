@@ -1,0 +1,84 @@
+[background-image="fcs-render-uk.png",background-opacity="0.5"]
+= Reference Implementations
+
+[.notes]
+--
+* Java and Python, focus on FCS endpoints
+* Java class hierarchies, organization & structure, processes & lifecycles, configuration
+--
+
+
+[.small]
+== CLARIN Reference Libraries (Java)
+
+* Development started ~2012
+* Modularized: Client/Server, SRU/FCS, Parser
+* in Java 1.8+ (https://endoflife.date/oracle-jdk[_EOL: Ende 2030_])
+* Extensive documentation, some tests (_proven by being in use for a long time_)
+* Artifacts in https://nexus.clarin.eu[CLARIN Nexus], Code on https://github.com/clarin-eric/?q=fcs[Github]
+* Server/endpoint: external dependencies to
+
+** Logging: `slf4j`
+** HTTP: `javax.servlet:servlet-api`
+** Parser: `antlr4` (FCS-QL) / CQL
+
+* Build: maven
+* Deployment: jetty, tomcat, …
+
+
+[.small]
+== CLARIN Reference Libraries (Python)
+
+* ~ 2022: Translation of Java reference libraries to Python
+* Strong orientation towards the Java reference libraries
++
+→ (fast) (almost) identical interfaces, class/function names
+* but: slight optimizations for Python, no 1:1 copy
+* Focus on (new) FCS endpoints → no clients!
+* Typed, documented; published on PyPI
+* Synchronous, minimal WSGI - allows embedding in existing apps
+* Python 3.8+
+* Dependencies to
+
+** XML parsing: `lxml`
+** HTTP/WSGI: `werkzeug`
+** Query Parser: `PLY` (CQL), `ANTLR4` (FCS-QL)
+
+
+[.text-left.small]
+== CLARIN Reference Libraries
+
+* FCS SRU Server: https://github.com/clarin-eric/fcs-sru-server/[Java] (https://clarin-eric.github.io/fcs-sru-server/apidocs/index.html[docs]), https://github.com/Querela/fcs-sru-server-python/[Python] (https://fcs-sru-server-python.readthedocs.io/en/latest/[docs])
+* FCS Simple Endpoint: https://github.com/clarin-eric/fcs-simple-endpoint[Java] (https://clarin-eric.github.io/fcs-simple-endpoint/apidocs/index.html[docs]), https://github.com/Querela/fcs-simple-endpoint-python[Python] (https://fcs-simple-endpoint-python.readthedocs.io/en/latest/[docs])
+
+[.mt-2]
+* FCS SRU Client: https://github.com/clarin-eric/fcs-sru-client/[Java] (https://clarin-eric.github.io/fcs-sru-client/apidocs/index.html[docs])
+* FCS Simple Client: https://github.com/clarin-eric/fcs-simple-client[Java] (https://clarin-eric.github.io/fcs-simple-client/apidocs/index.html[docs])
+
+[.mt-2]
+* CQL Parser: https://github.com/indexdata/cql-java[Java] (http://zing.z3950.org/cql/java/docs/index.html[docs]?), https://github.com/Querela/cql-python[Python], https://github.com/Querela/cql-js[JavaScript]
+* FCS-QL Parser: https://github.com/clarin-eric/fcs-ql[Java], https://github.com/Querela/fcs-ql-python[Python] (https://fcs-ql-python.readthedocs.io/en/latest/[docs])
+
+[.mt-2]
+* Maven Endpoint Archetype: https://github.com/clarin-eric/fcs-endpoint-archetype[Java]
+* FCS SRU Aggregator: https://github.com/clarin-eric/fcs-sru-aggregator[Java]
+* FCS Endpoint Validator: https://github.com/clarin-eric/fcs-endpoint-tester[Java] (old), https://github.com/saw-leipzig/fcs-endpoint-validator[Java] ← test compliance with _SRU/FCS protocol_
+* Korp: https://github.com/clarin-eric/fcs-korp-endpoint/[Java], https://github.com/Querela/fcs-korp-endpoint-python/[Python]
+
+_https://github.com/indexdata/[Indexdata]: CQL-Parser, https://github.com/Querela/[Querela]: Python implementations_
+
+[.notes]
+--
+* Note: concrete examples and implementations will follow in a later section, high-level overview here
+--
+
+
+[.small]
+== FCS Endpoint – Design and structure
+
+* Query Parser (CQL, FCS-QL)
+
+[.mt-2]
+* *FCS SRU Server*
+
+
