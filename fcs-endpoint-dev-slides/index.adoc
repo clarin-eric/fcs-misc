@@ -12,7 +12,7 @@ ifdef::backend-revealjs[]
 // :highlightjsdir:
 // https://github.com/asciidoctor/asciidoctor-reveal.js/blob/cbe2ac7f72877050ce15ee4a38fd54ca91590a78/lib/asciidoctor-revealjs/highlightjs.rb#L62
 :highlightjs-theme: reveal.js/plugin/highlight/magula.css
-:highlightjs-languages: xml,python,java,json,isbl,csharp,wren,x86asm
+:highlightjs-languages: xml,python,java,json,yaml,isbl,csharp,wren,x86asm
 endif::[]
 :imagesdir: images
 :customcss: css/presentation.css
@@ -38,6 +38,25 @@ include::fcs-development-guide.adoc[leveloffset=+1]
 
 include::fcs-fundamentals.adoc[leveloffset=+1]
 
+<<<
+
+include::reference-implementations.adoc[leveloffset=+1]
+
+<<<
+
+include::resources-and-dataviews.adoc[leveloffset=+1]
+
+<<<
+
+include::query-translation.adoc[leveloffset=+1]
+
+<<<
+
+include::endpoint-development.adoc[leveloffset=+1]
+
+<<<
+
+include::deployment.adoc[leveloffset=+1]
 
 <<<
 
