@@ -1,0 +1,263 @@
+[background-image="fcs-render-uk.png",background-opacity="0.5"]
+= Deployment
+
+[.notes]
+--
+* Deployment instructions for FCS Endpoint Tester/Validator, FCS SRU Aggregator and FCS Korp Endpoint
+--
+
+
+== FCS Endpoint Protocol Conformance Tester
+
+* _NOTE: This is about the now legacy FCS endpoint tester, see <<FCS Endpoint Validator,Section: FCS Endpoint Validator>> for the updated and rewritten validator!_
+* WebApp for testing the *compliance with the FCS specification* of endpoints
+
+[.mt-3]
+* Code: https://github.com/clarin-eric/fcs-endpoint-tester[github.com/clarin-eric/fcs-endpoint-tester]
+* Deployment: http://clarin.ids-mannheim.de/srutest[clarin.ids-mannheim.de/srutest]
+* Java 8; Vaadin 7.7.15 (UI)
+
+[.mt-3]
+* Installation uses SNAPSHOT versions of the SRU/FCS libraries, and normally reserved functions to validate the SRU/FCS protocols
+
+
+[.small.text-left]
+== FCS Endpoint Conformance Tester – Deployment
+
+SRU/FCS SNAPSHOT libraries must be installed directly from Git
+[source,bash]
+----
+$ git clone https://github.com/clarin-eric/fcs-sru-client.git && cd fcs-sru-client
+$ mvn install
+$ git clone https://github.com/clarin-eric/fcs-simple-client.git && cd fcs-simple-client
+$ mvn install
+----
+
+Build with Maven
+[source,bash]
+----
+$ git clone https://github.com/clarin-eric/fcs-endpoint-tester.git && cd fcs-endpoint-tester
+$ mvn clean package
+----
+
+Deployment with Jetty on http://localhost:8080/
+[source,bash]
+----
+$ JETTY_VERSION="9.4.51.v20230217"
+$ wget https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${JETTY_VERSION}/jetty-distribution-${JETTY_VERSION}.zip && unzip jetty-distribution-${JETTY_VERSION}.zip && rm jetty-distribution-${JETTY_VERSION}.zip
+$ cd jetty-distribution-${JETTY_VERSION}/
+$ java -jar start.jar --add-to-start=http,deploy
+$ cd webapps/ && cp ../../target/FCSEndpointTester-X.Y.Z-SNAPSHOT.war ROOT.war && cd ..
+$ java -jar start.jar
+----
+
+
+[.text-left]
+== FCS Endpoint Conformance Tester – Deployment (Docker)
+
+Create Docker Image
+[source,bash]
+----
+$ git clone https://github.com/clarin-eric/fcs-endpoint-tester.git && cd fcs-endpoint-tester
+$ docker build -t fcs-endpoint-tester .
+----
+
+Run Container
+[source,bash]
+----
+$ docker run --rm -it -p 8080:8080 fcs-endpoint-tester
+----
+
+
+== FCS Endpoint Validator
+
+* This is a updated and completely rewritten SRU/FCS Endpoint Validator based on <<FCS Endpoint Protocol Conformance Tester>>. It allows to inspect HTTP requests/responses and store validation results in addition to more test cases.
+* WebApp for testing the *compliance with the SRU/FCS specification* of FCS endpoints
+
+[.mt-3]
+* Code: https://github.com/saw-leipzig/fcs-endpoint-validator[github.com/saw-leipzig/fcs-endpoint-validator]
+* Deployment: https://fcs-validator.data.saw-leipzig.de[fcs-validator.data.saw-leipzig.de]
+* Multi-module maven project
+** (standalone) JUnit5 test runner with test cases, Java 11
+** Vaadin 24 UI with SpringBoot, Java 17
+
+
+== FCS Endpoint Validator – Deployment
+
+Build with Maven
+[source,bash]
+----
+$ git clone https://github.com/saw-leipzig/fcs-endpoint-validator.git && cd fcs-endpoint-validator
+$ mvn clean package install
+----
+
+Deployment with SpringBoot on http://localhost:8080/ (might automatically open a new browser tab)
+[source,bash]
+----
+$ cd fcs-endpoint-validator-ui/
+$ mvn spring-boot:run
+----
+
+
+== FCS Endpoint Validator – Deployment (Docker)
+
+Download sources:
+[source,bash]
+----
+$ git clone https://github.com/saw-leipzig/fcs-endpoint-validator.git && cd fcs-endpoint-validator
+----
+
+Create `docker-compose.yml` deployment description:
+[source,yaml]
+----
+version: '3'
+
+services:
+  fcs-endpoint-validator:
+    build:
+      context: .
+      dockerfile: fcs-endpoint-validator-ui/Dockerfile
+    container_name: fcs-endpoint-validator
+    ports:
+      # default, public 8080 to docker container 8080
+      - 8080:8080
+    restart: unless-stopped
+----
+
+Run Docker-Compose deployment:
+[source,bash]
+----
+$ docker compose build
+$ docker compose down -v
+$ docker compose up -d
+----
+
+
+== FCS SRU Aggregator
+
+* Primary FCS client application
+* Central search interface for users,
++
+“aggregates” FCS search queries to/from distributed endpoints
+
+[.mt-3]
+* Code: https://github.com/clarin-eric/fcs-sru-aggregator[github.com/clarin-eric/fcs-sru-aggregator]
+* Deployments:
+
+** *CLARIN*: https://contentsearch.clarin.eu/[contentsearch.clarin.eu] + (https://alpha-contentsearch.clarin.eu/[Alpha] / https://beta-contentsearch.clarin.eu/[Beta] instances)
+** *Text+*: https://fcs.text-plus.org/[fcs.text-plus.org] (https://alpha-fcs.text-plus.org/[Alpha] instance)
+
+* Registry of endpoints in https://centres.clarin.eu/fcs[Centre Registry] + side loading
+* Deployment instructions found in the repo in https://github.com/clarin-eric/fcs-sru-aggregator/blob/master/DEPLOYMENT.md[`DEPLOYMENT.md`] 
+
+
+[.text-left]
+== FCS SRU Aggregator – Deployment
+
+Build application (native)
+[source,bash]
+----
+$ git clone https://github.com/clarin-eric/fcs-sru-aggregator.git && cd fcs-sru-aggregator
+$ ./build.sh --jar
+----
+
+Configuration (endpoint sideloading + logging) in `aggregator_devel.yml` (`aggregator.yml` for production deployment)
+
+[.small.ms-3.text-left]
+--
+* `aggregatorParams` → `additionalFCSEndpoints`
+* `logging` → `loggers`
+--
+
+Running on http://localhost:4019/
+[source,bash]
+----
+$ ./build.sh --run
+----
+
+
+[.text-left]
+== FCS SRU Aggregator – Deployment (Docker)
+
+Create Docker Image
+[source,bash]
+----
+$ git clone https://github.com/clarin-eric/fcs-sru-aggregator.git && cd fcs-sru-aggregator
+$ docker build --tag=fcs-aggregator .
+----
+
+Run Docker Container
+[source,bash]
+----
+$ touch fcsAggregatorResources.json fcsAggregatorResources.backup.json
+$ docker run -d --restart unless-stopped \
+    -p 4019:4019 -p 5005:5005 \
+    -v $(pwd)/aggregator.yml:/work/aggregator.yml:ro \
+    -v $(pwd)/fcsAggregatorResources.json:/var/lib/aggregator/fcsAggregatorResources.json \
+    -v $(pwd)/fcsAggregatorResources.backup.json:/var/lib/aggregator/fcsAggregatorResources.backup.json \
+    fcs-aggregator
+----
+
+
+== FCS Korp Endpoint
+
+* Reference endpoint for Korp corpus search engine
+* Example → Korp-API publicly accessible, no further configuration required for testing
+
+[.mt-3]
+* Code:
+
+** Java: github.com/clarin-eric/fcs-korp-endpoint 
+** Python: github.com/Querela/fcs-korp-endpoint-python
+
+* Deployment(s):
+
+* https://centres.clarin.eu/centre/37[Språkbanken (Göteborg)]: https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru
+* https://centres.clarin.eu/centre/14[CLARIN-DK-UCPH (Copenhagen S)]: https://alf.hum.ku.dk/korp/fcs/2.0/endpoint/sru 
+* ...
+
+
+[.text-left]
+== FCS Korp Endpoint – Deployment (Java)
+
+Build Application
+[source,bash]
+----
+$ git clone https://github.com/clarin-eric/fcs-korp-endpoint.git && cd fcs-korp-endpoint
+$ mvn clean compile war:war
+----
+
+Deployment then with Jetty/Tomcat etc. analogous to the FCS Endpoint Tester
+
+
+[.text-left]
+== FCS Korp Endpoint – Deployment (Python)
+
+Prepare Deployment
+[source,bash]
+----
+$ git clone https://github.com/Querela/fcs-korp-endpoint-python.git && cd fcs-korp-endpoint-python
+$ python3 -m venv venv && source venv/bin/activate
+$ python3 -m pip install -e .
+----
+
+Test Deployment (http://localhost:8080)
+
+[source,bash]
+----
+$ python3 -m korp_endpoint
+----
+
+Productive deployment with Docker (http://localhost:5000)
+[source,bash]
+----
+$ docker build --progress=plain -t korpy .
+$ docker run --rm -it -p 5000:5000 korpy
+----
+
+
+== Deployment Notes
+
+* When using Docker and `localhost`, network configurations may need to be adjusted so that the Docker container has access to the host
+
+** → `host.docker.internal`

@@ -1,0 +1,1135 @@
+[background-image="fcs-render-uk.png",background-opacity="0.5"]
+= Fundamentals
+
+[.notes]
+--
+* SRU (Overview, APD/Models, Request Parameter, Diagnostics, …)
+* FCS (Discovery, Endpoint Description, Search, SRU Parameter, Diagnostics)
+* FCS Notes (Versions, Compatibility, Aggregator)
+--
+
+
+[.text-left]
+== Disclaimer
+
+Main focus on:
+
+[.ms-5]
+* Version: *FCS Core 2.0*; maximum compatibility with FCS Core 1.0
+* *SRU Server*, *FCS Endpunkt*; not FCS client application development
+* Using the reference libraries
++
+→ *Java* and *Python*
+* Possible (re-)use of existing endpoints
+
+No:
+
+[.ms-5]
+* Working through the specification; only the essential information
+* New or redevelopment of SRU/FCS protocols, libraries etc.
++
+(e.g. in other languages)
+
+
+[.text-left]
+== SRU – History
+
+SRU: **Search/Retrieve via URL** → https://www.loc.gov/standards/sru/[LOC]
+
+* Originally developed by the _Library of Congress (LOC)_
++
+2004: *SRU 1.1* - https://www.loc.gov/standards/sru/sru-1-1.html[LOC]
++
+2007: *SRU 1.2* - https://www.loc.gov/standards/sru/sru-1-2.html[LOC]
+
+* As of SRU 2.0 standardized by _OASIS_ footnote:[OASIS: Organization for the Advancement of Structured Information Standards] as _“searchRetrieve Version 1.0 OASIS Standard”_
++
+2013: SRU 2.0 - https://www.loc.gov/standards/sru/sru-2-0.html[LOC], http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part0-overview/searchRetrieve-v1.0-os-part0-overview.html[OASIS] (https://www.oasis-open.org/news/announcements/searchretrieve-version-1-0-oasis-standard-published/[OASIS Announcement])
++
+Extension of SRU 1.2 → Differences to SRU 1.2 (https://www.loc.gov/standards/sru/differences.html[LOC])
+
+
+== searchRetrieve Version 1.0 – OASIS Standard
+
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part0-overview/searchRetrieve-v1.0-os-part0-overview.html[Part 0]. Overview Version 1.0
+* {empty}
++
+[.darkgrey]
+--
+http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part1-apd/searchRetrieve-v1.0-os-part1-apd.html[Part 1]. *Abstract Protocol Definition* Version 1.0
+--
+* {empty}
++
+[.darkgrey]
+--
+http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part2-sru1.2/searchRetrieve-v1.0-os-part2-sru1.2.html[Part 2]. SRU *searchRetrieve Operation*: APD Binding for *SRU 1.2* Version 1.0
+--
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html[Part 3]. SRU *searchRetrieve Operation*: APD Binding for *SRU 2.0* Version 1.0
+* {empty}
++
+[.darkgrey]
+--
+http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part4-opensearch/searchRetrieve-v1.0-os-part4-opensearch.html[Part 4]. pass:q[<s>APD Binding for *OpenSearch* 1.0  version 1.0</s>]
+--
+* {empty}
++
+[.darkgrey]
+--
+http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part5-cql/searchRetrieve-v1.0-os-part5-cql.html[Part 5].  *CQL*: The Contextual Query Language  version 1.0
+--
+* {empty}
++
+[.darkgrey]
+--
+http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part6-scan/searchRetrieve-v1.0-os-part6-scan.html[Part 6].  SRU *Scan Operation* version 1.0
+--
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part7-explain/searchRetrieve-v1.0-os-part7-explain.html[Part 7]. SRU *Explain Operation* version 1.0
+
+[.notes]
+--
+* grayed out: not relevant for us
+* crossed out: plays no role at all for the FCS
+--
+
+
+[.x-small]
+== searchRetrieve: Part 0. – Overview Version 1.0
+
+*SRU* (_SRU: Search/Retrieve via URL_) is a [.blue]++web service protocol++ supported over both SOAP and [.blue]++REST for client-server based search++. *SRU1.x* was developed as a web service replacement for the NISO Z39.50 protocol. [.blue]+pass:q[*SRU2.0* is a revision to *SRU*]+ which as well as including many enhancements to SRU1.2 was developed alongside the *APD*.
+
+For the SRU protocol model, three operations are defined as part of its *Processing Model*:
+
+* *SearchRetrieve Operation*. The actual SearchRetrieve operation defined by the SRU protocol; A SearchRetrieve operation consists of a [.blue]++SearchRetrieve request from client to server followed by a SearchRetrieve response from server to client++.
+* *Scan Operation*. Similar to SRU, the Scan protocol defines a request message and a response message for [.blue]++iterating through available search terms++. a Scan operation consists of a Scan request followed by a Scan response.
+* *Explain Operation*. Every SRU or scan server provides an associated [.blue]++Explain document++ as part of its *Description and Discovery Model*, providing [.blue]++information about the server’s capabilities++. A client may retrieve this document and use the information to [.blue]++self-configure and provide an appropriate interface to the user++. When a client retrieves an Explain document, this constitutes an Explain operation.
+
+[.notes]
+--
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part1-apd/searchRetrieve-v1.0-os-part1-apd.html
+* SRW = search/retrieve for the web
+--
+
+
+== searchRetrieve – APD and Bindings
+
+* *Abstract Protocol Definition (APD)* für _“searchRetrieve operation”_
+
+** Model for _SearchRetrieve Operation_
+** Describes _Capabilities_ and  _General Characteristics_ of a Server or Search Engine, as well as how access should take place
+** Defines abstract Request parameters and Response elements
+
+* *Binding*
+
+** Describes corresponding names of the parameters and elements
+** _static_ (for human), _dynamic_ (for machine), …
+** Bindings: SRU 1.2, *SRU 2.0*, (OpenSearch)
+** Examples: “startPosition” (APD) → “startRecord” (SRU 2.0)
++
+“recordPacking” (SRU 1.2) → “recordXMLEscaping” (SRU 2.0)
+
+[.notes]
+--
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#recordPacking
+--
+
+
+[.text-left]
+== searchRetrieve – APD Abstract Models
+
+*Data Model* +
+Description of the data on which the search is to be executed
+
+*Query Model* +
+Description of the construction of search queries
+
+*Processing Model* +
+Description of how query is sent from client to server
+
+*Result Set Model* +
+Structure of the results of a search
+
+*Diagnostics Model* +
+Description of how errors are communicated from the server to the client
+
+*Description and Discovery Model* +
+Description, for the discovery of the “Search Service”, self-description of the functionality of the service
+
+[.notes]
+--
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part0-overview/searchRetrieve-v1.0-os-part0-overview.html#_Toc312151029
+--
+
+
+[.hidden,data-visibility=hidden]
+== SRU 2.0
+
+* Request / response flow  (Client ↔ Server)
+** HTTP GET/POST with set of parameters (extensible)
+* Request processing on the server
+* Operations: searchRetrieve, scan, explain
+* Data model with result sets, records and associated schemas
+* Diagnostics: (non-)fatal for warnings and errors
+* No fixed serialization, *XML for FCS*
+
+
+== SRU 2.0 – Operation Model
+
+* SRU Request (Client → Server) with Response (Server → Client)
+* Operations
+** SearchRetrieve
+** Scan
+** Explain
+
+
+== SRU 2.0 – Data Model
+
+* Server = Database for Client for search/retrieval
+* Database = Collection of Units of Data → Abstract Record
+* *Abstract Records* (or *Response Records*) in one/multiple formats by server
+* Format (or Item Type) = *Record Schema*
+
+
+[.columns]
+== SRU 2.0 – Protocol Model
+
+* *HTTP GET*
+
+** Parameters encoded as “`key=value`”
+** UTF-8
+** `%`-Escaping
+** Separation at “`?`”, “`&`”, “`=`”
+
+* *HTTP POST*
+
+** `application/x-www-form-urlencoded`
+** No character encoding necessary
+** No length restriction
+
+* [.darkgrey]+HTTP SOAP (?)+
+
+image::sru-protocol-model.gif[SRU Protocol,float=right]
+// http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0_files/image002.gif
+
+
+== SRU 2.0 – Processing Model
+
+* “Request processing on the server”
+
+* Request
+
+** Number of records
+** Identifier for Record Schema (→ Records in Response)
+** Identifier for Response Schema (→ whole Response)
+
+* Response
+
+** Records in Result Set
+** Diagnostic Information
+** Result Set Identifier for requests for further results
+
+
+== SRU 2.0 – Query Model
+
+* Any “appropriate query language” can be used
+* Mandatory support of
++
+“Contextual Query Language” (CQL)
+
+
+== SRU 2.0 – Parameter Model
+
+* Use of Parameters, some predefined by SRU 2.0
+* Parameters not defined in the protocol are also permitted
+* Parameter “`query`”
+** included in every query in some manner (“`query`” or by parameters not defined in the protocol)
+** Query with “`queryType`” (default “`cql`”)
+
+
+== SRU 2.0 – Result Set Model
+
+* Logical model → “Result Sets” are not mandatory
+
+* Query → Selection of suitable Records
+
+** Ordered list, _non-modifiable set_ after creation
+** Sorting/order determined by server
+
+* for Client:
+
+** Set of abstract Records, counting starts with `1`
+** Each record _can_ be requested in its own format
+** Individual records can _“disappear”_, no reordering in the Result Set by the Server, but Diagnostic to inform
+
+
+[.small]
+== SRU 2.0 – Diagnostic Model
+
+* *fatal*
+
+** Execution of the query cannot be completed
+** e.g. invalid query
+
+* *non-fatal*
+
+** Processing impaired, but request can be completed
+** e.g. individual records are not available in the requested schema, server only sends the available ones and informs about the rest
+
+** {empty}
++
+[.mt-5]
+--
+*surrogate*
+--
+*** For single Records
+
+** *non-surrogate*
+*** All records are available, but something went wrong, e.g. sorting
+*** Or simply a warning
+
+
+== SRU 2.0 – Explain Model
+
+* Must be available for HTTP GET via the *base URL* of the SRU server
+* → Server Capabilities
+* In the client for self-configuration and to provide the corresponding user interface
+* Details on supported Query Types, CQL Context Sets, Diagnostic Sets, Records Schemas, Sorting options, defaults, …
+
+
+== SRU 2.0 – Serialization Model
+
+* No restriction on the serialization of responses
++
+(for the entire message or single records)
+
+* Non-XML serialization is allowed
+
+
+== searchRetrieve 2.0 – Request Parameter
+
+* All parameters are optional, non-repeatable
+* [.blue]+pass:q[*query*, *startRecord*, *maximumRecords*, recordXMLEscaping, recordSchema, resultSetTTL, stylesheet; Extension parameters]+
+* New in 2.0: [.blue]+pass:q[*queryType*, sortKeys, renderedBy, httpAccept, responseType, recordPacking; Facet  Parameters]+
+
+[.mt-5]
+* Spec: “link:http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#_Toc324162435[Actual Request Parameters for this Binding]”
+
+
+== searchRetrieve 2.0 – Response Elements
+
+* All elements are optional, non-repeatable by default
+* [.blue]+pass:q[*numberOfRecords*, resultSetId, *records*, *nextRecordPosition*, echoedSearchRetrieveRequest, *diagnostics*, extraResponseDataⓇ]+
+* New in 2.0: [.blue]+pass:q[resultSetTTL, resultCountPrecisionⓇ, facetedResultsⓇ, searchResultAnalysisⓇ]+
++
+(Ⓡ = repeatable)
+
+[.mt-5]
+* Spec: “link:http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#_Toc324162438[Actual Response Elements for this Binding]”
+
+
+[.notes]
+--
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#_Toc324162438
+--
+
+
+== searchRetrieve 2.0 – Query
+
+* *`query`* (Parameter)
+
+** Query
+** Mandatory if no specification of _``queryType``_
+
+* *`queryType`* (Parameter, SRU 2.0)
+
+** Optional, by default “`cql`”
+** Query Types must be listed in the Explain, with URL for definition and usage abbreviation
+** Reserved
+*** `cql`
+*** `searchTerms` (processing is left to the server, < SRU 2.0)
+
+
+== searchRetrieve 2.0 – Query (Examples)
+
+* https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=cat[pass:q[spraakbanken.gu.se/…/sru?*query=cat*]]
++
+(default, FCS 2.0, SRU 2.0)
+
+* https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?operation=searchRetrieve&version=1.2&query=cat[pass:q[spraakbanken.gu.se/…/sru?*operation=searchRetrieve*&*version=1.2*&query=cat]]
++
+(FCS 1.0, SRU 1.2)
+
+* https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?operation=searchRetrieve&queryType=cql&query=%22anv%C3%A4ndning%22[pass:q[spraakbanken.gu.se/…/sru?operation=searchRetrieve&queryType=cql&*query=%22anv%C3%A4ndning%22*]]
++
+(FCS 2.0, SRU 2.0)
+
+* https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?operation=searchRetrieve&queryType=fcs&query=%5bword%3d%22anv%C3%A4ndning%22%5d&x-cmd-resource-info=true[pass:q[spraakbanken.gu.se/…/sru?operation=searchRetrieve&*queryType=fcs*&query=%5bword%3d%22anv%C3%A4ndning%22%5d&x-cmd-resource-info=true]]
++
+(FCS 2.0 mit FCS-QL Query)
+
+
+== searchRetrieve 2.0 – Pagination
+
+* Query for result range of _``startRecord``_ with maximum _``maximumRecords``_
+* *`startRecord`* (Parameter)
+
+** Optional, positive integer, starting with `1`
+
+* *`maximumRecords`* (Parameter)
+
+** Optional, non-negative integer
+** Server selects default if not specified
+** Server can respond with fewer records, never more
+
+
+ifdef::backend-revealjs[]
+== searchRetrieve 2.0 – Pagination (2)
+endif::[]
+
+* Response with total number (_``numberOfRecords``_) of records in the Result Set, with offset (_``nextRecordPosition``_) to next results
+* *`numberOfRecords`* (Element)
+
+** Number of results in the Result Set
+** If query fails, it must be “`0`”
+
+* *`nextRecordPosition`* (Element)
+
+** Counter for next result set, if last record in the response is not last in the result set
+** If no further records, then this element must not appear
+
+
+== searchRetrieve 2.0 – Result Set
+
+* *`resultSetId`* (Element)
+
+** Optional, identifier for the Result Set, for referencing in the subsequent requests
+
+* *`resultSetTTL`* (Parameter / Element, Element in SRU 2.0 only)
+
+** Optional, in seconds
+** In request from Client when Result Set is no longer used
+** In response from Server, how long Result Set is available (“good-faith estimate”, → can be longer or shorter)
+
+* *`resultCountPrecision`* (Element, SRU 2.0)
+
+** URI: “`info:srw/vocabulary/resultCountPrecision/1/…`”
+** `exact` / `unknown` / `estimate` / `maximum` / `minimum` / `current`
+
+
+== searchRetrieve 2.0 – Pagination (Cont.)
+
+[.position-absolute.right--30.width-75.opacity-50]
+image::fcs-sru-results-xml.png[Response XML for CQL search for "cat"]
+
+* https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=cat[pass:q[spraakbanken.gu.se/…/sru?*query=cat*]]
++
+→ 9220 results, next results starting from 251
+
+* https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=cat&startRecord=300&maximumRecords=10[pass:q[spraakbanken.gu.se/…/sru?query=cat&*startRecord=300*&*maximumRecords=10*]]
++
+→ More from 310
+
+* https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=cat&startRecord=10000&maximumRecords=10[pass:q[spraakbanken.gu.se/…/sru?query=cat&*startRecord=10000*&maximumRecords=10]]
++
+→ Error, because “out of range”
+
+* https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=catsss[pass:q[spraakbanken.gu.se/…/sru?*query=catsss*]]
++
+→ No results
+
+* https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=cat&maximumRecords=100000[pass:q[spraakbanken.gu.se/…/sru?query=cat&*maximumRecords=100000*]]
++
+→ Restricted to 1000 Records
+
+
+== searchRetrieve 2.0 – Serialization
+
+* *`recordXMLEscaping`* (Parameter, SRU 2.0)
+
+** If records are serialized as XML, “`string`” of the Records can be escaped (“`<`”, “`>`”, “`&`”); default is “`xml`” as direct embedding of the Records in the Response, e.g. for Stylesheets
+
+* *`recordPacking`* (Parameter, SRU 2.0)
+
+** In SRU 1.2 used to have the semantic of `recordXMLEscaping`
+** “`packed`” (default), Server should deliver Records with requested schema; “`unpacked`”, Server can determine the location of the application data in the Records itself (?)
+
+// NOTE: hint, in Java impl some errors still
+
+
+ifdef::backend-revealjs[]
+== searchRetrieve 2.0 – Serialization (2)
+endif::[]
+
+* {empty}
++
+[.darkgrey]
+--
+*`httpAccept`* (Parameter, SRU 2.0)
+--
+
+** {empty}
++
+[.darkgrey]
+--
+Schema for Response, default is “`application/sru+xml`”
+--
+
+* {empty}
++
+[.darkgrey]
+--
+*`responseType`* (Parameter)
+--
+
+** {empty}
++
+[.darkgrey]
+--
+Schema for Response (in combination with `httpAccept` parameter)
+--
+
+* *`recordSchema`* (Parameter)
+
+** Schema of the Records in Response, e.g. “`http://clarin.eu/fcs/resource`”
+** Identifier for schema from Explain Response
+
+* *`records`* (Element)
+
+** Contains Records / Surrogate Diagnostics
+** According to http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#sruplusxml[default Schema] a list of “`<record>`” elements
+
+[.notes]
+--
+* *`recordSchema`* with `http://clarin.eu/fcs/resource` can be used for multiplexing if several SRU functionalities are offered via one endpoint, e.g. also DFG Viewer or similar.
+--
+
+
+ifdef::backend-revealjs[]
+== searchRetrieve 2.0 – Serialization (3)
+endif::[]
+
+* *`stylesheet`* (Parameter)
+
+** URL to stylesheet, for display to the user
+
+** *`renderedBy`* (Parameter, SRU 2.0)
+
+** Where is stylesheet for Response rendered
+** “`client`” (default), URL of _``stylesheet``_ parameter is simply echoed → “thin client” (in Web Browser)
+** {empty}
++
+[.darkgrey]
+--
+“`server`”, should transform default SRU response with stylesheet (e.g. for _``httpAccept``_ with HTML format)
+--
+
+
+ifdef::backend-revealjs[]
+== searchRetrieve 2.0 – Serialization (4)
+endif::[]
+
+* https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=cat&recordXMLEscaping=string[pass:q[spraakbanken.gu.se/…/sru?query=cat&*recordXMLEscaping=string*]]
++
+→ Possible serialization error in Java library
+
+* https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?operation=searchRetrieve&version=1.2&query=cat&version=1.2&recordPacking=string[pass:q[spraakbanken.gu.se/…/sru?*operation=searchRetrieve*&version=1.2&query=cat&*version=1.2*&*recordPacking=string*]]
++
+(FCS 1.0, SRU 1.2, like _``recordXMLEscaping``_)
+
+* https://spraakbanken.gu.se/ws/fcs/2.0/endpoint/korp/sru?query=cat&recordPacking=unpacked[pass:q[spraakbanken.gu.se/…/sru?query=cat&*recordPacking=unpacked*]]
++
+→ No noticeable change here
+
+* …
+
+
+== searchRetrieve 2.0 – Unsupported Parameters
+
+* Sorting (_``sortKeys``_) and Faceting not supported
+
+
+== SRU 2.0 – Extensions
+
+* Extensions possible in
+
+** Request via *Extension Parameter*
+** (prefixed with “`x-`” and namespace identifier, e.g. “`x-fcs-`”)
+
+* Response in the *“`<extraResponseData>`” Element*
+* Response with `extraResponseData`, _only_ if requested in Request with corresponding parameter, never voluntary
+
+** Server can ignore the request, no obligation
+
+* Unknown extension parameters are to be ignored
+
+[.notes]
+--
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#Extensions
+--
+
+
+== SRU 2.0 – Backwards Compatibility
+
+* Parameters “`operation`” and “`version`” only in SRU 1.1/SRU 1.2, removed in SRU 2.0 → Assumption of a separate endpoint for each SRU version  
+* Heuristic for detecting the SRU version
+
+** `searchRetrieve` = `query` or `queryType` parameter
+** `scan` = `scanClause` parameter
+** `explain`
+
+* Interoperability with older versions:
+
+** Use of `operation`/`version` parameters → SRU < 2.0
+** Caution with parameters with changed semantics
++
+especially `recordPacking`
+
+[.notes]
+--
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#interop
+--
+
+
+== SRU 2.0 – Diagnostics
+
+* “Error handling”
+* Difference between (non-)fatal, (non-)surrogate → <<SRU 2.0 – Diagnostic Model,SRU 2.0 – Diagnostic Model>>
+* Schema: `info:srw/schema/1/diagnostics-v1.1`
++
+Prefix: `info:srw/diagnostic/1/`
+
+** `uri` (ID), `details` (additional information, depending on Diagnostic), message
+
+* Information:
+
+** General information and notes (https://www.loc.gov/standards/sru/diagnostics/[LOC], http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#diagnostics[OASIS SRU 2.0])
+** List of Diagnostics (https://www.loc.gov/standards/sru/diagnostics/diagnosticsList.html[LOC], http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#diagnosticsList[OASIS SRU 2.0]) 
+
+* Categories: General (1-9), CQL (10-49), Result Sets (50-60), Records (61-74), Sorting (80-96), Explain (100-102), Stylesheets (110-111), Scan (120-121)
+* Not limited to this list only, custom diagnostics possible
+
+[.notes]
+--
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#diagnostics
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#diagnosticsList
+* https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/normative-appendix.adoc#list-of-diagnostics
+--
+
+
+ifdef::backend-revealjs[]
+[.columns]
+== SRU 2.0 – Diagnostics (Table)
+endif::[]
+
+[.column]
+--
+[.xxx-small,%noheader,cols="1,6,6"] 
+|===
+|{set:cellbgcolor:#b16c2b88}1
+|General system error
+|Debugging information (traceback)
+
+|{set:cellbgcolor}2
+2+|System temporarily unavailable
+
+|3
+2+|Authentication error
+
+|4
+2+|Unsupported operation
+
+|5
+|Unsupported version
+|Highest version supported
+
+|6
+|Unsupported parameter value
+|Name of parameter
+
+|7
+|Mandatory parameter not supplied
+|Name of missing parameter
+
+|8
+|Unsupported parameter
+|Name of the unsupported parameter
+
+|9
+2+|Unsupported combination of parameters
+
+|10
+2+|Query syntax error
+
+|23
+|Too many characters in term
+|Length of longest term
+
+|26
+|Non special character escaped in term
+|Character incorrectly escaped
+
+|35
+|Term contains only stopwords
+|Value
+
+|37
+|Unsupported boolean operator
+|Value
+
+|38
+|Too many boolean operators in query
+|Maximum number supported
+
+ifdef::backend-revealjs[]
+|===
+--
+[.column]
+--
+[.xxx-small,%noheader,cols="1,6,6"] 
+|===
+endif::[]
+
+|{set:cellbgcolor:#b16c2b88}47
+2+|Cannot *process* query; reason unknown
+
+|{set:cellbgcolor:#b16c2b88}48
+|Query feature unsupported
+|Feature
+
+|{set:cellbgcolor}60
+|Result set not created: too many matching records
+|Maximum number
+
+|61
+2+|First record position out of range
+
+|64
+2+|Record temporarily unavailable
+
+|65
+2+|Record does not exist
+
+|66
+|Unknown schema for retrieval
+|Schema URI or short name
+
+|67
+|Record not available in this schema
+|Schema URI or short name
+
+|68
+2+|Not authorized to send record
+
+|69
+2+|Not authorized to send record in this schema
+
+|70
+|Record too large to send
+|Maximum record size
+
+|71
+2+|Unsupported recordXMLEscaping value
+
+|80
+2+|Sort not supported
+
+|110
+2+|Stylesheets not supported
+
+|111
+|Unsupported stylesheet
+|URL of stylesheet
+|===
+--
+
+
+== FCS Interface Specification
+
+[.position-absolute.right-0.width-50]
+image::FCS_architecture.png[FCS Architecture]
+
+[.pt-5]
+* FCS = Description of capabilities, +
+Extensions according to SRU +
+and operations
++
+→ Use of SRU/CQL and +
+Erweiterungen nach SRU
+* Interface specification = formats and transport protocol
+
+** Endpoint = bridge between client (FCS formats) and local search engine
+** Client = user interface, query input and result presentation
+
+* Discovery and Search mechanism
+
+== FCS – Discovery
+
+* SRU Explain
+** _Help and information for the client on accessing, requesting and processing results from the server_
+
+* Information about endpoint
++
+--
+** Capabilities: Basic Search, Advanced Search?
+** Resources for search
+--
++
+→ Endpoint Description (XML) via _explain SRU Operation_
+
+[.notes]
+--
+* FCS 2.0 §3 https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/fcs-to-sru-cql-binding.adoc[CLARIN-FCS to SRU/CQL binding]
+--
+
+
+== FCS – Endpoint Description
+
+* XML according to the schema https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/attachments/Endpoint-Description.xsd[Endpoint-Description.xsd] 
+* *`<ed:EndpointDescription>`*
+** [.blue]`@version` mit “`2`”
+** [.blue]`<ed:Capabilities>` (1)
+** [.blue]`<ed:SupportedDataViews>` (1)
+** [.blue]`<ed:SupportedLayers>` (1) (if Advanced Search Capability)
+** [.blue]`<ed:Resources>` (1)
+
+
+ifdef::backend-revealjs[]
+== FCS – Endpoint Description (2)
+endif::[]
+
+* *`<ed:Capability>`*
+** Content: Capability Identifier, URI
+*** `\http://clarin.eu/fcs/capability/basic-search`
+*** `\http://clarin.eu/fcs/capability/advanced-search`
+
+
+ifdef::backend-revealjs[]
+== FCS – Endpoint Description (3)
+endif::[]
+
+* *`<ed:SupportedDataView>`*
+** Content: MIME type, e.g. `application/x-clarin-fcs-hits+xml`
+** [.blue]`@id` → for referencing in `<ed:Resource>`
+** [.blue]`@delivery-policy`: `send-by-default` / `need-to-request`
+** No duplicates (based on MIME type) allowed
+
+
+ifdef::backend-revealjs[]
+== FCS – Endpoint Description (4)
+endif::[]
+
+* *`<ed:SupportedLayer>`*
+** (only for Advanced Search)
+** Content: Layer Identifier, e.g. “`orth`”
+** [.blue]`@id` → for referencing in `<ed:Resource>`
+** [.blue]`@result-id` → Referencing the layer in the Advanced Data View
+** [.blue]`@qualifier` → Identifier in FCS-QL Search Term for the layer
+** [.blue]`@alt-value-info`,[.blue]` @alt-value-info-uri`: short description of the layer, e.g. for tagset, + URL with further information
+** No duplicates allowed based on `@result-id` MIME type
+
+
+ifdef::backend-revealjs[]
+[.small]
+== FCS – Endpoint Description (5)
+endif::[]
+
+* *`<ed:Resource>`*
+** [.blue]`@pid`: Persistent Identifier (e.g. `MdSelfLink` from CMDI Record)
+** [.blue]`<ed:Title>` (1+) with `@xml:lang`, no duplicates, English required
+** [.blue]`<ed:Description>` (0+) with `@xml:lang`, English required, should be at most 1 sentence
+** [.blue]`<ed:Institution>` (0+) with `@xml:lang`, English required
+** [.blue]`<ed:LandingPageURI>` (0/1) – link to the website of the resource (or institution) with more information 
+** [.blue]`<ed:Languages>` (1) with `<ed:Language>` content according to ISO 639-3 language codes
+** [.blue]`<ed:AvailableDataViews>` (1) with `@ref` = list of IDs of the `<ed:SupportedDataView>` elements, e.g. “`hits adv`”
+** [.blue]`<ed:AvailableLayers>` (1) (if Advanced Search Capability), with `@ref` = list of IDs of the `<ed:SupportedLayer>` elements, e.g. “`word lemma pos`”
+** [.blue]`<ed:Resources>` (0/1) for sub resources
+** For `<ed:AvailableDataViews>` and `<ed:AvailableLayers>` sub-resources should support the same lists, a new declaration is still required
+
+
+ifdef::backend-revealjs[]
+[.small]
+== FCS – Endpoint Description (Examples)
+endif::[]
+
+.Minimal Endpoint Description for BASIC Search
+[source,xml]
+----
+<ed:EndpointDescription xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="2">
+  <ed:Capabilities>
+    <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
+  </ed:Capabilities>
+  <ed:SupportedDataViews>
+    <ed:SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</ed:SupportedDataView>
+  </ed:SupportedDataViews>
+  <ed:Resources>
+    <!-- just one top-level resource at the Endpoint -->
+    <ed:Resource pid="http://hdl.handle.net/4711/0815">
+      <ed:Title xml:lang="de">Goethe Korpus</ed:Title>
+      <ed:Title xml:lang="en">Goethe corpus</ed:Title>
+      <ed:Description xml:lang="de">Das Goethe-Korpus des IDS Mannheim.</ed:Description>
+      <ed:Description xml:lang="en">The Goethe corpus of IDS Mannheim.</ed:Description>
+      <ed:LandingPageURI>http://repos.example.org/corpus1.html</ed:LandingPageURI>
+      <ed:Languages>
+        <ed:Language>deu</ed:Language>
+      </ed:Languages>
+      <ed:AvailableDataViews ref="hits" />
+    </ed:Resource>
+  </ed:Resources>
+</ed:EndpointDescription>
+----
+
+
+ifdef::backend-revealjs[]
+[.small]
+== FCS – Endpoint Description (Examples 2)
+endif::[]
+
+.Endpoint Description with CMDI Data View and Sub-Resources
+[source,xml,highlight="7,30,31..43"]
+----
+<ed:EndpointDescription xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="2">
+  <ed:Capabilities>
+    <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
+  </ed:Capabilities>
+  <ed:SupportedDataViews>
+    <ed:SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</ed:SupportedDataView>
+    <ed:SupportedDataView id="cmdi" delivery-policy="need-to-request">application/x-cmdi+xml</ed:SupportedDataView>
+  </ed:SupportedDataViews>
+  <ed:Resources>
+    <!-- top-level resource 1 -->
+    <ed:Resource pid="http://hdl.handle.net/4711/0815">
+      <ed:Title xml:lang="de">Goethe Korpus</ed:Title>
+      <ed:Title xml:lang="en">Goethe corpus</ed:Title>
+      <ed:Description xml:lang="de">Das Goethe-Korpus des IDS Mannheim.</ed:Description>
+      <ed:Description xml:lang="en">The Goethe corpus of IDS Mannheim.</ed:Description>
+      <ed:LandingPageURI>http://repos.example.org/corpus1.html</ed:LandingPageURI>
+      <ed:Languages>
+        <ed:Language>deu</ed:Language>
+      </ed:Languages>
+      <ed:AvailableDataViews ref="hits" />
+    </ed:Resource>
+    <!-- top-level resource 2 -->
+    <ed:Resource pid="http://hdl.handle.net/4711/0816">
+      <ed:Title xml:lang="de">Zeitungskorpus des Mannheimer Morgen</ed:Title>
+      <ed:Title xml:lang="en">Mannheimer Morgen newspaper corpus</ed:Title>
+      <ed:LandingPageURI>http://repos.example.org/corpus2.html</ed:LandingPageURI>
+      <ed:Languages>
+        <ed:Language>deu</ed:Language>
+      </ed:Languages>
+      <ed:AvailableDataViews ref="hits cmdi" />
+      <ed:Resources>
+        <!-- sub-resource 1 of top-level resource 2 -->
+        <ed:Resource pid="http://hdl.handle.net/4711/0816-1">
+          <ed:Title xml:lang="de">Zeitungskorpus des Mannheimer Morgen (vor 1990)</ed:Title>
+          <ed:Title xml:lang="en">Mannheimer Morgen newspaper corpus (before 1990)</ed:Title>
+          <ed:LandingPageURI>http://repos.example.org/corpus2.html#sub1</ed:LandingPageURI>
+          <ed:Languages>
+            <ed:Language>deu</ed:Language>
+          </ed:Languages>
+          <ed:AvailableDataViews ref="hits cmdi" />
+        </ed:Resource>
+        <!-- sub-resource 2 of top-level resource 2 ... -->
+      </ed:Resources>
+    </ed:Resource>
+  </ed:Resources>
+</ed:EndpointDescription>
+----
+
+
+ifdef::backend-revealjs[]
+[.small]
+== FCS – Endpoint Description (Examples 3)
+endif::[]
+
+.Endpoint Description with ADVANCED Search Capability
+[source,xml,highlight="4,8,10..21,34,35"]
+----
+<ed:EndpointDescription xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="2">
+  <ed:Capabilities>
+    <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
+    <ed:Capability>http://clarin.eu/fcs/capability/advanced-search</ed:Capability>
+  </ed:Capabilities>
+  <ed:SupportedDataViews>
+    <ed:SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</ed:SupportedDataView>
+    <ed:SupportedDataView id="adv" delivery-policy="send-by-default">application/x-clarin-fcs-adv+xml</ed:SupportedDataView>
+  </ed:SupportedDataViews>
+  <ed:SupportedLayers>
+    <ed:SupportedLayer id="word" result-id="http://spraakbanken.gu.se/ns/fcs/layer/word">text</ed:SupportedLayer>
+    <ed:SupportedLayer id="orth" result-id="http://endpoint.example.org/Layers/orth" type="empty">orth</ed:SupportedLayer>
+    <ed:SupportedLayer id="lemma" result-id="http://spraakbanken.gu.se/ns/fcs/layer/lemma">lemma</ed:SupportedLayer>
+    <ed:SupportedLayer id="pos" result-id="http://spraakbanken.gu.se/ns/fcs/layer/pos"
+                       alt-value-info="SUC tagset"
+                       alt-value-info-uri="https://spraakbanken.gu.se/parole/Docs/SUC2.0-manual.pdf"
+                       qualifier="suc">pos</ed:SupportedLayer>
+    <ed:SupportedLayer id="pos2" result-id="http://spraakbanken.gu.se/ns/fcs/layer/pos2"
+                       alt-value-info="2nd tagset"
+                       qualifier="t2">pos</ed:SupportedLayer>
+  </ed:SupportedLayers>
+
+  <ed:Resources>
+    <!-- just one top-level resource at the Endpoint -->
+    <ed:Resource pid="hdl:10794/suc">
+      <ed:Title xml:lang="sv">SUC-korpusen</ed:Title>
+      <ed:Title xml:lang="en">The SUC corpus</ed:Title>
+      <ed:Description xml:lang="sv">Stockholm-Umeå-korpusen hos Språkbanken.</ed:Description>
+      <ed:Description xml:lang="en">The Stockholm-Umeå corpus at Språkbanken.</ed:Description>
+      <ed:LandingPageURI>https://spraakbanken.gu.se/resurser/suc</ed:LandingPageURI>
+      <ed:Languages>
+        <ed:Language>swe</ed:Language>
+      </ed:Languages>
+      <ed:AvailableDataViews ref="hits adv" />
+      <ed:AvailableLayers ref="word lemma pos pos2" />
+    </ed:Resource>
+  </ed:Resources>
+</ed:EndpointDescription>
+----
+
+
+== FCS – Search
+
+* SRU SearchRetreive
+* Actual “Search”
+
+** *Basic Search* with CQL
+** *Advanced Search* with FCS-QL
+
+* Search results are serialized in _Resource (Fragment)_ and in _Data View_ formats
+* Implementation details → <<Resources and Data Views,Chapter _Resources and Data Views_>>
+
+
+== FCS – SRU Extension Parameter
+
+* *`x-fcs-endpoint-description`* (explain)
+
+** “`true`” - `<sru:extraResponseData>` of the Explain Response contains the Endpoint Description document
+
+* *`x-fcs-context`* (searchRetrieve)
+
+** Comma-separated list of PIDs
+** Restrict the search to resources identified by these PIDs
+
+* *`x-fcs-dataviews`* (searchRetrieve)
+
+** Comma-separated list of Data View identifiers
+** Endpoints should also deliver these _``need-to-request``_ Data Views if requested
+
+* *`x-fcs-rewrites-allowed`* (searchRetrieve)
+
+** “`true`” - Endpoint can simplify query for higher recall
+
+[.notes]
+--
+* https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/normative-appendix.adoc#list-of-extra-request-parameters
+--
+
+
+== FCS – Diagnostics
+
+* Complements to the SRU Diagnostics → <<SRU 2.0 – Diagnostics,SRU 2.0 – Diagnostics>>
+* Prefix: `\http://clarin.eu/fcs/diagnostic/`
+* Refer to the <<FCS – SRU Extension Parameter,Extra Request Parameters>>
+
+
+ifdef::backend-revealjs[]
+== FCS – Diagnostics (Table)
+endif::[]
+
+[.xx-small%header,cols="3m,4,1"] 
+|===
+|Identifier URI
+|Description
+|Impact
+
+|{set:cellbgcolor:#b16c2b88}\http://clarin.eu/fcs/diagnostic/1
+|Persistent identifier passed by the Client for restricting the search is invalid.
+|non-fatal
+
+|{set:cellbgcolor}\http://clarin.eu/fcs/diagnostic/2
+|Resource set too large. Query context automatically adjusted.
+|non-fatal
+
+|\http://clarin.eu/fcs/diagnostic/3
+|Resource set too large. Cannot perform Query.
+|fatal
+
+|{set:cellbgcolor:#b16c2b88}\http://clarin.eu/fcs/diagnostic/4
+|Requested Data View not valid for this resource.
+|non-fatal
+
+|{set:cellbgcolor}\http://clarin.eu/fcs/diagnostic/10
+|General query syntax error.
+|fatal
+
+|{set:cellbgcolor:#b16c2b88}\http://clarin.eu/fcs/diagnostic/11
+|Query too complex. Cannot perform Query.
+|fatal
+
+|{set:cellbgcolor}\http://clarin.eu/fcs/diagnostic/12
+|Query was rewritten.
+|non-fatal
+
+|{set:cellbgcolor:#b16c2b88}\http://clarin.eu/fcs/diagnostic/14
+|General processing hint.
+|non-fatal
+|===
+
+[.notes]
+--
+* https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/normative-appendix.adoc#list-of-diagnostics
+--
+
+
+== Versions and Backwards Compatibility
+
+* “Clients MUST be compatible to CLARIN-FCS 1.0” (https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/interface-specification.adoc#backwards-compatibility[Quelle])
+
+** Thus implementation of SRU 1.2 still required (?)
+** Restriction to _Basic Search_ Capability
+** Processing of legacy XML namespaces (SRU Response, Diagnostics)
+
+* *Heuristic for version detection* (of endpoints)
+
+** Client: `Explain` request without `version` and `operation` parameters
+** Endpoint: SRU Response `<sru:explainResponse>`/`<sru:version>` with default SRU version
+
+* Versions
+
+** FCS 2.0 ↔ SRU 2.0
+** FCS 1.0 ↔ SRU 1.2 (SRU 1.1)
+
+[.notes]
+--
+* https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/interface-specification.adoc#versioning-and-extensions
+--
+
+
+== Notes on FCS SRU Aggregator
+
+* Currently no (?) support for FCS 2.0 only endpoints
++
+--
+** For compatibility reasons support of _Legacy FCS_ and _FCS 1.0_
+** Assumption that endpoints in _FCS 2.0_ also support earlier FCS Versions… [.lightgrey]+pass:q[_(no issue with CLARIN SRU/FCS libraries)_]+
+--
++
+→ _FCS 2.0 only_ endpoints _may_ therefore still receive  _FCS 1.0 (SRU 1.2)_ requests!
+
+* Aggregator sends `searchRetrieve` requests with only one resource PID in the `x-fcs-context` parameter for each resource requested
+
+** i.e. search across `N` resources of an endpoint → `N` separate search queries
+
+
+[.hidden]
+== Note on Scan Operation
+
+* Usage _only_ in Legacy FCS,
++
+originally for listing the available resources
+
+* Reserved for possible future use
+* Please ignore!
+
+[.notes]
+--
+* https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/fcs-to-sru-cql-binding.adoc#operation-scan
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part6-scan/searchRetrieve-v1.0-os-part6-scan.html
+--

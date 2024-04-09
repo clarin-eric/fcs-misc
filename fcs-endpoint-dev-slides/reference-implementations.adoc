@@ -1,0 +1,340 @@
+[background-image="fcs-render-uk.png",background-opacity="0.5"]
+= Reference Implementations
+
+[.notes]
+--
+* Java and Python, focus on FCS endpoints
+* Java class hierarchies, organization & structure, processes & lifecycles, configuration
+--
+
+
+[.small]
+== CLARIN Reference Libraries (Java)
+
+* Development started ~2012
+* Modularized: Client/Server, SRU/FCS, Parser
+* in Java 1.8+ (https://endoflife.date/oracle-jdk[_EOL: Ende 2030_])
+* Extensive documentation, some tests (_proven by being in use for a long time_)
+* Artifacts in https://nexus.clarin.eu[CLARIN Nexus], Code on https://github.com/clarin-eric/?q=fcs[Github]
+* Server/endpoint: external dependencies to
+
+** Logging: `slf4j`
+** HTTP: `javax.servlet:servlet-api`
+** Parser: `antlr4` (FCS-QL) / CQL
+
+* Build: maven
+* Deployment: jetty, tomcat, …
+
+
+[.small]
+== CLARIN Reference Libraries (Python)
+
+* ~ 2022: Translation of Java reference libraries to Python
+* Strong orientation towards the Java reference libraries
++
+→ (fast) (almost) identical interfaces, class/function names
+* but: slight optimizations for Python, no 1:1 copy
+* Focus on (new) FCS endpoints → no clients!
+* Typed, documented; published on PyPI
+* Synchronous, minimal WSGI - allows embedding in existing apps
+* Python 3.8+
+* Dependencies to
+
+** XML parsing: `lxml`
+** HTTP/WSGI: `werkzeug`
+** Query Parser: `PLY` (CQL), `ANTLR4` (FCS-QL)
+
+
+[.text-left.small]
+== CLARIN Reference Libraries
+
+* FCS SRU Server: https://github.com/clarin-eric/fcs-sru-server/[Java] (https://clarin-eric.github.io/fcs-sru-server/apidocs/index.html[docs]), https://github.com/Querela/fcs-sru-server-python/[Python] (https://fcs-sru-server-python.readthedocs.io/en/latest/[docs])
+* FCS Simple Endpoint: https://github.com/clarin-eric/fcs-simple-endpoint[Java] (https://clarin-eric.github.io/fcs-simple-endpoint/apidocs/index.html[docs]), https://github.com/Querela/fcs-simple-endpoint-python[Python] (https://fcs-simple-endpoint-python.readthedocs.io/en/latest/[docs])
+
+[.mt-2]
+* FCS SRU Client: https://github.com/clarin-eric/fcs-sru-client/[Java] (https://clarin-eric.github.io/fcs-sru-client/apidocs/index.html[docs])
+* FCS Simple Client: https://github.com/clarin-eric/fcs-simple-client[Java] (https://clarin-eric.github.io/fcs-simple-client/apidocs/index.html[docs])
+
+[.mt-2]
+* CQL Parser: https://github.com/indexdata/cql-java[Java] (http://zing.z3950.org/cql/java/docs/index.html[docs]?), https://github.com/Querela/cql-python[Python], https://github.com/Querela/cql-js[JavaScript]
+* FCS-QL Parser: https://github.com/clarin-eric/fcs-ql[Java], https://github.com/Querela/fcs-ql-python[Python] (https://fcs-ql-python.readthedocs.io/en/latest/[docs])
+
+[.mt-2]
+* Maven Endpoint Archetype: https://github.com/clarin-eric/fcs-endpoint-archetype[Java]
+* FCS SRU Aggregator: https://github.com/clarin-eric/fcs-sru-aggregator[Java]
+* FCS Endpoint Validator: https://github.com/clarin-eric/fcs-endpoint-tester[Java] (old), https://github.com/saw-leipzig/fcs-endpoint-validator[Java] ← test compliance with _SRU/FCS protocol_
+* Korp: https://github.com/clarin-eric/fcs-korp-endpoint/[Java], https://github.com/Querela/fcs-korp-endpoint-python/[Python]
+
+_https://github.com/indexdata/[Indexdata]: CQL-Parser, https://github.com/Querela/[Querela]: Python implementations_
+
+[.notes]
+--
+* Note: concrete examples and implementations will follow in a later section, high-level overview here
+--
+
+
+[.small]
+== FCS Endpoint – Design and structure
+
+* Query Parser (CQL, FCS-QL)
+
+[.mt-2]
+* *FCS SRU Server*
+
+** SRU configurations, versions, parameters, diagnostics, namespaces
+** XML SRU Writer
+** Request Parameter parser, SRUServer (request handler)
+** Abstract SRU interfaces (results, `SRUSearchEngine`)
+** Auth (_Interface, WIP_)
+
+ifdef::backend-revealjs[]
+[.small]
+== FCS Endpoint – Structure (Cont.)
+endif::[]
+
+[.mt-2]
+* *FCS Simple Endpoint*
+
+** FCS configurations (Endpoint Description), parameters, diagnostics, namespaces
+** XML Endpoint Description parser, Record and Data View writer
+** SimpleEndpointSearchEngineBase (`SRUSearchEngine` + FCS extensions)
+
+[.mt-2]
+* *FCS Endpoint for XYZ*
+
+** Implementation of abstract classes and bindings to search engine, query translation
+** Configuration: Endpoint Description, SRU Server Configuration
+** Deployment on Java Servlet Server or as WSGI app
+
+
+[.text-left.small]
+== FCS Endpoint – Initialization
+
+`SRUServerServlet` / `SRUServerApp` (web server)
+
+* Set default WebApp parameters
+* Parse the SRU Server Config
+* Create `QueryParserRegistry` (CQL)
+* Initialize *`SRUSearchEngine`*
+* Create `SRUServer` (with `SearchEngine` + configurations)
+
+`SRUSearchEngine` +
+(user implementation, → `SimpleEndpointSearchEngineBase`)
+
+* Further initialization of the `QueryParserRegistry` (FCS-QL)
+* *`do_init`* (user init)
+* Create Endpoint Description
+
+
+[.text-left.small]
+== FCS Endpoint – Communication Flow
+
+[GET] request  (incoming)
+
+[.ms-5.text-left.block-border-left-dashed]
+--
+↳ `SRUServerServlet` / `SRUServerApp` (web server)
+
+[.ms-5.text-left.block-border-left-dashed,open]
+====
+↳ `SRUServer`
+
+[.ms-3]
+* URL parameter evaluation
+* Multiplexing by operation: search/scan/explain
+
+[.ms-5.text-left.block-border-left-dashed,open]
+=====
+↳ `SimpleEndpointSearchEngineBase` (user implementation)
+
+[.ms-3]
+** Parse search query (CQL/FCS-QL) and send to search engine
+** Wrap result in `SRUSearchResultSet`
+** Possible diagnostics etc.
+
+↲
+=====
+
+[.ms-3]
+* optional error handling
+* XML output generation (SRU parameter)
+====
+--
+
+
+[.text-left]
+== FCS Endpoint – Class Hierarchy
+
+`SRUServerServlet` - https://github.com/clarin-eric/fcs-sru-server/blob/main/src/main/java/eu/clarin/sru/server/utils/SRUServerServlet.java[Java] (Servlet) / `SRUServerApp` - https://github.com/Querela/fcs-sru-server-python/blob/1.1.3/src/clarin/sru/server/wsgi.py#L36[Python] (WSGI)
+
+[.ms-5.darkgrey.font-italic.block-border-left-dashed]
+--
+Servlet implementation for servlet container, `doGet` handler, setup of `SRUServer` wrapper/application executed by the endpoint operator
+--
+
+SRUServer - https://github.com/clarin-eric/fcs-sru-server/blob/main/src/main/java/eu/clarin/sru/server/SRUServer.java[Java], https://github.com/Querela/fcs-sru-server-python/blob/1.1.3/src/clarin/sru/server/server.py#L293[Python]
+
+[.ms-5.darkgrey.font-italic.block-border-left-dashed]
+--
+SRU protocol implementation, `handleRequest`, error handling, XML output generation
+--
+
+SRURequestImpl - https://github.com/clarin-eric/fcs-sru-server/blob/main/src/main/java/eu/clarin/sru/server/SRURequestImpl.java[Java], https://github.com/Querela/fcs-sru-server-python/blob/1.1.3/src/clarin/sru/server/request.py#L567[Python]
+
+[.ms-5.darkgrey.font-italic.block-border-left-dashed]
+--
+Specific SRU GET parameter evaluation (parsing, validation; SRU versions) + possible FCS parameters (“`x-`...”), SRU version detection
+--
+[.ms-5.block-border-left-dashed]
+--
+↳ SRURequest (Interface) - https://github.com/clarin-eric/fcs-sru-server/blob/main/src/main/java/eu/clarin/sru/server/SRURequest.java[Java], https://github.com/Querela/fcs-sru-server-python/blob/1.1.3/src/clarin/sru/server/request.py#L47[Python]
+
+[.ms-5.darkgrey.font-italic.block-border-left-dashed,open]
+====
+Documentation of all SRU parameters
+====
+--
+
+
+ifdef::backend-revealjs[]
+[.text-left]
+== FCS Endpoint – Class Hierarchy (2)
+endif::[]
+
+*`XYZEndpointSearchEngine`* - korp: https://github.com/clarin-eric/fcs-korp-endpoint/blob/master/src/main/java/se/gu/spraakbanken/fcs/endpoint/korp/KorpEndpointSearchEngine.java[Java], https://github.com/Querela/fcs-korp-endpoint-python/blob/5ee448d2369e450571a6d82d3e379154752a3397/src/korp_endpoint/endpoint.py#L182[Python]
+
+[.ms-5.darkgrey.font-italic.block-border-left-dashed]
+--
+Actual implementation of `createEndpointDescription`, `do`* methods
+--
+[.ms-5.block-border-left-dashed]
+--
+↳ `SimpleEndpointSearchEngineBase` (abstract) - https://github.com/clarin-eric/fcs-simple-endpoint/blob/main/src/main/java/eu/clarin/sru/server/fcs/SimpleEndpointSearchEngineBase.java[Java], https://github.com/Querela/fcs-simple-endpoint-python/blob/1.0.4/src/clarin/sru/fcs/server/search.py#L507[Python]
+
+[.ms-5.darkgrey.font-italic.block-border-left-dashed,open]
+====
+Lifecyle (`init` → `destroy`), integration of endpoint description, interfaces for users
+====
+[.ms-5.block-border-left-dashed,open]
+====
+↳ `SRUSearchEngineBase` (abstract) - https://github.com/clarin-eric/fcs-sru-server/blob/main/src/main/java/eu/clarin/sru/server/utils/SRUSearchEngineBase.java[Java]
+
+[.ms-5.block-border-left-dashed,open]
+=====
+↳ `SRUSearchEngine` (interface) - https://github.com/clarin-eric/fcs-sru-server/blob/main/src/main/java/eu/clarin/sru/server/SRUSearchEngine.java[Java], https://github.com/Querela/fcs-sru-server-python/blob/1.1.3/src/clarin/sru/server/server.py#L160[Python]
+
+[.ms-5.darkgrey.font-italic.block-border-left-dashed,open]
+======
+Interface: `search`, `explain`, `scan`
+======
+=====
+====
+--
+
+
+ifdef::backend-revealjs[]
+[.text-left]
+== FCS Endpoint – Class Hierarchy (3)
+endif::[]
+
+*`XYZSRUSearchResultSet`* - korp: https://github.com/clarin-eric/fcs-korp-endpoint/blob/master/src/main/java/se/gu/spraakbanken/fcs/endpoint/korp/KorpSRUSearchResultSet.java[Java], https://github.com/Querela/fcs-korp-endpoint-python/blob/5ee448d2369e450571a6d82d3e379154752a3397/src/korp_endpoint/endpoint.py#L57[Python]
+
+[.ms-5.darkgrey.font-italic.block-border-left-dashed]
+--
+Actual implementation, `nextRecord` + `writeRecord` iterator and serialization of results
+--
+[.ms-5.block-border-left-dashed]
+--
+↳ `SRUSearchResultSet` (abstract) - https://github.com/clarin-eric/fcs-sru-server/blob/main/src/main/java/eu/clarin/sru/server/SRUSearchResultSet.java[Java], https://github.com/Querela/fcs-sru-server-python/blob/1.1.3/src/clarin/sru/server/result.py#L208[Python]
+
+[.ms-5.darkgrey.font-italic.block-border-left-dashed,open]
+====
+Fields for `searchRetrieve` operation results (total, records, …)
+====
+[.ms-5.block-border-left-dashed,open]
+====
+↳ `SRUAbstractResult` (interface) - https://github.com/clarin-eric/fcs-sru-server/blob/main/src/main/java/eu/clarin/sru/server/SRUAbstractResult.java[Java], https://github.com/Querela/fcs-sru-server-python/blob/1.1.3/src/clarin/sru/server/result.py#L15[Python]
+
+[.ms-5.darkgrey.font-italic.block-border-left-dashed,open]
+=====
+Diagnostics + `ExtraResponseData`
+=====
+====
+--
+
+_``XYZSRUScanResultSet``, `XYZSRUExplainResult` do not need to be implemented separately, default behavior is adequate_
+
+
+ifdef::backend-revealjs[]
+[.text-left]
+== FCS Endpoint – Class Hierarchy (4)
+endif::[]
+
+`SRUConstants` - https://github.com/clarin-eric/fcs-sru-server/blob/main/src/main/java/eu/clarin/sru/server/SRUConstants.java[Java], https://github.com/Querela/fcs-sru-server-python/blob/1.1.3/src/clarin/sru/constants.py[Python]
+
+* Diagnostic codes
+* Namespaces
+* Python: SRU parameter + values
+
+[.mt-5]
+`SRUDiagnostic` - https://github.com/clarin-eric/fcs-sru-server/blob/main/src/main/java/eu/clarin/sru/server/SRUDiagnostic.java[Java], https://github.com/Querela/fcs-sru-server-python/blob/1.1.3/src/clarin/sru/diagnostic.py[Python]
+
+* Error handling, message (text description) of the diagnostic
+
+
+[.text-left.small]
+== Endpoint Configurations
+
+[.position-absolute.right--30.width-75.opacity-50,xml]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoint-config xmlns="http://www.clarin.eu/sru-server/1.0/">
+    <databaseInfo>
+        <title xml:lang="se">Språkbankens korpusar</title>
+        <title xml:lang="en" primary="true">The Språkbanken corpora</title>
+        <description xml:lang="se">Sök i Språkbankens korpusar.</description>
+        <description xml:lang="en" primary="true">Search in the Språkbanken corpora.</description>
+        <author xml:lang="en">Språkbanken (The Swedish Language Bank)</author>
+        <author xml:lang="se" primary="true">Språkbanken</author>
+    </databaseInfo>
+   
+    <indexInfo>
+        <set name="fcs" identifier="http://clarin.eu/fcs/resource">
+            <title xml:lang="se">Clarins innehållssökning</title>
+            <title xml:lang="en" primary="true">CLARIN Content Search</title>
+        </set>
+        <index search="true" scan="false" sort="false">
+            <title xml:lang="en" primary="true">Words</title>
+            <map primary="true">
+                <name set="fcs">words</name>
+            </map>
+        </index>
+    </indexInfo>
+   
+    <schemaInfo>
+        <schema identifier="http://clarin.eu/fcs/resource" name="fcs"
+                sort="false" retrieve="true">
+            <title xml:lang="en" primary="true">CLARIN Content Search</title>
+        </schema>
+    </schemaInfo>
+</endpoint-config>
+----
+
+*WebApp Parameter* (`web.xml` o.Ä.) - https://github.com/clarin-eric/fcs-korp-endpoint/blob/master/src/main/webapp/WEB-INF/web.xml[Korp example]
+
+* SRU Version
+* SRU/FCS configurations
+
+*SRU (SRU Server Config)* - https://github.com/clarin-eric/fcs-korp-endpoint/blob/master/src/main/webapp/WEB-INF/sru-server-config.xml[Korp example] →
+
+* `databaseInfo` about endpoint, _but no evaluation in client?_
+* default: `indexInfo` + `schemaInfo`
+* *Mandatory: `database` field in `serverInfo`!*
+
+FCS (Endpoint Description) - https://github.com/clarin-eric/fcs-korp-endpoint/blob/master/src/main/webapp/WEB-INF/endpoint-description.xml[Korp example]
+
+* FCS Version (1/2)
+* Capabilities, Layer, DataViews
+* Resources
+
+

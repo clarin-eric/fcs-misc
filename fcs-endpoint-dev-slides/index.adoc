@@ -1,0 +1,85 @@
+= FCS Endpoint Development Tutorial
+:author: Erik Körner <koerner@saw-leipzig.de>
+:date: 2024-03-11
+:revealjsdir: reveal.js
+:revealjs_theme: white
+:revealjs_width: 1408
+:revealjs_height: 892
+:revealjs_slideNumber: h.v
+// :revealjs_hash: true
+:source-highlighter: highlight.js
+ifdef::backend-revealjs[]
+// :highlightjsdir:
+// https://github.com/asciidoctor/asciidoctor-reveal.js/blob/cbe2ac7f72877050ce15ee4a38fd54ca91590a78/lib/asciidoctor-revealjs/highlightjs.rb#L62
+:highlightjs-theme: reveal.js/plugin/highlight/magula.css
+:highlightjs-languages: xml,python,java,json,yaml,isbl,csharp,wren,x86asm
+endif::[]
+:imagesdir: images
+:customcss: css/presentation.css
+:title-slide-background-image: fcs-render-uk.png
+:title-slide-background-opacity: 0.5
+:toclevels: 1
+:icons: font
+
+[%notitle,%discrete]
+ifdef::backend-revealjs[== Table of Contents]
+
+toc::[]
+
+<<<
+
+include::fcs-intro.adoc[leveloffset=+1]
+
+<<<
+
+include::fcs-development-guide.adoc[leveloffset=+1]
+
+<<<
+
+include::fcs-fundamentals.adoc[leveloffset=+1]
+
+<<<
+
+include::reference-implementations.adoc[leveloffset=+1]
+
+<<<
+
+include::resources-and-dataviews.adoc[leveloffset=+1]
+
+<<<
+
+include::query-translation.adoc[leveloffset=+1]
+
+<<<
+
+include::endpoint-development.adoc[leveloffset=+1]
+
+<<<
+
+include::deployment.adoc[leveloffset=+1]
+
+<<<
+
+include::fcs-resources.adoc[leveloffset=+1]
+
+
+// for faster development, should not be enabled in production/if publicised
+// [pass]
+// ++++
+// <script src="./live.js"></script>
+// ++++
+
+[pass]
+++++
+<script>
+// remove hidden sections/slides;
+// add role "[.hidden]" to a slide to remove it from the presentation
+var sections = document.getElementsByTagName('section');
+for (var i = sections.length-1; i > -1; --i) {
+    console.log(sections[i].classList);
+    if (sections[i].classList.contains("hidden")) {
+        sections[i].remove();
+    }
+}
+</script>
+++++

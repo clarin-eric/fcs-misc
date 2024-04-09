@@ -1,0 +1,504 @@
+[background-image="fcs-render-uk.png",background-opacity="0.5"]
+= FCS Endpoint Development
+
+[.notes]
+--
+* VSCode settings, kickstart a project
+* Minimal FCS endpoint, search engine connection, result serialization
+* Deployment, Embedding, Extensibility
+--
+
+
+[.small]
+== Visual Studio Code _(suggestion)_
+
+[.position-absolute.right--10.width-20.zindex--1]
+image::vscode-logo.png[CQL-JS Demo]
+
+* Download & Installation: https://code.visualstudio.com/[code.visualstudio.com]
+* Extensions:
+
+** *Java*
+*** https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack[vscjava.vscode-java-pack]
+*** https://marketplace.visualstudio.com/items?itemName=redhat.vscode-xml[redhat.vscode-xml] (optional)
+
+** *Python*
+*** https://marketplace.visualstudio.com/items?itemName=ms-python.python[ms-python.python]
+*** https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance[ms-python.vscode-pylance], https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter[ms-python.black-formatter] (optional)
+
+** *Quality of Life*
+*** https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens[eamodio.gitlens]
+*** https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack[ms-vscode-remote.vscode-remote-extensionpack], https://marketplace.visualstudio.com/items?itemName=ms-vscode.remote-explorer[ms-vscode.remote-explorer] (for WSL or remote via SSH)
+
+[.notes]
+--
+* QoL = Quality of Life
+--
+
+
+== Visual Studio Code – Debugging (Java)
+
+* For `*.war`/Jetty web application testing
+* No hot code swapping / do not make any changes between compilation and debugging!
+
+* VSCode Debug Setting:
+** _Run and Debug > Add Configuration … > “Java: Attach by Process ID”_
+
+* Run application with Maven:
++
+[.code-width-full,bash]
+----
+MAVEN_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -agentlib:jdwp=transport=dt_socket,server=y,address=5005" \
+    mvn [jetty:run-war|...]
+----
+
+
+[.columns]
+== Visual Studio Code – Debugging (Python)
+
+[.column]
+--
+* `launch.json`
+
+** *pytest*: no predefined configuration in “Run and Debug” menu
+** file/module: as required
+
+* `settings.json`
+
+** *pytest*: coverage must be deactivated here!
+--
+[.column]
+--
+[source,json]
+----
+{
+    "name": "Python: pytest",
+    "type": "python",
+    "request": "launch",
+    "console": "integratedTerminal",
+    "purpose": [
+        "debug-test"
+    ],
+    "justMyCode": false
+}
+----
+[source,json]
+----
+"python.testing.pytestArgs": [
+    ".",
+    // disable coverage for debugging
+    "--no-cov",
+    // disable ansi color output (-vv)
+    "-q",
+],
+----
+--
+
+
+== Kickstart FCS Endpoint Project
+
+* See <<Guide to Endpoint Development>>
++
+→ Using reference endpoint implementations
+
+[.mt-4]
+* Using the corp endpoint
+
+** Java: https://github.com/clarin-eric/fcs-korp-endpoint[github.com/clarin-eric/fcs-korp-endpoint]
+** Python: https://github.com/Querela/fcs-korp-endpoint-python/[github.com/Querela/fcs-korp-endpoint-python]
+** Java: https://github.com/clarin-eric/fcs-sru-cqi-bridge[github.com/clarin-eric/fcs-sru-cqi-bridge] (CQP/SRU bridge)
+
+* Java: project generation with *Maven*
+
+** Project template: https://github.com/clarin-eric/fcs-endpoint-archetype[github.com/clarin-eric/fcs-endpoint-archetype]
+
+
+[.text-left]
+== CLARIN SRU/FCS Endpoint Archetype
+
+* Installation of the archetype in the local Maven repository, or
+* Configuration of the CLARIN Nexus as a remote repository
+* Project generation with Maven:
+
+[source,bash]
+----
+mvn archetype:generate \
+    -DarchetypeGroupId=eu.clarin.sru.fcs \
+    -DarchetypeArtifactId=fcs-endpoint-archetype \
+    -DarchetypeVersion=1.6.0 \
+    -DgroupId=[ id.group.fcs ] \
+    -DartifactId=[ my-cool-endpoint ] \
+    -Dversion=[ 1.0-SNAPSHOT ] \
+    -DinstitutionName=[ "My Institution" ]
+----
+[.x-small.darkgrey.ms-6]
+--
+* _all `[`... `]` placeholders must be replaced with the appropriate values (enclose values with spaces in quotation marks)_
+* _if archetype is installed using `git`, then use `archetypeVersion=1.6.0-SNAPSHOT` (see details in https://github.com/clarin-eric/fcs-endpoint-archetype/blob/main/pom.xml#L8[`pom.xml`])_
+--
+
+
+[.small]
+== Minimal FCS Endpoint
+
+* Required class implementations
+
+** `SimpleEndpointSearchEngineBase`
+** `SRUSearchResultSet`
+** *Wrapper or adapter for search engine (!)*
+
+* Required configurations
+
+** `sru-server-config.xml`
+** `endpoint-description.xml`
+** Web app configurations
++
+(Java: `web.xml`, Python: key-value parameter dict)
+
+*** Reference to implementation of the `SimpleEndpointSearchEngineBase`
+*** Required SRU parameters (`host`, `port`, `server`, …)
+
+
+[.text-left.x-small]
+== Minimal FCS Endpoint – Initialization
+
+→ *`SimpleEndpointSearchEngineBase`* (https://github.com/clarin-eric/fcs-simple-endpoint/blob/main/src/main/java/eu/clarin/sru/server/fcs/SimpleEndpointSearchEngineBase.java[Java], https://github.com/Querela/fcs-simple-endpoint-python/blob/1.0.4/src/clarin/sru/fcs/server/search.py#L507[Python])
+
+[.mt-4]
+`void doInit (ServletContext context, SRUServerConfig config, SRUQueryParserRegistry.Builder queryParsersBuilder, Map<String, String> params)` - https://github.com/clarin-eric/fcs-simple-endpoint/blob/main/src/main/java/eu/clarin/sru/server/fcs/SimpleEndpointSearchEngineBase.java#L288[Java], https://github.com/Querela/fcs-simple-endpoint-python/blob/1.0.4/src/clarin/sru/fcs/server/search.py#L722[Python]
+
+* Required implementation!
+* (optional) initialization of APIs, default values (PIDs), …
+
+[.mt-4]
+`EndpointDescription createEndpointDescription (ServletContext context, SRUServerConfig config, Map<String, String> params)` - https://github.com/clarin-eric/fcs-simple-endpoint/blob/main/src/main/java/eu/clarin/sru/server/fcs/SimpleEndpointSearchEngineBase.java#L265[Java], https://github.com/Querela/fcs-simple-endpoint-python/blob/1.0.4/src/clarin/sru/fcs/server/search.py#L713[Python]
+
+* Required implementation!
+* Loading of `EndpointDescription` (https://github.com/clarin-eric/fcs-simple-endpoint/blob/main/src/main/java/eu/clarin/sru/server/fcs/utils/SimpleEndpointDescription.java[Java], https://github.com/Querela/fcs-simple-endpoint-python/blob/1.0.4/src/clarin/sru/fcs/server/search.py#L430[Python])
+
+** embedded XML file (load with `SimpleEndpointDescriptionParser`, https://github.com/clarin-eric/fcs-simple-endpoint/blob/main/src/main/java/eu/clarin/sru/server/fcs/utils/SimpleEndpointDescriptionParser.java[Java], https://github.com/Querela/fcs-simple-endpoint-python/blob/1.0.4/src/clarin/sru/fcs/xml/reader.py#L38[Python]) or
+** construction dynamically, e.g. via API - example https://github.com/Leipzig-Corpora-Collection/fcs-noske-endpoint/blob/36fc8ae12131164a9cf00f4ed3648e9b47a1bd7d/src/main/java/de/saw_leipzig/textplus/webservices/fcs/fcs_noske_endpoint/NoSkESRUFCSEndpointSearchEngine.java#L355-L366[NoSketchEngine]
+
+
+[.text-left]
+== Minimal FCS Endpoint – Scan/Explain
+
+* (theoretically) nothing to implement
++
+→ Default handlers for “explain” and “scan” respond to requests automatically
+
+* Endpoint Description is always returned as an “explain” operation (in case of doubt)
+
+→ `SimpleEndpointSearchEngineBase` (https://github.com/clarin-eric/fcs-simple-endpoint/blob/main/src/main/java/eu/clarin/sru/server/fcs/SimpleEndpointSearchEngineBase.java[Java], https://github.com/Querela/fcs-simple-endpoint-python/blob/1.0.4/src/clarin/sru/fcs/server/search.py#L507[Python])
+
+
+[.text-left.x-small]
+== Minimal FCS Endpoint – Search Request
+
+`SRUSearchResultSet search (SRUServerConfig config, SRURequest request, SRUDiagnosticList diagnostics)`
+
+* Parse query (search request)
+
+** Check “`queryType`” parameter, whether CQL, FCS-QL, …
+** Error: `SRU_CANNOT_PROCESS_QUERY_REASON_UNKNOWN`
+
+* Analyze `ExtraRequestData`
+** “`x-fcs-context`” - requested resource (scope of search)
+*** Diagnostic: `FCS_DIAGNOSTIC_PERSISTENT_IDENTIFIER_INVALID` - invalid PIDs
+*** Error: `SRU_UNSUPPORTED_PARAMETER_VALUE` - e.g. too many PIDs, no PIDs
+** “`x-fcs-dataviews`” - requested Data Views
+*** Diagnostic: `FCS_DIAGNOSTIC_PERSISTENT_IDENTIFIER_INVALID`
+
+* Pagination → `startRecord` (1) / `maximumRecords` (-1)
+
+[.mt-3]
+* Process search with (local) search engine
+* Wrap results in `SRUSearchResultSet`
+
+[.mt-3]
+* [.green]+pass:q[_“If in Doubt” → `SRU_GENERAL_SYSTEM_ERROR`_]+
+
+[.notes]
+--
+* https://github.com/Leipzig-Corpora-Collection/fcs-noske-endpoint/blob/main/src/main/java/de/saw_leipzig/textplus/webservices/fcs/fcs_noske_endpoint/NoSkESRUFCSEndpointSearchEngine.java
+* https://github.com/clarin-eric/fcs-korp-endpoint/blob/master/src/main/java/se/gu/spraakbanken/fcs/endpoint/korp/KorpEndpointSearchEngine.java
+* https://github.com/Querela/fcs-korp-endpoint-python/blob/main/src/korp_endpoint/endpoint.py
+--
+
+
+[.small]
+== Search Engine Integration
+
+* *Input*: Parameters of search query
++
+--
+** Query (translated for (local) search engine)
+** Resource (PID)
+** Pagination: offset + count, → `startRecord` (1) / `maximumRecords` (-1)
+
+[.mt-4]
+** _(Request object and Server configurations)_
+** _(all global/static objects, such as API adapters etc.)_
+--
+
+[.mt-4]
+* *Output*: Details for response, results
+
+** Total number (optional, FCS 2.0 allows indication of accuracy)
+** List of results
+
+*** with “hit highlighting” (Hits) (Basic + Advanced Search)
+*** tokenized (using character offsets) for FCS-QL (Advanced Search) with optional Advanced Search annotation layers
+
+** Diagnostics
+
+
+ifdef::backend-revealjs[]
+[.small.columns]
+== Search Engine Integration (2)
+endif::[]
+
+[.column]
+--
+* Wrapper for results
+
+** Total number of results
+** List of results (text with hit offsets; tokens + annotations)
+** Resource PID, URL to result details
+
+* `SRUSearchResultSet` implementation
+
+** Iterator interface → `nextRecord()`, `writeRecord()`; `curRecordCursor`
+
+* Ex: https://github.com/Leipzig-Corpora-Collection/fcs-noske-endpoint/blob/main/src/main/java/de/saw_leipzig/textplus/webservices/fcs/fcs_noske_endpoint/searcher/MyResults.java[MyResults], https://github.com/Leipzig-Corpora-Collection/fcs-noske-endpoint/blob/main/src/main/java/de/saw_leipzig/textplus/webservices/fcs/fcs_noske_endpoint/NoSkESRUFCSSearchResultSet.java[NoSkESRUFCSSearchResultSet]
+--
+[.column]
+--
+[source,java]
+----
+protected NoSkESRUFCSSearchResultSet(..., MyResults results) {
+    super(diagnostics);
+    this.serverConfig = serverConfig;
+    this.request = request;
+
+    this.results = results;
+    currentRecordCursor = -1;
+    // ...
+
+public int getTotalRecordCount() { return (int) results.getTotal(); }
+public int getRecordCount() { return results.getResults().size(); }
+
+public boolean nextRecord() throws SRUException {
+    if (currentRecordCursor < (getRecordCount() - 1)) {
+        currentRecordCursor++;
+        return true; }
+    return false; }
+
+public void writeRecord(XMLStreamWriter writer) {
+    MyResults.ResultEntry result = results.getResults().get(currentRecordCursor);
+
+    XMLStreamWriterHelper.writeStartResource(writer, results.getPid(), null);
+    XMLStreamWriterHelper.writeStartResourceFragment(writer, null, result.landingpage);
+    // ...
+    XMLStreamWriterHelper.writeEndResourceFragment(writer);
+    XMLStreamWriterHelper.writeEndResource(writer);
+}
+----
+--
+
+
+== Result Serialization
+
+* `SRUXMLStreamWriter` - https://github.com/clarin-eric/fcs-sru-server/blob/main/src/main/java/eu/clarin/sru/server/SRUXMLStreamWriter.java[Java], https://github.com/Querela/fcs-sru-server-python/blob/1.1.3/src/clarin/sru/xml/writer.py#L24[Python]
+
+** (internal), specifically for SRU “`recordXmlEscaping`”
+
+* *`XMLStreamWriterHelper`* - https://github.com/clarin-eric/fcs-simple-endpoint/blob/main/src/main/java/eu/clarin/sru/server/fcs/XMLStreamWriterHelper.java[Java], https://github.com/Querela/fcs-simple-endpoint-python/blob/1.0.4/src/clarin/sru/fcs/xml/writer.py#L21[Python] ([.darkgrey]`FCSRecordXMLStreamWriter`)
+
+** Boilerplate + help for writing _Record_, _RecordFragment_, _Hits/Kwic Data View_
+
+* *`AdvancedDataViewWriter`* - https://github.com/clarin-eric/fcs-simple-endpoint/blob/main/src/main/java/eu/clarin/sru/server/fcs/AdvancedDataViewWriter.java[Java], https://github.com/Querela/fcs-simple-endpoint-python/blob/1.0.4/src/clarin/sru/fcs/xml/writer.py#L508[Python]
+
+** Help with writing _Advanced Data Views_
+** `addSpans` (content, layer, offset, hit?)
++
+`writeHitsDataView`, `writeAdvancedDataView`
+
+
+[.columns]
+== Minimal Configuration – Endpoint Description
+
+[.column.is-one-third]
+--
+* FCS Version: 2
+* Capabilities: BASIC Search
+* Data Views: HITS
+* Resources: (min: 1)
+
+** Title
+** Description
+** LandingPage URL
+** Languages → one language (ISO 639-3)
+--
+[.column]
+--
+[.small.width-75,xml,highlight="5,7,10,13,14..18,20,22"]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<EndpointDescription xmlns="http://clarin.eu/fcs/endpoint-description"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://clarin.eu/fcs/endpoint-description ../../schema/Core_2/Endpoint-Description.xsd"
+             version="2">
+  <Capabilities>
+    <Capability>http://clarin.eu/fcs/capability/basic-search</Capability>
+  </Capabilities>
+  <SupportedDataViews>
+    <SupportedDataView id="hits" delivery-policy="send-by-default" >application/x-clarin-fcs-hits+xml</SupportedDataView>
+  </SupportedDataViews>
+  <Resources>
+    <Resource pid="hdl:10794/sbkorpusar">
+      <Title xml:lang="sv">Språkbankens korpusar</Title>
+      <Title xml:lang="en">The Språkbanken corpora</Title>
+      <Description xml:lang="sv">Korpusarna hos Språkbanken.</Description>
+      <Description xml:lang="en">The corpora at Språkbanken.</Description>
+      <LandingPageURI >https://spraakbanken.gu.se/resurser/corpus</LandingPageURI>
+      <Languages>
+        <Language>swe</Language>
+      </Languages>
+      <AvailableDataViews ref="hits"/>
+    </Resource>
+  </Resources>
+</EndpointDescription>
+----
+--
+
+
+== Minimal Configuration – SRU
+
+* SRU Server Configurations → <<Endpoint Configurations,Endpoint Configurations>> (`sru-server-config.xml`)
+
+** `databaseInfo` with general information about endpoint
+** default: `indexInfo` + `schemaInfo`
+** required: [.green]+pass:q[`serverInfo` > `database`]+ (`host` and `port` by default)
+
+* Web server configuration
+
+** Optional adjustment of SRU / FCS parameters
+** Java: `web.xml`
+** Python: key-value dictionary
+
+[.notes]
+--
+* default: `indexInfo` + `schemaInfo` → copy/paste from template/existing endpoints, configuration remains largely the same here
+--
+
+
+== FCS Endpoint Deployment (Java)
+
+* Using Maven (!) / `pom.xml`
+
+** `<packaging>war</packaging>`
+** Build Plugin:
+
+*** _``org.apache.maven.plugins:maven-war-plugin[:2.6]``_ (?)
+*** `org.apache.maven.plugins:maven-compiler-plugin`
+
+* Create WAR artifact
+
+** `mvn clean compile war:war`
+** `mvn clean package` (also run tests etc.)
+
+* Deploy with Java Servlet Engine / HTTP server like https://tomcat.apache.org/[Apache Tomcat] /  https://eclipse.dev/jetty/[Eclipse Jetty] / …
+
+[.notes]
+--
+* TODO: Check if `maven-war-plugin` is no longer necessary?
+--
+
+
+== FCS Endpoint Deployment (Python)
+
+* “`make_app()`” method
++
+→ provides configured WSGI `SRUServerApp` (https://github.com/Querela/fcs-sru-server-python/blob/main/src/clarin/sru/server/wsgi.py[Python])
+
+* Deployment suggestion: https://gunicorn.org/[gunicorn] (Python WSGI HTTP server)
+* Example: https://github.com/Querela/fcs-korp-endpoint-python/[fcs-korp-endpoint-python]
+
+** as https://github.com/Querela/fcs-korp-endpoint-python/blob/main/src/korp_endpoint/__main__.py[module] with https://werkzeug.palletsprojects.com/en/3.0.x/serving/[werkzeug test server]
++
+[.darkgrey]
+`python3 -m korp_endpoint`
+
+** gunicorn in Docker Container (https://github.com/Querela/fcs-korp-endpoint-python/blob/5ee448d2369e450571a6d82d3e379154752a3397/Dockerfile#L44-L49[Dockerfile])
++
+[.darkgrey]
+`gunicorn 'korp_endpoint.app:make_gunicorn_app()'`
+
+
+[.columns]
+== Embedded FCS Endpoint (Python)
+
+[.column.is-half]
+--
+* Tested only with Python as WSGI app in Flask
++
+→ in kosh: https://github.com/Querela/kosh/tree/feature/fcs[PR], https://github.com/cceh/kosh/commit/1785582775dde1839e4b2f106625e0bd79d86141[commit]
+
+* Idea:
+
+** Create `SRUServer` with `SRUSearchEngine` (global)
+** Forward requests (filtered by path) to `SRUServer`
+--
+[.column]
+--
+[.code-width-full,python,highlight="2,3,5..14,19..21"]
+----
+def init(self, flask: Flask) -> None:
+    self.server = self.build_fcs_server()
+    flask.add_url_rule("some-path/fcs", "some-path/fcs", self.handle)
+
+def build_fcs_server(self) -> SRUServer:
+    params = self.build_fcs_server_params()
+    config = self.build_fcs_server_config(params)
+    qpr_builder = SRUQueryParserRegistry.Builder(True)
+    search_engine = KoshFCSEndpointSearchEngine(
+        endpoint_description=self.build_fcs_endpointdescription(),
+        # ... other parameters
+    )
+    search_engine.init(config, qpr_builder, params)
+    return SRUServer(config, qpr_builder.build(), search_engine)
+
+def handle(self) -> Response:
+    LOGGER.debug("request: %s", request)  # Flask/Werkzeug Request
+    LOGGER.debug("request?args: %s", request.args)
+    response = Response()                 # Flask/Werkzeug Response
+    self.server.handle_request(request, response)
+    return response
+----
+--
+
+
+[.small]
+== FCS Endpoint – Extensibility
+
+* Supports own query languages, Data Views etc.
+* Example: *LexFCS* (FCS extension for lexical resources)
++
+→ i.e. new query language and Data View
+
+[.mt-4]
+* *LexCQL* - query language (CQL dialect)
+
+** `SRUQueryParser` (https://github.com/clarin-eric/fcs-sru-server/blob/main/src/main/java/eu/clarin/sru/server/SRUQueryParser.java[Java], https://github.com/Querela/fcs-sru-server-python/blob/1.1.3/src/clarin/sru/queryparser.py#L58[Python]), based on `CQLQueryParser` (https://github.com/clarin-eric/fcs-sru-server/blob/main/src/main/java/eu/clarin/sru/server/CQLQueryParser.java[Java], https://github.com/Querela/fcs-sru-server-python/blob/1.1.3/src/clarin/sru/queryparser.py#L281[Python])
++
+→ `LexCQLQueryParser` with `LexCQLQuery`
+
+** `SimpleEndpointSearchEngineBase.doInit()` (https://github.com/clarin-eric/fcs-simple-endpoint/blob/FCSSimpleEndpoint-1.6.0/src/main/java/eu/clarin/sru/server/fcs/SimpleEndpointSearchEngineBase.java#L181[Java], https://github.com/Querela/fcs-simple-endpoint-python/blob/1.0.4/src/clarin/sru/fcs/server/search.py#L722[Python])
++
+→ `queryParsersBuilder.register(new LexCQLQueryParser());`
+
+* *LexHITS* - HITS Data View extension
+
+** in `SRUSearchResultSet.writeRecord` (https://github.com/clarin-eric/fcs-sru-server/blob/SRUServer-1.9.0/src/main/java/eu/clarin/sru/server/SRUSearchResultSet.java#L182[Java], https://github.com/Querela/fcs-sru-server-python/blob/1.1.3/src/clarin/sru/server/result.py#L346[Python]) appropriate XML result serialization
+
