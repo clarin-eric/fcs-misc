@@ -9,6 +9,7 @@ on:
       - 'fcs-core-2.0/**'
       - '.github/workflows/build-fcs-core-2.0-adoc.yml'
   workflow_dispatch:
+  workflow_call:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -20,7 +21,7 @@ jobs:
     container: asciidoctor/docker-asciidoctor
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Build HTML
         run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-core-2.0.html fcs-core-2.0/index.adoc
@@ -32,7 +33,7 @@ jobs:
         run: cp -R fcs-core-2.0/attachments docs/
 
       - name: Store results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: fcs-core-2.0-specs
           path: docs/*
