@@ -16,7 +16,7 @@ In short: Content Search over _Distributed Resources_
 Also: Federated “Corpus Query Platform”
 * _Search for patterns in distributed text collections_
 * No central index!
-* Text resources include annotated corpora, full texts etc.
+* Text resources include annotated corpora, full-texts etc.
 * FCS = interface specification, search infrastructure and software ecosystem
 * Usage of _established standards_ and _extensibility_!
 
@@ -54,7 +54,7 @@ endif::[]
 
 * (Own) text resources
 * “Search engine” on those text resources
-** Minimum: full text search
+** Minimum: full-text search
 * Deployment of publicly accessible FCS endpoint(s)
 
 
@@ -136,7 +136,7 @@ endif::[]
 * *~ 2011* Started as Working Group in CLARIN
 * *Mai 2011* https://trac.clarin.eu/wiki/Clarin%20Federated%20Search%20Demonstrator[EDC/FCS Workshop]
 * *~ 2011–2013* Initial version, now named *FCS “Legacy”*
-** SRU Scan for resources, BASIC Search (CQL/full text), KWIC
+** SRU Scan for resources, BASIC Search (CQL/full-text), KWIC
 * *April 2013* https://www.clarin.eu/event/2013/federated-content-search-workshop[FCS Workshop]
 * *~ 2013/2014* Code and Spec for *FCS Core 1.0*
 ** ``fcs-simple-endpoint:1.0.0``, ``sru-server:1.5.0``
@@ -160,14 +160,19 @@ ifdef::backend-revealjs[]
 == History (2)
 endif::[]
 
-* *~ 2015/2016* Spec and Code for *FCS Core 2.0*
+* *~ 2015/2016* Starting work on and Code for *FCS Core 2.0*
 ** ``fcs-simple-endpoint:1.3.0``, ``sru-server:1.8.0``
 ** Advanced Data Views (FCS-QL), …
+* *June 2017* Official release of *FCS Core 2.0* Spec
 * *2022* FCS is focus in Text+ (_Findability_)
 * *2023* New FCS maintainer in CLARIN
 ** Migration of Source Code to https://github.com/clarin-eric/?q=fcs[GitHub.com], updated documentation
 ** Python FCS endpoint libraries
-** Updated libraries & tools, rewrite of FCS Endpoint Validator
+** Updated libraries & tools
+** Prototypes for LexFCS extension
+* *2024*
+** Experiments with Entity Search (extension)
+** Rewrite of FCS Endpoint Validator
 
 
 [%notitle,background-image="LexFCS_Diagram_v3.png",background-size="contain"]
@@ -195,7 +200,7 @@ endif::[]
 --
 [%noheader,%autowidth,cols="h,4*"]
 |===
-|Full text
+|Full-text
 s|The
 s|cyclists
 s|are

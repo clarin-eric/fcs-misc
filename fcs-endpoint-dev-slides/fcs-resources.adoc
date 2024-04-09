@@ -17,10 +17,10 @@ https://github.com/clarin-eric/fcs-misc/[github.com/clarin-eric/fcs-misc/] (spec
 
 == Publications
 
-* as part of Text+ → see https://www.zotero.org/groups/4533881/textplus/tags/FCS/library[Zotero.org] tagged “FCS”
+* As part of Text+ → see https://www.zotero.org/groups/4533881/textplus/tags/FCS/library[Zotero.org] tagged “FCS”
 * Listing in https://gitlab.gwdg.de/textplus/ag-fcs-documents/-/blob/main/awesome-fcs.md?ref_type=heads#publications[Text+ Awesome FCS] list
-* in the context of CLARIN? → no dedicated bibliography
+* In the context of CLARIN? → no dedicated bibliography
 
 ** CLARIN Federated Content Search (CLARIN-FCS) – Core Specification, 2014, Oliver Schonefeld et al.
 ** Federated Search: Towards a Common Search Infrastructure, 2012, Herman Stehouwer et al.
-** several workshops
+** Several workshops

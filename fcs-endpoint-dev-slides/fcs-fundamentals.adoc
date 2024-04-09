@@ -154,6 +154,11 @@ Description of how errors are communicated from the server to the client
 *Description and Discovery Model* +
 Description, for the discovery of the “Search Service”, self-description of the functionality of the service
 
+[.notes]
+--
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part0-overview/searchRetrieve-v1.0-os-part0-overview.html#_Toc312151029
+--
+
 
 [.hidden,data-visibility=hidden]
 == SRU 2.0
@@ -580,7 +585,7 @@ especially `recordPacking`
 
 [.notes]
 --
-* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#_Toc324162498
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#interop
 --
 
 
@@ -596,15 +601,15 @@ Prefix: `info:srw/diagnostic/1/`
 
 * Information:
 
-** General information and notes (https://www.loc.gov/standards/sru/diagnostics/[LOC], http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#_Toc324162462[OASIS SRU 2.0])
-** List of Diagnostics (https://www.loc.gov/standards/sru/diagnostics/diagnosticsList.html[LOC], http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#_Toc324162491[OASIS SRU 2.0]) 
+** General information and notes (https://www.loc.gov/standards/sru/diagnostics/[LOC], http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#diagnostics[OASIS SRU 2.0])
+** List of Diagnostics (https://www.loc.gov/standards/sru/diagnostics/diagnosticsList.html[LOC], http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#diagnosticsList[OASIS SRU 2.0]) 
 
 * Categories: General (1-9), CQL (10-49), Result Sets (50-60), Records (61-74), Sorting (80-96), Explain (100-102), Stylesheets (110-111), Scan (120-121)
 * Not limited to this list only, custom diagnostics possible
 
 [.notes]
 --
-* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#_Toc324162462
+* http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#diagnostics
 * http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part3-sru2.0/searchRetrieve-v1.0-os-part3-sru2.0.html#diagnosticsList
 * https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/normative-appendix.adoc#list-of-diagnostics
 --

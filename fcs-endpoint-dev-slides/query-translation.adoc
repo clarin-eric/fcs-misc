@@ -15,6 +15,23 @@
 [.position-absolute.right--20.zindex--1]
 image::cql-js-screenshot.png[CQL-JS Demo]
 
+* More resources in https://github.com/clarin-eric/awesome-fcs#query-parsers[Awesome FCS List > Query Parsers]
+* *CQL* (Contextual Query Language)
+
+** BNF grammar: www.loc.gov/standards/sru/cql/spec.html#bnf
+** Hand-written https://github.com/clarin-eric/awesome-fcs#cql-contextual-query-language[parser implementation] in Java, Python, JS, …
+** Documentation: http://zing.z3950.org/cql/java/docs/index.html[Java]
+** Visualization in https://github.com/Querela/cql-js[demo of JS parser]
+*** Validation for https://gitlab.gwdg.de/textplus/ag-fcs-lex-fcs-cql-js[Text+ LexCQL]
+
+* *FCS-QL* (Federated Content Search Query Language)
+** EBNF grammar: https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/fcsql-grammar.ebnf[github.com/clarin-eric/fcs-misc] (FCS Core 2.0)
+** https://github.com/clarin-eric/awesome-fcs#fcs-ql-federated-content-search-query-language[Parser implementation] in https://github.com/clarin-eric/fcs-ql[Java], https://github.com/Querela/fcs-ql-python[Python],
++
+using ANTRL4, parsed into own wrappers (https://github.com/clarin-eric/fcs-simple-endpoint/tree/FCSSimpleEndpoint-1.6.0/src/main/java/eu/clarin/sru/server/fcs/parser[Java], https://github.com/Querela/fcs-ql-python/blob/1.0.1/src/fcsql/parser.py[Python])
+** Documentation: https://clarin-eric.github.io/fcs-simple-endpoint/apidocs/eu/clarin/sru/server/fcs/parser/package-summary.html[Java], https://fcs-ql-python.readthedocs.io/en/latest/reference/fcsql.parser.html[Python]
+** Grammar visualization with ANTLR4 tools
+
 
 [.text-left]
 == FCS-QL – Visualization
@@ -45,6 +62,26 @@ antlr4-parse src/fcsql/FCSParser.g4 src/fcsql/FCSLexer.g4 query -gui
 [.text-left.small]
 == FCS-QL Query Nodes
 
+QueryNode (with child node “children”)
+
+* Expression (layer identifier, layer identifier qualifier, operator, regular expression + flags)
+
+** [.darkgrey]+Wildcard+
+** Group → 1 QueryNode; “`(`” … “`)`”
+** [.darkgrey]+NOT → 1 QueryNode+
+** AND, OR → list of QueryNodes
+
+* [.darkgrey]+QueryDisjunction → list of QueryNodes+
+* QuerySequence → list of QueryNodes → [.green]+“list of QuerySegmenten”+
+* QuerySegment (min, max) → Expression → [.green]+“a single token”+
+* [.darkgrey]+QueryGroup (min, max) → QueryNode+
+* [.darkgrey]+Within-Query (SimpleWithin, QueryWithWithin) (Scope: sentence, utterance, paragraph, turn, text, session)+ [.green]+pass:q[_(unused)_]+
+
+[.notes]
+--
+* grayed out: currently not supported by the FCS Aggregator for searching (in visual query builder)
+--
+
 
 [.text-left.small]
 == FCS-QL Query Nodes – Aggregator
@@ -52,12 +89,85 @@ antlr4-parse src/fcsql/FCSParser.g4 src/fcsql/FCSLexer.g4 query -gui
 [.position-absolute.width-50.right--20.opacity-50.zindex--1]
 image::fcsql-querybuilder-complex.png[FCS-QL Query Builder]
 
+Parsed Query:
+
+* *Query Sequence* → [.green]+pass:q[with list of _Query Segment_]+
++
+[.darkgrey]
+=====
+[ word = ".*her" ] [ lemma = "Artznei" ] [ pos = "VERB" ]
+=====
+
+* *Query Segment* → [.green]+a token (can be repeatable)+
++
+[.darkgrey,open]
+=====
+[ word = "her.*" & ( word = "test" | word = "Apfel" ) ]
+[ pos = "ADV" ]{1,3}
+=====
++
+--
+** *Expression AND*
++
+[.darkgrey,open]
+=====
+[ word = "her.*" & word = "test" ]
+=====
+
+*** Expression Group
+*** Expression
+
+** *Expression Group* → *Expression OR* → [.green]+pass:q[list of _Expression_]+
++
+[.darkgrey]
+=====
+[ ( word = "her.*" | word = "Test" ) ]
+=====
+
+** *Expression* → [.green]+pass:q[*Layer Identifier*, *Operator*, *Regex* (value)]+
++
+[.darkgrey,open]
+=====
+[ word = "her.*" ]
+=====
+--
+
 
 == FCS-QL – Remarks
+
+* Currently (_Aggregator v3.9.1_) only _limited_ support of all FCS-QL features
++
+→ partly due to Visual Query Builder
+
+* Free text input / improved query builder planned for the future
+
+* Use appropriate diagnostics if query features are not supported
+
+** SRU: `\info:srw/diagnostic/1/48` - [.green]+Query feature unsupported.+
+** [.line-through]#FCS: `\http://clarin.eu/fcs/diagnostic/10` - [.green]+General query syntax error.+# - should be intercepted by FCS-QL parser library
+** FCS: `\http://clarin.eu/fcs/diagnostic/11` - [.green]+Query too complex. Cannot perform Query.+
 
 
 [.small]
 == Query-Mapping
+
+* Idea:
+
+** Let libraries parse raw queries (CQL, FCS-QL)
+** Recursively walk through the parsed query tree, “depth first”
+** Successively generate transformed query (for target system),
++
+e.g. `StringBuilder` in Java
+
+* Examples:
+
+** https://www.kielipankki.fi/support/korp-advanced/[Korp]: CQL → CQP (https://github.com/clarin-eric/fcs-korp-endpoint/blob/ffccf7f65cc55744e1b1a8cebacce5485c530bda/src/main/java/se/gu/spraakbanken/fcs/endpoint/korp/cqp/FCSToCQPConverter.java#L50-L112[Java], https://github.com/Querela/fcs-korp-endpoint-python/blob/5ee448d2369e450571a6d82d3e379154752a3397/src/korp_endpoint/query_converter.py#L26-L67[Python]), FCS-QL → CQP (https://github.com/clarin-eric/fcs-korp-endpoint/blob/ffccf7f65cc55744e1b1a8cebacce5485c530bda/src/main/java/se/gu/spraakbanken/fcs/endpoint/korp/cqp/FCSToCQPConverter.java#L114-L332[Java], https://github.com/Querela/fcs-korp-endpoint-python/blob/5ee448d2369e450571a6d82d3e379154752a3397/src/korp_endpoint/query_converter.py#L73-L210[Python])
+** https://www.sketchengine.eu/documentation/corpus-querying/[NoSketchEngine]: CQL → CQL (https://github.com/Leipzig-Corpora-Collection/fcs-noske-endpoint/blob/main/src/main/java/de/saw_leipzig/textplus/webservices/fcs/fcs_noske_endpoint/query/CQLtoNoSkECQLConverter.java[Java]), FCS-QL → CQL (https://github.com/Leipzig-Corpora-Collection/fcs-noske-endpoint/blob/main/src/main/java/de/saw_leipzig/textplus/webservices/fcs/fcs_noske_endpoint/query/FCSQLtoNoSkECQLConverter.java[Java])
+** https://solr.apache.org/guide/solr/latest/query-guide/standard-query-parser.html[Solr]: CQL → Solr (https://gist.github.com/Querela/825a084f94b30de88827050eddc8e361#file-cqltosolrconverter-java[Java]), LexCQL → Solr (https://gist.github.com/Querela/825a084f94b30de88827050eddc8e361#file-lexcqltosolrconverter-java[Java])
+
+*** SolrQuery with  https://solr.apache.org/guide/solr/latest/query-guide/highlighting.html[highlighting], Custom https://gist.github.com/Querela/825a084f94b30de88827050eddc8e361#file-searcher-java-L38-L44[hit prefixes/postfixes], use Solr result as pre-formatted Data View content (https://gist.github.com/Querela/825a084f94b30de88827050eddc8e361#file-sawsrusearchresultset-java-L137-L262[Code])
+
+** CQI Bridge: CQL → CQP (https://github.com/clarin-eric/fcs-sru-cqi-bridge/blob/9bcbe0f3297bde3f578b7eb6403d248571ac6bc2/src/main/java/eu/clarin/sru/cqibridge/CqiSRUSearchEngine.java#L228-L265[Java])
 
 
 ifdef::backend-revealjs[]
@@ -67,5 +177,13 @@ endif::[]
 
 * ElasticSearch
 
+** Only BASIC Search with https://www.elastic.co/guide/en/elasticsearch/reference/current/full-text-queries.html[full-text queries], e.g. with https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html[Simple Query String]
+
 * Solr
 
+** Only BASIC Search
+** ADVANCED Search with e.g. https://meertensinstituut.github.io/mtas/index.html[MTAS] (“Multi Tier Annotation Search”)
+
+* In general: use actual *Corpus Search Engine* for ADVANCED Search
++
+→ otherwise _at most_ a single annotation layer (“text”) can be searched

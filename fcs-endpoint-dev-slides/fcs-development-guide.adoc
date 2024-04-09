@@ -1,5 +1,5 @@
 [background-image="fcs-render-uk.png",background-opacity="0.5"]
-= Guide to endpoint development
+= Guide to Endpoint Development
 
 [.notes]
 --
@@ -91,7 +91,7 @@ endif::[]
 [.text-left]
 == Prerequisite for local search engine
 
-❗ Full text search
+❗ Full-text search
 [.ms-5]
 ❓ With Hit markers
 [.mb-5]

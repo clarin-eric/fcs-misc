@@ -16,7 +16,7 @@
 
 /* for slides with background image, make colored box for title */
 .reveal section.stack.present section:first-of-type[data-background-image] h2,
-.reveal .slides > section.present > h2,
+.reveal .slides>section.present>h2,
 .reveal section.stack.present section:first-of-type[data-background-image] aside.notes {
   background: #fff8f1d0;
   padding: 3rem;
@@ -39,6 +39,10 @@
   max-height: 45rem;
 }
 
+.reveal p a {
+  word-break: break-all;
+}
+
 /* --- Slide Styles ----------------------------------------------------- */
 
 .reveal .lightbg {
@@ -53,7 +57,7 @@
 
 .reveal .paragraph.left,
 .reveal .left .paragraph,
-.reveal .left > .content > .ulist {
+.reveal .left>.content>.ulist {
   text-align: left;
 }
 
@@ -215,15 +219,19 @@ div.refs li:hover p a {
 .lightgrey {
   color: lightgray;
 }
+
 .darkgrey {
   color: darkgrey;
 }
+
 .lightblue {
   color: lightblue;
 }
+
 .blue {
   color: blue;
 }
+
 .green {
   color: green;
 }
@@ -267,12 +275,15 @@ div.refs li:hover p a {
 .right-0 {
   right: 0;
 }
+
 .right--10 {
   right: -10%;
 }
+
 .right--20 {
   right: -20%;
 }
+
 .right--30 {
   right: -30%;
 }
@@ -280,15 +291,19 @@ div.refs li:hover p a {
 .width-10 {
   width: 10%;
 }
+
 .width-20 {
   width: 20%;
 }
+
 .width-50 {
   width: 50%;
 }
+
 .width-75 {
   width: 75%;
 }
+
 .width-100 {
   width: 100%;
 }
@@ -502,6 +517,7 @@ div.refs li:hover p a {
 .ms-5 {
   margin-left: 3rem !important;
 }
+
 .ms-6 {
   margin-left: 5rem !important;
 }
