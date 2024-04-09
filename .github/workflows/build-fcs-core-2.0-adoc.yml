@@ -1,4 +1,4 @@
-name: build <fcs-core-2.0> adocs 
+name: build <fcs-core-2.0> adocs
 
 on:
   push:
@@ -9,7 +9,6 @@ on:
       - 'fcs-core-2.0/**'
       - '.github/workflows/build-fcs-core-2.0-adoc.yml'
   workflow_dispatch:
-  workflow_call:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}

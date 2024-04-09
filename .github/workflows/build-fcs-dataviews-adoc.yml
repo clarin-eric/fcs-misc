@@ -1,4 +1,4 @@
-name: build <fcs-dataviews-1.0> adocs 
+name: build <fcs-dataviews-1.0> adocs
 
 on:
   push:

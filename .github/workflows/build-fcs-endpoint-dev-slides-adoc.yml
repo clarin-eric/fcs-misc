@@ -10,7 +10,6 @@ on:
       - 'fcs-endpoint-dev-slides/**'
       - '.github/workflows/build-fcs-endpoint-dev-slides-adoc.yml'
   workflow_dispatch:
-  workflow_call:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}

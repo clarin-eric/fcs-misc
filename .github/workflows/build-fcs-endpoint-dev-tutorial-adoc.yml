@@ -1,4 +1,4 @@
-name: build <fcs-endpoint-dev-tutorial> adocs 
+name: build <fcs-endpoint-dev-tutorial> adocs
 
 on:
   push:

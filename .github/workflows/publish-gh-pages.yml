@@ -1,0 +1,154 @@
+name: publish to <gh-pages>
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  
+  fcs-core-1-0:
+    runs-on: ubuntu-latest
+    container: asciidoctor/docker-asciidoctor
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build HTML
+        run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-core-1.0.html fcs-core-1.0/index.adoc
+
+      - name: Build PDF
+        run: asciidoctor-pdf -v -D docs -o fcs-core-1.0.pdf fcs-core-1.0/index.adoc
+
+      - name: Copy attachments
+        run: cp -R fcs-core-1.0/attachments docs/
+
+      - name: Store results
+        uses: actions/upload-artifact@v4
+        with:
+          name: fcs-core-1.0-specs
+          path: docs/*
+
+  fcs-core-2-0:
+    runs-on: ubuntu-latest
+    container: asciidoctor/docker-asciidoctor
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build HTML
+        run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-core-2.0.html fcs-core-2.0/index.adoc
+
+      - name: Build PDF
+        run: asciidoctor-pdf -v -D docs -o fcs-core-2.0.pdf fcs-core-2.0/index.adoc
+
+      - name: Copy attachments
+        run: cp -R fcs-core-2.0/attachments docs/
+
+      - name: Store results
+        uses: actions/upload-artifact@v4
+        with:
+          name: fcs-core-2.0-specs
+          path: docs/*
+
+  fcs-dataviews-1-0:
+    runs-on: ubuntu-latest
+    container: asciidoctor/docker-asciidoctor
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build HTML
+        run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-dataviews-1.0.html fcs-dataviews-1.0/index.adoc
+
+      - name: Build PDF
+        run: asciidoctor-pdf -v -D docs -o fcs-dataviews-1.0.pdf fcs-dataviews-1.0/index.adoc
+
+      - name: Store results
+        uses: actions/upload-artifact@v4
+        with:
+          name: fcs-dataviews-1.0-specs
+          path: docs/*
+
+  fcs-aai:
+    runs-on: ubuntu-latest
+    container: asciidoctor/docker-asciidoctor
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build HTML
+        run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-aai.html fcs-aai/index.adoc
+
+      - name: Build PDF
+        run: asciidoctor-pdf -v -D docs -o fcs-aai.pdf fcs-aai/index.adoc
+
+      - name: Store results
+        uses: actions/upload-artifact@v4
+        with:
+          name: fcs-aai-specs
+          path: docs/*
+
+  fcs-endpoint-dev-slides:
+    runs-on: ubuntu-latest
+    container: asciidoctor/docker-asciidoctor
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup reveal.js
+        run: |
+          git clone -b 4.1.2 --depth 1 https://github.com/hakimel/reveal.js.git
+          mkdir -p slides/reveal.js
+          mv reveal.js/dist slides/reveal.js/
+          mv reveal.js/plugin slides/reveal.js/
+
+      - name: Setup highlight.js for reveal.js
+        run: |
+          git clone -b 10.7.3 --depth 1 https://github.com/highlightjs/highlight.js.git
+          cp highlight.js/src/styles/github.css slides/reveal.js/plugin/highlight/
+          cp highlight.js/src/styles/idea.css slides/reveal.js/plugin/highlight/
+          cp highlight.js/src/styles/magula.css slides/reveal.js/plugin/highlight/
+
+      - name: Build slides
+        run: asciidoctor-revealjs -v -D slides -o index.html fcs-endpoint-dev-slides/index.adoc
+  
+      - name: Copy slide resources
+        run: |
+          mv -v fcs-endpoint-dev-slides/images slides/
+          mv -v fcs-endpoint-dev-slides/css slides/
+
+      - name: Store results
+        uses: actions/upload-artifact@v4
+        with:
+          name: fcs-endpoint-dev-slides
+          path: slides/*
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [ fcs-aai, fcs-core-1-0, fcs-core-2-0, fcs-dataviews-1-0, fcs-endpoint-dev-slides ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch results <fcs-endpoint-dev-slides>
+        uses: actions/download-artifact@v4
+        with:
+          path: build
+
+      - name: Push generated files to branch 'gh-pages'
+        run: |
+          mkdir -p static
+          mv -v build/* static
+          mv -v .github/pages/index-for-clarin.html static/index.html
+          cd static
+          git init -b main
+          git config user.name $GITHUB_ACTOR
+          git config user.email $GITHUB_ACTOR@users.noreply.github.com
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git add .
+          git commit -m "[release] Publish on GitHub Pages"
+          git push --force origin main:gh-pages
+        if: ${{ success() }}
