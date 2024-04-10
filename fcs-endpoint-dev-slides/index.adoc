@@ -1,18 +1,24 @@
 = FCS Endpoint Development Tutorial
 :author: Erik Körner <koerner@saw-leipzig.de>
 :date: 2024-03-11
+// revealjs
 :revealjsdir: reveal.js
 :revealjs_theme: white
 :revealjs_width: 1408
 :revealjs_height: 892
 :revealjs_slideNumber: h.v
 // :revealjs_hash: true
-:source-highlighter: highlight.js
+// source code
 ifdef::backend-revealjs[]
+:source-highlighter: highlight.js
 // :highlightjsdir:
-// https://github.com/asciidoctor/asciidoctor-reveal.js/blob/cbe2ac7f72877050ce15ee4a38fd54ca91590a78/lib/asciidoctor-revealjs/highlightjs.rb#L62
+// see https://github.com/asciidoctor/asciidoctor-reveal.js/blob/cbe2ac7f72877050ce15ee4a38fd54ca91590a78/lib/asciidoctor-revealjs/highlightjs.rb#L62
 :highlightjs-theme: reveal.js/plugin/highlight/magula.css
 :highlightjs-languages: xml,python,java,json,yaml,isbl,csharp,wren,x86asm
+endif::[]
+ifndef::backend-revealjs[]
+:source-highlighter: rouge
+:rouge-style: igor_pro
 endif::[]
 :imagesdir: images
 :customcss: css/presentation.css
