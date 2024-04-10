@@ -113,6 +113,25 @@ jobs:
           name: lexfcs-specs
           path: docs/*
 
+  fcs-endpoint-dev-tutorial:
+    runs-on: ubuntu-latest
+    container: asciidoctor/docker-asciidoctor
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build HTML
+        run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-endpoint-dev-tutorial.html fcs-endpoint-dev-tutorial/index.adoc
+
+      - name: Build PDF
+        run: asciidoctor-pdf -v -D docs -o fcs-endpoint-dev-tutorial.pdf fcs-endpoint-dev-tutorial/index.adoc
+
+      - name: Store results
+        uses: actions/upload-artifact@v4
+        with:
+          name: fcs-endpoint-dev-tutorial
+          path: docs/*
+
   fcs-endpoint-dev-slides:
     runs-on: ubuntu-latest
     container: asciidoctor/docker-asciidoctor
@@ -176,6 +195,7 @@ jobs:
         fcs-dataviews-1-0,
         fcs-aai,
         lexfcs,
+        fcs-endpoint-dev-tutorial,
         fcs-endpoint-dev-slides,
         fcs-endpoint-dev-slides-as-doc,
       ]
