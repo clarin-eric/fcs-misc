@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+    xmlns:hits="http://textplus.org/fcs/dataview/hits"
+    xml:lang="en" vc:minVersion="1.0" vc:maxVersion="1.1"
+    targetNamespace="http://textplus.org/fcs/dataview/hits" elementFormDefault="qualified">
+
+    <xs:annotation>
+        <xs:documentation>
+            <h:p>
+                This schema defines the structure of a
+                <h:em>generic result</h:em> data view. All CLARIN-FCS endpoints
+                MUST support this data view.
+            </h:p>
+            <h:p>
+                The value <h:code>application/x-clarin-fcs-hits+xml</h:code>
+                MUST be used to indicate a <h:em>generic result</h:em> data view.
+            </h:p>
+        </xs:documentation>    
+    </xs:annotation>
+
+    <xs:element name="Result">
+        <xs:annotation>
+            <xs:documentation>
+                <h:p>
+                    A single result line with one or more marked hits.
+                    White-space is considered <h:em>non-signification</h:em>,
+                    except for delimiting tokens.
+                </h:p>
+                <h:p>
+                    CLARIN-FCS client MAY
+                    normalize white-space and strip leading and tailing
+                    white-space and collapse all white-space between
+                    tokens to a single #x20 character.
+                </h:p>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element name="Hit" type="hits:hitType" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                A hit highlight or a field type annotation. It SHALL not be empty.
+                            </h:p>
+                            <h:p>
+                                One <h:code>Result</h:code> element MUST
+                                one <h:code>Hit</h:code> element, but MAY
+                                contain more than one.
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="hitType" mixed="true">
+        <!-- nested content (highlighting?)
+        <xs:sequence>
+            <xs:element name="Hit" type="xs:string" minOccurs="0" maxOccurs="unbounded"></xs:element>
+        </xs:sequence>
+        -->
+        <xs:attribute name="kind" type="hits:fieldType" use="optional">
+            <xs:annotation>
+                <xs:documentation>
+                    <h:p>
+                        Field type identifier for this annotation. Is used in the &lt;Hit&gt; element to determine which function the annotated text has.
+                    </h:p>
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:simpleType name="fieldType">
+        <xs:restriction base="xs:string">
+            <!-- <xs:pattern value="[a-zA-Z][a-zA-Z0-9]*" /> -->
+            <xs:enumeration value="lex-lemma"/>
+            <xs:enumeration value="lex-pos"/>
+            <xs:enumeration value="lex-def"/>
+            <!-- <xs:enumeration value="query"/> -->
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
