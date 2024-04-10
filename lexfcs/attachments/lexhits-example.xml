@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Result xmlns="http://textplus.org/fcs/dataview/hits"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://textplus.org/fcs/dataview/hits ./DataView-LexHits.xsd">
+    The quick brown <Hit kind="lex-lemma">fox</Hit> jumps <Hit kind="lex-pos">over</Hit> the lazy <Hit>dog</Hit>.
+</Result>

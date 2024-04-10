@@ -12,6 +12,7 @@ Jump to: [[Specification Documents](#specification-documents)]
 - [CLARIN Federated Content Search - FCS **Core 1.0**: `fcs-core-1.0/index.adoc`](fcs-core-1.0/index.adoc)
 - [CLARIN Federated Content Search - FCS **Data Views 1.0**: `fcs-dataviews-1.0/index.adoc`](fcs-dataviews-1.0/index.adoc)
 - _WIP_ [CLARIN Federated Content Search - FCS **AAI 1.0**: `fcs-aai/index.adoc`](fcs-aai/index.adoc)
+- _WIP_ [Text+ **LexFCS 1.0**: `lexfcs/index.adoc`](lexfcs/index.adoc)
 
 ### Folder Structure
 

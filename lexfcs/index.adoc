@@ -1,0 +1,44 @@
+= Federated Content Search for Lexical Resources (LexFCS): Specification
+Erik Körner <koerner@saw-leipzig.de>; Thomas Eckart <eckart@saw-leipzig.de>; Axel Herold <herold@bbaw.de>; Frank Wiegand <wiegand@bbaw.de>; Frank Michaelis <michaelis@ids-mannheim.de>; Matthias Bremm <bremm@uni-trier.de>; Louis Cotgrove <cotgrove@ids-mannheim.de>; Thorsten Trippel <trippel@ids-mannheim.de>; Felix Rau <f.rau@uni-koeln.de>
+v0.1, 2023-05-04
+// more metadata
+:description: Specification extension of the CLARIN Federated Content Search (FCS) for Lexical Resources (LexFCS).
+:organization: Text+
+// settings
+:doctype: book
+// source code
+:source-highlighter: rouge
+:rouge-style: igor_pro
+// toc and heading
+:toc:
+:toclevels: 4
+:sectnums:
+:sectnumlevels: 4
+:appendix-caption!:
+// directory stuff
+:imagesdir: images
+// pdf
+ifdef::backend-pdf[]
+:pdf-theme: textplus
+:pdf-themesdir: {docdir}/themes
+:title-logo-image: image:{docdir}/themes/textplus-logo.svg[pdfwidth=3.25in,align=center]
+endif::[]
+
+//ifdef::backend-pdf[]
+//[%notitle]
+//--
+//[abstract]
+//{description}
+//--
+//endif::[]
+
+include::introduction.adoc[leveloffset=+1]
+
+include::lexcql.adoc[leveloffset=+1]
+
+include::dataviews.adoc[leveloffset=+1]
+
+[appendix]
+== Normative Appendix
+
+include::lexcql-contextset.adoc[leveloffset=+2]

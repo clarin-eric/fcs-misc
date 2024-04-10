@@ -1,0 +1,24 @@
+extends: default
+header:
+  font-color: #999999
+  height: 0.5in
+  recto:
+    columns: '<30% =0% >70%'
+    right:
+      content: '_{doctitle}_'
+    left:
+      content: image:textplus-logo.svg[pdfwidth=0.45in]
+  verso:
+    columns: '<70% =0% >30%'
+    left:
+      content: $header_recto_right_content
+    right:
+      content: $header_recto_left_content
+footer:
+  height: 0.45in
+  recto:
+    right:
+      content: '{section-or-chapter-title} | {page-number}'
+  verso:
+    left:
+      content: '{page-number} | {chapter-title}'

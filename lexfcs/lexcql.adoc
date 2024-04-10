@@ -1,0 +1,91 @@
+= LexCQL
+:description: LexCQL query language.
+
+The LexCQL makes use of the <<ref:LOC-CQL,Contextual Query Language (CQL)>> for queries on lexical resources in the context of the FCS. This has the benefit of using an existing, well-known and standardized query language with an established ecosystem, including libraries, parsers and extensive documentation. The proposed Context Set can be found in section <<CQL ContextSet specification>>.
+
+LexCQL queries should offer the greatest possible compatibility and flexibility to users, i.e. it `SHOULD` allow the retrieval of lexical records which are available in different spelling or normalisation variants (upper/lower case; diacritics/umlauts; other forms of normalization) with a simple query. It therefore should make it easier to formulate meaningful queries, reduce frustration caused by missing or incomplete results and also enable fuzzy search functionality. Endpoints `SHOULD` support this flexible, user-oriented handling, but are always free to rank more suitable results higher.
+
+However, users `SHOULD` also be given the option of _"sharpening"_ search queries using optional operators or modifiers, to refine queries and the associated result sets.
+
+
+== Queryable fields / indexes
+Every LexCQL Endpoint `MUST` support queries for field `lemma` (at least implicitly as default field) and `SHOULD` support as many queryable fields as feasible.
+
+:fn-lemma: pass:n[footnote:[`SHOULD` be used as default query field]]
+:fn-pos: footnote:[Potential use of the <<ref:UD-POS,Universal Dependencies POS tags>>]
+
+=== Form and sense definition
+
+* `lemma`: Lemma, main form, article name {fn-lemma}
+
+* `def`: Definition
+
+=== Grammatical properties (WIP)
+
+NOTE: Analogous to https://dariah-eric.github.io/lexicalresources/pages/TEILex0/TEILex0.html#typology-of-gram[TEI Lex-0 types] .
+
+* `pos`: Part of speech {fn-pos}
+
+NOTE: __Open question__: all TEI Lex-0 vocabulary (like case, gender, etc.)?
+
+
+=== Semantic relations / Cross-references _(WIP)_
+
+NOTE: Analogous to https://dariah-eric.github.io/lexicalresources/pages/TEILex0/TEILex0.html#crossref_typology[TEI Lex-0 types] with `xr` Context Set.
+
+* `xr$synonymy`: Synonym
+* `xr$hyponymy`: Hyponym
+* `xr$hypernymy`: Hyperonym
+* `xr$meronymy`: Meronym
+* `xr$antonymy`: Antonym
+
+NOTE: __Open question__: how exactly do search scenarios look like here?
+
+[discrete]
+==== Examples
+
+* `pos = "NOUN" AND xr$synonymy = "house"`
++
+Searching for nouns that are synonyms to "house".
+
+
+=== Senses, Entities, Synsets _(WIP)_
+
+* `senseRef`: References to external sense definitions (like Princeton WordNet, GermaNet, Interlingual Index, authority files)
+
+
+[discrete]
+==== Examples
+
+* `senseRef = "https://d-nb.info/gnd/118571249"`
++
+Searching for all references of the entity https://d-nb.info/gnd/118571249 (person "Gottfried Wilhelm Leibniz").
+
+* `senseRef = "wordnet:study%2:31:02::"`
++
+Searching for sense "study" (http://wordnetweb.princeton.edu/perl/webwn?c=6&sub=Change&o2=&o0=1&o8=1&o1=1&o7=&o5=&o9=&o6=1&o3=&o4=&i=12&h=010000000000100000000&s=study[`study%2:31:02::`, _analyze, analyse, study, examine, canvass_]).
++
+NOTE: Some inventory of authorities or lookups should be defined and agreed on. Otherwise, it is up to the Endpoint to interpret the senses correctly.
+
+_Open questions_:
+
+ *** Standard way of referencing Princeton WordNet senses?
+
+
+=== Operators _(WIP)_
+
+* Partial or full match of an _index_
+
+** *`=`* for full match?
++
+NOTE: Very generic definition in <<ref:LOC-CQLCS,CQL Context Set>> specification.
++
+_Open questions_:
+
+*** Taking into account lower/uppercase normalisation of Umlauts?
+*** CQL operators for partial matches or usage of `/approx`?
+*** Regular expressions?
+
+* Combination with `AND` / `OR` and parentheses `(` ... `)`
++
+NOTE: Leave full support to the endpoints!

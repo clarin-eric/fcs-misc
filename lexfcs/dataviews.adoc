@@ -1,0 +1,40 @@
+= LexFCS Data Views
+:description: FCS DataViews for Lex Search.
+
+
+Data formats for result representation.
+
+
+== Extension of the Hits Data View for LexFCS
+
+Based on:
+
+* <<ref:CLARIN-FCSCore20,FCS Core 2.0 specification>> (section "Basic Search", §2.2.3.2)
+* Hits XML schema https://github.com/clarin-eric/fcs-misc/blob/main/schema/Core_2/DataView-Hits.xsd["DataView-Hits.xsd"]
+
+.Example of basic *Hits* Data View
+[source,xml]
+----
+<!-- potential @pid and @ref attributes omitted -->
+<fcs:DataView type="application/x-clarin-fcs-hits+xml">
+  <hits:Result xmlns:hits="http://clarin.eu/fcs/dataview/hits">The quick brown <hits:Hit>fox</hits:Hit> jumps over the lazy<hits:Hit>dog</hits:Hit>.</hits:Result>
+</fcs:DataView>
+----
+
+Reuse of the `<hits:Hit>` element, with the extension of content hinting by using an optional attribute `@kind` with the following allowed values:
+
+* `lex-lemma`: Lemma,
+* `lex-pos`: Part of speech,
+* `lex-def`: Definition.
+
+Textual content outside of `<hits:Hit>` are displayed unchanged.
+
+.Example of extended *Hits* Data View with additional `@kind` attributes
+[source,xml]
+----
+<fcs:DataView type="application/x-textplus-fcs-hits+xml">
+  <hits:Result xmlns:hits="http://textplus.org/fcs/dataview/hits"><hits:Hit kind="lex-lemma">Apple</hits:Hit>: <hits:Hit kind="lex-pos">NOUN</hits:Hit>. <hits:Hit kind="lex-def">An apple is an edible fruit produced by an apple tree.</hits:Hit></hits:Result>
+</fcs:DataView>
+----
+
+Endpoints `MUST` generate responses that are valid according to the XML schema link:attachments/DataView-LexHits.xsd["DataView-LexHits.xsd"].
