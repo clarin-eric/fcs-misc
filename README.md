@@ -5,6 +5,7 @@ This repo contains AsciiDoc sources, images, examples and schema files for the C
 Jump to: [[Specification Documents](#specification-documents)]
 | [[Tutorial Documents](#tutorial-documents)]
 | [[Historical Resources](#historical-resources)]
+| [[Webpage with Builds](#webpage-with-builds)]
 
 ## Specification Documents
 
@@ -109,3 +110,9 @@ To be found under [`historical/`](historical/):
 - [`schema/`](historical/schema/) -- `xsd` schema files
 - [`software/`](historical/software/)
     - [`mpi-endpoint/`](historical/software/mpi-endpoint/) -- CQL Search servlet
+
+## Webpage with Builds
+
+A static overview webpage with _latest_ document builds is available at https://clarin-eric.github.io/fcs-misc/.
+
+To update this page (only manually), go to [Actions: _publish to \<gh-pages\>_](https://github.com/clarin-eric/fcs-misc/actions/workflows/publish-gh-pages.yml) and trigger a rebuild with the _Run workflow_ button on the `main` branch.
