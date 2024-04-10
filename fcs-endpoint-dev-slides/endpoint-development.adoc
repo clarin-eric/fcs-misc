@@ -258,7 +258,7 @@ ifdef::backend-revealjs[]
 == Search Engine Integration (2)
 endif::[]
 
-[.column]
+[.column.is-one-third]
 --
 * Wrapper for results
 

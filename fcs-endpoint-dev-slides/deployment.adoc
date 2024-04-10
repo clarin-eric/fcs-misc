@@ -82,6 +82,7 @@ $ docker run --rm -it -p 8080:8080 fcs-endpoint-tester
 ** Vaadin 24 UI with SpringBoot, Java 17
 
 
+[.text-left]
 == FCS Endpoint Validator – Deployment
 
 Build with Maven
@@ -99,6 +100,7 @@ $ mvn spring-boot:run
 ----
 
 
+[.text-left]
 == FCS Endpoint Validator – Deployment (Docker)
 
 Download sources:
