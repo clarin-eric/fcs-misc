@@ -154,6 +154,7 @@ jobs:
         fcs-core-2-0,
         fcs-dataviews-1-0,
         fcs-endpoint-dev-slides,
+        fcs-endpoint-dev-slides-as-doc,
       ]
 
     steps:
@@ -167,8 +168,9 @@ jobs:
       - name: Push generated files to branch 'gh-pages'
         run: |
           mkdir -p static
-          mv -v build/* static
-          mv -v .github/pages/index-for-clarin.html static/index.html
+          mv -v build/* static/
+          mv -v .github/pages/* static/
+          sed -i 's/###BUILDDATE###/'"$(date '+%Y-%m-%d %H:%M:%S %Z')"'/g' static/index.html
           cd static
           git init -b main
           git config user.name $GITHUB_ACTOR
