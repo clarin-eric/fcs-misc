@@ -1,6 +1,6 @@
 # FCS Miscellaneous Resources
 
-This repo contains AsciiDoc sources, images, examples and schema files for the CLARIN Federated Content Search (FCS) specification documents found at [clarin.eu](https://www.clarin.eu/content/federated-content-search-clarin-fcs-technical-details). Prior versions of the specification documents with examples and schema files are also backed up [here](historical/).
+This repo contains AsciiDoc sources, images, examples and schema files for the CLARIN Federated Content Search (FCS) specification documents found at [clarin.eu](https://www.clarin.eu/content/federated-content-search-clarin-fcs-technical-details). Prior versions of the specification documents with examples and schema files are also backed up in the [`historical/`](historical/) folder. Current builds of the AsciiDoc sources are available [on this page](https://clarin-eric.github.io/fcs-misc/).
 
 Jump to: [[Specification Documents](#specification-documents)]
 | [[Tutorial Documents](#tutorial-documents)]
