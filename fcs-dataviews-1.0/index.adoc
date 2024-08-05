@@ -39,3 +39,7 @@ include::introduction.adoc[leveloffset=+1]
 <<<
 
 include::dataviews.adoc[leveloffset=+1]
+
+<<<
+
+include::changelog.adoc[leveloffset=+1]

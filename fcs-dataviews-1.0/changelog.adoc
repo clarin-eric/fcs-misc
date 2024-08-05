@@ -1,0 +1,32 @@
+= Changelog
+
+:sectnums!:
+
+// tag::compact[]
+
+// --- Github ---
+
+[discrete]
+== 2023-06-12 -- Conversion to AsciiDoc and Migration of specification documents to Github
+// https://github.com/clarin-eric/fcs-misc/commit/5b8952c1bfe96495f70e866634bf5dcf17166ba3
+
+* Convert specification documents for FCS Core 2.0, Core 1.0, DataView and AAI to AsciiDoc
+* Migrate from CLARIN Trac to https://github.com/clarin-eric/[CLARIN Github]
+* Add Github Actions workflow to automate build process
+
+// --- versions in Trac ---
+
+[discrete]
+== 2017-06-13 -- Last version on Trac
+// https://trac.clarin.eu/wiki/FCS/Dataviews?version=6
+// https://trac.clarin.eu/wiki/FCS/Dataviews?action=diff&version=6&old_version=1
+
+* Proofing, typo fixes, updated links
+
+[discrete]
+== 2014-05-05 -- Data Views specification
+// https://trac.clarin.eu/wiki/FCS/Dataviews?version=1
+
+* Add full specification
+
+:sectnums:
