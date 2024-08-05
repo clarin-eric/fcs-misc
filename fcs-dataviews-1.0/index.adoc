@@ -42,4 +42,5 @@ include::dataviews.adoc[leveloffset=+1]
 
 <<<
 
+:sectnums!:
 include::changelog.adoc[leveloffset=+1]

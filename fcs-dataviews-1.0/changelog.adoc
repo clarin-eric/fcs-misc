@@ -1,7 +1,5 @@
 = Changelog
 
-:sectnums!:
-
 // tag::compact[]
 
 // --- Github ---
@@ -28,5 +26,3 @@
 // https://trac.clarin.eu/wiki/FCS/Dataviews?version=1
 
 * Add full specification
-
-:sectnums:

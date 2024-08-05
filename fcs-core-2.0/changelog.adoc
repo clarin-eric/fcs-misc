@@ -1,7 +1,5 @@
 = Changelog
 
-:sectnums!:
-
 // tag::compact[]
 
 // --- Github ---
@@ -63,5 +61,3 @@
 [discrete]
 == 2015-10-15 -- Start with Core 2.0 specification
 // https://trac.clarin.eu/wiki/Taskforces/FCS/FCS-Specification-Draft?version=1
-
-:sectnums:
