@@ -1,0 +1,23 @@
+= Changelog
+
+// tag::compact[]
+
+// --- Github ---
+
+[discrete]
+== 2023-06-12 -- Conversion to AsciiDoc and Migration of specification documents to Github
+// https://github.com/clarin-eric/fcs-misc/commit/5b8952c1bfe96495f70e866634bf5dcf17166ba3
+
+* Convert specification documents for FCS Core 2.0, Core 1.0, DataView and AAI to AsciiDoc
+* Migrate from CLARIN Trac to https://github.com/clarin-eric/[CLARIN Github]
+* Add Github Actions workflow to automate build process
+
+// --- versions in cloud.fripost.org ---
+
+[discrete]
+== 2021-01-27 -- FCS Update Proposal for AAI
+// https://cloud.fripost.org/s/K49go8pARLEA5tY?dir=undefined&openfile=1946589
+
+[discrete]
+== 2020-02-19 -- Meeting about Shibbolizing FCS
+// https://cloud.fripost.org/s/K49go8pARLEA5tY?dir=undefined&openfile=871637

@@ -51,3 +51,8 @@ include::normative-appendix.adoc[leveloffset=+1]
 
 [appendix]
 include::non-normative-appendix.adoc[leveloffset=+1]
+
+<<<
+
+:sectnums!:
+include::changelog.adoc[leveloffset=+1]
