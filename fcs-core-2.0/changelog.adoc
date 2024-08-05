@@ -1,0 +1,59 @@
+= Changelog
+
+:sectnums!:
+
+// tag::compact[]
+
+// --- Github ---
+
+== 2024-04-10 -- Static Github Pages with builds from specification sources
+// https://github.com/clarin-eric/fcs-misc/commit/c1a01f0515216508262010347573d69e4a41aafb
+// https://github.com/clarin-eric/fcs-misc/commit/10100e687fb4a601b565166085a6803ddce45f0e
+
+* Webpage: https://clarin-eric.github.io/fcs-misc/
+
+== 2023-06-29 -- Fix Typo
+// https://github.com/clarin-eric/fcs-misc/commit/dbc795dc5cc1a6e7ecc52bda3fcaa1fdefeccc48
+
+== 2023-06-12 -- Conversion to AsciiDoc and Migration of specification documents to Github
+// https://github.com/clarin-eric/fcs-misc/commit/5b8952c1bfe96495f70e866634bf5dcf17166ba3
+
+* Convert specification documents for FCS Core 2.0, Core 1.0, DataView and AAI to AsciiDoc
+* Migrate from CLARIN Trac to https://github.com/clarin-eric/[CLARIN Github]
+* Add Github Actions workflow to automate build process
+
+// --- versions in Trac ---
+
+== 2022-08-03 -- Final version on Trac
+// https://trac.clarin.eu/wiki/Taskforces/FCS/FCS-Specification-Draft?version=89
+// https://trac.clarin.eu/wiki/Taskforces/FCS/FCS-Specification-Draft?action=diff&version=89&old_version=82
+// https://trac.clarin.eu/wiki/Taskforces/FCS/FCS-Specification-Draft?action=history
+
+* Fixes of typos, broken references, EBNF
+* Reformatting XML examples
+* Update Advanced Data View example, Segment end index is inclusive
+
+== 2018-12-04 -- SCCTC approved specification
+// https://trac.clarin.eu/wiki/Taskforces/FCS/FCS-Specification-Draft?version=82
+// https://trac.clarin.eu/wiki/Taskforces/FCS/FCS-Specification-Draft?action=diff&version=82&old_version=74
+
+* Reformatting
+* Proofing, update language and examples
+
+== 2017-06-16 -- Specification candidate for approval by SCCTC
+// https://trac.clarin.eu/wiki/Taskforces/FCS/FCS-Specification-Draft?version=74
+// https://trac.clarin.eu/wiki/Taskforces/FCS/FCS-Specification-Draft?action=diff&version=74&old_version=50
+// https://trac.clarin.eu/wiki/Taskforces/FCS/FCS-Specification-Draft?version=51
+// https://trac.clarin.eu/wiki/Taskforces/FCS/FCS-Specification-Draft?action=diff&version=51&old_version=50
+
+* Proofing, reformulations
+* Add SRU 2.0 examples
+
+== 2017-04-03 -- Final editing phase of draft
+// https://trac.clarin.eu/wiki/Taskforces/FCS/FCS-Specification-Draft?version=50
+// https://trac.clarin.eu/wiki/Taskforces/FCS/FCS-Specification-Draft?action=diff&version=50&old_version=1
+
+== 2015-10-15 -- Start with Core 2.0 specification
+// https://trac.clarin.eu/wiki/Taskforces/FCS/FCS-Specification-Draft?version=1
+
+:sectnums:
