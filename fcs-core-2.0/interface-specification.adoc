@@ -82,6 +82,10 @@ A human-readable title for the resource. A `REQUIRED` `@xml:lang` attribute indi
 +
 An optional human-readable description of the resource. It `SHOULD` be at most one sentence. A `REQUIRED` `@xml:lang` attribute indicates the language of the description. If supplied, an English version of the description is `REQUIRED`. The list of descriptions `MUST NOT` contain duplicate entries for the same language.
 
+* zero or more `<ed:Institution>` elements (`OPTIONAL`)
++
+An optional human-readable name for the institution of the resource. A `REQUIRED` `@xml:lang` attribute indicates the language of the institution name. If supplied, an English version of the institution name is `REQUIRED`. If there is no English translation available, the element with the English language should contain the original institution name. The list of institution names `MUST NOT` contain duplicate entries for the same language.
+
 * zero or one `<ed:LandingPageURI>` element (`OPTIONAL`)
 +
 A link to a website for the resource, e.g. a landing page for a resource, i.e. a web-site that describes a corpus.

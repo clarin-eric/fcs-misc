@@ -310,6 +310,17 @@
                     </xs:annotation>
                 </xs:element>
                 
+                <xs:element name="Institution" type="ed:i18nString" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                An optional human-readable institution name of the resource.
+                                If supplied, an English version is mandatory.
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                
                 <xs:element name="LandingPageURI" type="xs:anyURI" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation>

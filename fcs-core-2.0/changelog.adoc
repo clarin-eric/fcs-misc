@@ -5,6 +5,12 @@
 // --- Github ---
 
 [discrete]
+== 2024-09-04 -- Add EndpointDescription > Resource > Institution element
+
+* Add new optional `<ed:Institution>` element to further describe `<ed:Resource>`s in the _Endpoint Description_.
+* Proofing.
+
+[discrete]
 == 2024-04-10 -- Static Github Pages with builds from specification sources
 // https://github.com/clarin-eric/fcs-misc/commit/c1a01f0515216508262010347573d69e4a41aafb
 // https://github.com/clarin-eric/fcs-misc/commit/10100e687fb4a601b565166085a6803ddce45f0e
