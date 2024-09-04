@@ -214,7 +214,7 @@ The `<ed:Resource>` element contains a basic description of a resource that is a
 
 * one or more `<ed:Title>` elements (`REQUIRED`)
 +
-A human readable title for the resource. A `REQUIRED` `@xml:lang` attribute indicates the language of the title. An English version of the title is `REQUIRED`. The list of titles `MUST NOT` contain duplicate entries for the same language.
+A human-readable title for the resource. A `REQUIRED` `@xml:lang` attribute indicates the language of the title. An English version of the title is `REQUIRED`. The list of titles `MUST NOT` contain duplicate entries for the same language.
 
 * zero or more `<ed:Description>` elements (`OPTIONAL`)
 +
