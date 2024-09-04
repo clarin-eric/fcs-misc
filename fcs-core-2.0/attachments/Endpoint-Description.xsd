@@ -291,7 +291,7 @@
                     <xs:annotation>
                         <xs:documentation>
                             <h:p>
-                                A human readable title for the resource. An English version is
+                                A human-readable title for the resource. An English version is
                                 mandatory.
                             </h:p>
                         </xs:documentation>

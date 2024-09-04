@@ -54,7 +54,7 @@ The content of the `<ed:Capability>` element is a Capability Identifier that ind
 
 * one `<ed:SupportedDataViews>` element (`REQUIRED`)
 +
-A list of Data Views that are supported by this Endpoint. This list is composed of one or more <ed:SupportedDataView> elements. The content of a `<ed:SupportedDataView>` `MUST` be the MIME type of a supported Data View, e.g. `application/x-clarin-fcs-hits+xml`. Each `<ed:SupportedDataView>` element `MUST` carry an `@id` and a `@delivery-policy` attribute. The value of the `@id` attribute is later used in the <ed:Resource> element to indicate which Data View is supported by a resource (see below). Endpoints `SHOULD` use the recommended short identifier for the Data View. The `@delivery-policy` indicates, the Endpoint's delivery policy, for that Data View. Valid values are `send-by-default` for the _send-by-default_ and `need-to-request` for the _need-to-request_ delivery policy.
+A list of Data Views that are supported by this Endpoint. This list is composed of one or more `<ed:SupportedDataView>` elements. The content of a `<ed:SupportedDataView>` `MUST` be the MIME type of a supported Data View, e.g. `application/x-clarin-fcs-hits+xml`. Each `<ed:SupportedDataView>` element `MUST` carry an `@id` and a `@delivery-policy` attribute. The value of the `@id` attribute is later used in the <ed:Resource> element to indicate which Data View is supported by a resource (see below). Endpoints `SHOULD` use the recommended short identifier for the Data View. The `@delivery-policy` indicates, the Endpoint's delivery policy, for that Data View. Valid values are `send-by-default` for the _send-by-default_ and `need-to-request` for the _need-to-request_ delivery policy.
 +
 This list `MUST NOT` include duplicate entries, i.e. no MIME type must appear more than once.
 +
@@ -76,7 +76,7 @@ The `<ed:Resource>` element contains a basic description of a resource that is a
 
 * one or more `<ed:Title>` elements (`REQUIRED`)
 +
-A human readable title for the resource. A `REQUIRED` `@xml:lang` attribute indicates the language of the title. An English version of the title is `REQUIRED`. The list of titles `MUST NOT` contain duplicate entries for the same language.
+A human-readable title for the resource. A `REQUIRED` `@xml:lang` attribute indicates the language of the title. An English version of the title is `REQUIRED`. The list of titles `MUST NOT` contain duplicate entries for the same language.
 
 * zero or more `<ed:Description>` elements (`OPTIONAL`)
 +
