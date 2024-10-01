@@ -123,6 +123,7 @@ MAVEN_OPTS="-Xdebug -Xnoagent -Djava.compiler=NONE -agentlib:jdwp=transport=dt_s
 [source,bash]
 ----
 mvn archetype:generate \
+    -Pclarin \
     -DarchetypeGroupId=eu.clarin.sru.fcs \
     -DarchetypeArtifactId=fcs-endpoint-archetype \
     -DarchetypeVersion=1.6.0 \
@@ -134,6 +135,7 @@ mvn archetype:generate \
 [.x-small.darkgrey.ms-6]
 --
 * _all `[`... `]` placeholders must be replaced with the appropriate values (enclose values with spaces in quotation marks)_
+* _if using the CLARIN remote repository, the custom profile is selected with `-Pclarin`, see https://github.com/clarin-eric/fcs-endpoint-archetype/blob/main/README.md#b-using-the-remote-clarin-maven-repositorynexus[example maven configuration]_
 * _if archetype is installed using `git`, then use `archetypeVersion=1.6.0-SNAPSHOT` (see details in https://github.com/clarin-eric/fcs-endpoint-archetype/blob/main/pom.xml#L8[`pom.xml`])_
 --
 
