@@ -24,7 +24,7 @@ Also: Federated “Corpus Query Platform”
 [.text-left]
 == What is included in the FCS?
 
-*Interface Spezification*
+*Interface Specification*
 
 * Description of search protocol (query languages, formats and communication channels) +
 “for homogeneous access to heterogeneous search engines”
@@ -194,7 +194,7 @@ endif::[]
 
 == Basic Assumption on the Data Structure
 
-* different (optional) annotationa layers
+* different (optional) annotation layers
 
 [.x-small]
 --
