@@ -21,7 +21,8 @@ The key words `MUST`, `MUST NOT`, `REQUIRED`, `SHALL`, `SHALL NOT`, `SHOULD`, `S
 [[ref:CLARIN-FCSCore20]]CLARIN-FCS-Core 2.0::
     CLARIN Federated Content Search (CLARIN-FCS) - Core 2.0, SCCTC FCS Task-Force, May 2017,
     https://trac.clarin.eu/wiki/FCS/Specification,
-    https://office.clarin.eu/v/CE-2017-1046-FCS-Specification-v89.pdf
+    https://github.com/clarin-eric/fcs-misc/tree/main/fcs-core-2.0,
+    https://office.clarin.eu/v/CE-2017-1046-FCS-Specification-v20230426.pdf
 
 
 == Non-Normative References
