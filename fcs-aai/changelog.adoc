@@ -5,6 +5,17 @@
 // --- Github ---
 
 [discrete]
+== 2024-12-04 -- Update specification based on current prototype implementation
+
+* Add details about key/signature algorithms, RS256
+* Add key exchange details, using JWKS 
+* Add details about JWT claims (usage, requirments)
+* Add SRU 68 dignostic
+* Change `<AvailabilityRestriction>` element in `<EndpointDescription>`
+* Change order of SAML attributes for `userID` computation
+* Change formulation to generalize for any FCS client, not only AAI for FCS Aggregator
+
+[discrete]
 == 2023-06-12 -- Conversion to AsciiDoc and Migration of specification documents to Github
 // https://github.com/clarin-eric/fcs-misc/commit/5b8952c1bfe96495f70e866634bf5dcf17166ba3
 
