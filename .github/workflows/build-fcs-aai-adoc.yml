@@ -28,6 +28,9 @@ jobs:
       - name: Build PDF
         run: asciidoctor-pdf -v -D docs -o fcs-aai.pdf fcs-aai/index.adoc
 
+      - name: Copy attachments
+        run: cp -R fcs-aai/attachments docs/
+
       - name: Store results
         uses: actions/upload-artifact@v4
         with:

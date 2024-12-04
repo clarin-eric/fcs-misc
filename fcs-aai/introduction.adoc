@@ -2,16 +2,16 @@
 
 This specification is an extension specification to the <<ref:CLARIN-FCSCore20,CLARIN-FCS Core 2.0>> specification and describes an access mechanism for restricted resources.
 
-The Federated Content Search currently does not support the restriction of access to resources to specific user groups or users. There is no mechanism in the aggregator that limits access to announced resources and endpoints are typically accessible via the FCS protocol directly (omitting the use of the FCS aggregator). The goal is to allow restricting access to FCS resources to users that are authenticated using the established AAI infrastructure.
+The Federated Content Search currently does not support the restriction of access to resources to specific user groups or users. There is no mechanism in the aggregator or other FCS clients that limits access to announced resources and endpoints are typically accessible via the FCS protocol directly (omitting the use of the FCS aggregator). The goal is to allow restricting access to FCS resources to users that are authenticated using the established AAI infrastructure.
 
 This contains the following issues:
 
-. Shibbolizing the aggregator frontend so that 
+. Shibbolizing the FCS aggregator frontend so that 
   * unauthenticated users still get access to all unrestricted endpoints
   * authenticated users get access to all unrestricted endpoints and additionally to the restricted endpoints
 
-. Specifying (and implementing) changes for endpoints so that:
-  * endpoints can announce restricted resources to the aggregator
+. Specifying (and implementing) changes for FCS endpoints so that:
+  * endpoints can announce restricted resources to FCS clients, e.g. the aggregator
   * endpoints can rely on authenticated FCS user requests
 
 
@@ -27,6 +27,12 @@ The key words `MUST`, `MUST NOT`, `REQUIRED`, `SHALL`, `SHALL NOT`, `SHOULD`, `S
 
 IdP::
     _Identity Provider_, a system entity that issues authentication assertions, see <<ref:SAML>> and <<ref:AAI>>.
+
+[[ref:JWK]]JWK::
+    _JSON Web Key_, see <<ref:RFC7517>>.
+
+JWKS::
+    _JSON Web Key Set_ or _JWK Sets_, see <<ref:JWK>> and <<ref:RFC7517>>.
 
 JWT::
     _JSON Web Token_, see <<ref:RFC7519>>.
@@ -49,6 +55,14 @@ SP::
 [[ref:RFC2119]]RFC2119::
     Key words for use in RFCs to Indicate Requirement Levels, IETF RFC 2119, March 1997,
     https://www.ietf.org/rfc/rfc2119.html
+
+[[ref:RFC7515]]RFC7515::
+    JSON Web Signature (JWS), IETF RFC 7515, May 2015,
+    https://www.ietf.org/rfc/rfc7515.html
+
+[[ref:RFC7517]]RFC7517::
+    JSON Web Key (JWK), IETF RFC 7517, May 2015,
+    https://www.ietf.org/rfc/rfc7517.html
 
 [[ref:RFC7519]]RFC7519::
     JSON Web Token (JWT), IETF RFC 7519, May 2015,

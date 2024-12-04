@@ -7,13 +7,43 @@ The FCS supports restriction of access to resources to specific user groups or u
 
 The aggregator allows an optional login via Shibboleth. Authentication of search queries which are sent to an FCS endpoint is implemented using authentication headers with <<ref:RFC7519,JSON Web Token (JWT)>>. User information (e.g. mail address or similar) is encoded in the token as claims.
 
-JWTs include an RSA signed token which `SHOULD` be checked by the respective endpoint. In case of missing or insufficient authorization when accessing restricted resources, the endpoint `MUST` rise an error using <<ref:LOC-DIAG,SRU diagnostic>> "Authentication error" (`info:srw/diagnostic/1/3`).
+JWTs include an RSA signed token which `SHOULD` be checked by the respective endpoint. In case of missing or insufficient authorization when accessing restricted resources, the endpoint `MUST` rise an error using <<ref:LOC-DIAG,SRU diagnostic>> "Authentication error" (`info:srw/diagnostic/1/3`). The diagnostic "Not authorised to send record" (`info:srw/diagnostic/1/68`) `MAY` be sent as an error when an authenticated request was made but additional authorization is still required, e.g. if a resource might only allow certain users access.
 
-The aggregator owns a single common RSA key for all endpoints. For all endpoints with restricted resources its public key has to be manually transferred and included in their configuration. Communication between aggregator and endpoints is only allowed via SSL. Claims _iss_, _sub_ and _aud_ `SHOULD` be encoded in the JWT. The endpoint `MUST` check _aud_ to see if it is the correct recipient and `MAY` check the fields _iss_ and _exp_.
+The aggregator owns a single common RSA key for all endpoints. For all endpoints with restricted resources its public key has to be manually transferred and included in their configuration. Communication between aggregator and endpoints is only allowed via SSL. Claims _iss_, _sub_ and _aud_ `MUST` be encoded in the JWT. The endpoint `MUST` check _aud_ to see if it is the correct recipient and `MAY` check the fields _iss_ and _exp_.
 
 The availability and nature of a personal identifier attribute in the aggregator itself, is not guaranteed for a successful login. In SAML this is limited by the configuration of the external IdP selected by the user.
-When available, one of three SAML attributes is used as user personal identifier: _email_, _eduPersonPrincipalName_ or _eduPersonTargetedID_. These attributes are mapped by the aggregator to _userID_ in the same order of preference. _userID_ is then passed to the endpoint. The aggregator issues this information to JWTs and sends it to the appropriate endpoints.
+When available, one of three SAML attributes is used as user personal identifier: _eduPersonPrincipalName_, _eduPersonTargetedID_ or _mail_. These attributes are mapped by the aggregator to _userID_ in the same order of preference. _userID_ is then passed to the endpoint. The aggregator issues this information to JWTs and sends it to the appropriate endpoints.
 The endpoints alone announces which authentication information is required (see next section) and decides at runtime whether the information provided is sufficient for access. While the aggregator front end can inform and guide the user in advance, in case authentication information is still missing.
+
+
+=== JWT Signature Algorithm ===
+
+The JWT will be signed with the "RS256" algorithm (see <<ref:RFC7519,JSON Web Token (JWT), Section 8 "Implementation Requirements">>). The digital signature is created using RSASSA-PKCS1-v1_5 with the SHA-256 hash function. For this a RSA key size of 2048 bits or larger `MUST` be used. Endpoints and clients `MUST` support 2048 bit RSA keys but `SHOULD` be able to handle larger key sizes.
+
+Signing of the JWT will require the private-public RSA key pair in the FCS client. FCS endpoint will only require the public RSA key for validating the JWT signature. The JWT will not be encrypted.
+
+An example of using the RS256 algorithm can be found in the <<ref:RFC7515,Appendix A.2 of JSON Web Signature (JWS)>>.
+
+
+=== Key Exchange ===
+
+Verification of JWTs at an endpoint requires it to know the public RSA key used to generate and sign the JWT by the requesting client. Endpoints with restricted resources need to be configured to include the public key. This can be done in two ways, by manually transferring and including the public key in the configuration, or by using a public <<ref:RFC7517,JSON Web Key Set>> endpoint (`\https://<fcs-client.url>/.well-known/jwks.json`) to allow for automatic retrieval of the public key.
+
+
+=== JWT Claims and Verification ===
+
+The claims _iss_ (issuer), _sub_ (subject) and _aud_ (audience) `MUST` be encoded in the JWT by the client.
+
+* _iss_ `MUST` contain a unique identifier for the client, e.g. the canoncial public URL for web applications like the FCS aggregator.
+* _aud_ `MUST` contain the URL of the endpoint which is used to register the endpoint at the client and is also being used to for SRU/FCS requests.
+* _sub_ `MUST` contain the `userID` if a resource has a requirement of `personalIdentifier`. If `authOnly` then the _sub_ claim `SHOULD` be empty and should be ignored.
+
+The claims _exp_ (expiration time), _nbf_ (not before) and _iat_ (issued at) are `OPTIONAL` but `SHOULD` be used to limit token lifetime. Values `SHOULD` therefore be low, e.g., 15 seconds. Clocks of endpoint and client need to be synchronized. Setting the _jti_ (JWT ID) will also further secure communication by helping to prevent replay attacks.
+
+The endpoint `MUST` check _aud_ to see if it is the correct recipient and `MAY` check the fields _iss_ and _exp_, _nbf_, _iat_, _jti_.
+
+The _sub_ (subject) field `SHOULD` be used retrieve the `userID` for resources with `personalIdentifier` requirement and to perform advanced authorization.
+
 
 == Announcing Restricted Resources by the Endpoint
 
@@ -29,15 +59,17 @@ In order to announce restricted resources the endpoint needs to explain in the `
       <Language>swe</Language>
       <Language>deu</Language>
     </Languages>
-    <AvailabilityRestriction>
-      <RestrictionRequirement>requirementName</RestrictionRequirement>
-    <!-- ... -->
-    </AvailabilityRestriction>
+    <AvailabilityRestriction>requirementName</AvailabilityRestriction>
     <!-- ... -->
   </Resource>
 </Resources>
 ----
 
-The `<AvailabilityRestriction>` is defined in the top-level `<Resource>` element and the restriction is valid for its complete sub-tree hierarchy of `<Resource>` elements. From the backwards compatibility perspective this means that if you do not define the `<AvailabilityRestriction>` element all resources will be available for searching through the endpoint.
+The `<AvailabilityRestriction>` element can be defined for each `<Resource>` element. In case of sub-resources, each resource `MUST` declare restrictions independently. Restrictions in sub-resource `MAY` differ from their parent resource, i.e. there is no implicit inheritance semantic.
 
-The text node `requirementName` in `<RestrictionRequirement>` is either of `authOnly` or `personalIdentifier`. `authOnly` does not require any attributes except for the authentication via home institution. If `personalIdentifier` is stated _eduPersonPrincipalName_ or _eduPersonTargetedID_ or _email_ is passed to the endpoint as `userID` using the procedure described above.
+From the backwards compatibility perspective this means that if you do not define the `<AvailabilityRestriction>` element all resources will be available for searching through the endpoint. That will also apply to sub-resources without `<AvailabilityRestriction>` element while their parent `<Resource>` has a restriction defined.
+
+The text node `requirementName` in `<RestrictionRequirement>` is either of `authOnly` or `personalIdentifier`.
+
+* `authOnly`: the resource does not require any attributes except for the authentication via home institution.
+* `personalIdentifier`: extends `authOnly` by passing a `userID` using the procedure described above to the endpoint. The `userID` will be one of _eduPersonPrincipalName_ or _eduPersonTargetedID_ or _email_.
