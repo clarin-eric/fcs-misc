@@ -95,7 +95,9 @@
                              | '('                                  /* regex: opening parenthesis */
                              | ')'                                  /* regex: closing parenthesis */
                              | '{'                                  /* regex: opening curly brace */
+                             | '}'                                  /* regex: closing curly brace */
                              | '['                                  /* regex: opening square bracket */
+                             | ']'                                  /* regex: closing square bracket */
                              | '|'                                  /* regex: vertical bar */
                              | "x" hex hex                          /* Unicode codepoint with hex value hh */
                              | "u" hex hex hex hex                  /* Unicode codepoint with hex value hhhh */

@@ -5,6 +5,11 @@
 // --- Github ---
 
 [discrete]
+== 2025-04-15 -- Fix FCS-QL grammar
+
+* Fix FCS-QL grammar to include missing escape characters for regular expression special characters, e.g., `]` and `}`
+
+[discrete]
 == 2024-09-04 -- Add EndpointDescription > Resource > Institution element
 
 * Add new optional `<ed:Institution>` element to further describe `<ed:Resource>`s in the _Endpoint Description_.
