@@ -1,0 +1,322 @@
+= LexFCS Data Model
+
+The _LexFCS_ data model represents information about a single lexical record in a ``<lex:Entry>`` element and makes no general assumptions about the granularity, type or structure of the underlying lexical resource or its elements.
+
+
+== Entry
+
+Each ``<lex:Entry>`` element consists of at least one ``<lex:Field>`` element, each representing a specific kind of information.
+
+
+[discrete]
+=== Entry attributes
+
+The ``<lex:Entry>`` element `MAY` provide the default content language in https://tools.ietf.org/html/bcp47[IETF BCP 47] of the whole entry via the `@xml:lang` attribute. If more information is required, the `OPTIONAL` `@langUri` attribute `MAY` additionally be provided. Language specified on individual ``<lex:Value>`` elements overrides the ``<lex:Entry>`` language.
+
+.Allowed attributes of element `<lex:Entry>`
+[#lex-entry-attributes]
+[%header,cols="2m,6,2,5"]
+|===
+|Value Attribute
+|Description
+
+|Data type
+|Examples (without quotes)
+
+|xml:lang
+|Content language code in https://tools.ietf.org/html/bcp47[IETF BCP 47]
+|String
+|"deu", "egy-Egyp", "cop-x-cops"
+
+|langUri
+|URI referencing information about the content language, if not expressable using BCP 47
+|URI
+|"\https://en.wikipedia.org/wiki/Early_New_High_German"
+|===
+
+
+== Field
+
+Each ``<lex:Field>`` element has a type that `MUST` be specified using a `@type` attribute. A ``<lex:Field>`` element of a specific type `MAY` only occur once. The ``<lex:Field>`` element of type `lemma` is mandatory. For an overview of all allowed field types and their restrictions, refer to <<lex-field-types>>.
+
+The `@type` attribute value of a ``<lex:Field>`` element governs the semantics, data type, and mandatory / optional attributes of all its ``<lex:Value>`` elements. A ``<lex:Field>`` element `MUST` contain at least one ``<lex:Value>`` element, but `MAY` contain an unlimited number of ``<lex:Value>`` elements.
+
+.Lexical Search Field types
+[#lex-field-types]
+[%header,cols="3m,7,2,5"]
+|===
+|Field Type Identifier
+|Short Description
+|Value data type
+|Value examples (without quotes)
+
+|lemma
+|Lemma form, *mandatory*
+|String
+|"Dog", "cat", "walking", "better"
+
+|entryId
+|Identifier of the current entry
+|String
+|"104730", "Zwahr-2049-pawk"
+
+|phonetic
+|Phonetic form
+|String
+|"təˈdā"
+
+|translation
+|Translation
+|String
+|"pechare" (cup)
+
+|transcription
+|Transcription or transliteration
+|String
+|-
+
+4+^e|Prosaic Descriptions
+
+|definition
+|Definition or description
+|String
+|"A car is a vehicle with an engine […]"
+
+|etymology
+|Etymology information
+|String
+|-
+
+4+^e|Grammar and Morphology
+
+|case
+|Morphological Case
+|String
+|"Abl", "Nom", "Tra"
+
+|number
+|Morphological Number 
+|String
+|"Dual", "Sing", "Plur"
+
+|gender
+|Morphological Gender
+|String
+|"Fem", "Masc", "Com"
+
+|pos
+|Part-of-Speech
+|String
+|"NOUN", "NN", "N", "substantive"
+
+|baseform
+|Baseform (or stem …) of a lemma
+|String
+|
+
+|segmentation
+|Composita segmentation, hyphenation; into phonemes, syllables, subwords
+|String
+|"Schach+Brett", "to·day", "ins\|ta\|gram\|men"
+
+|sentiment
+|Sentiment information
+|String
+|"angry", "positive", "-0.823"
+
+|frequency
+|Frequency information like occurrences, relative frequency, word rank or frequency class
+|String
+|"17234", "0.567"
+
+4+^e|Relation to other Lexical Entries
+
+|antonym, +
+hyponym, +
+hypernym, +
+meronym, +
+holonym, +
+synonym
+|Semantic relations
+|String
+|-
+
+|related
+|Unspecified relation
+|String
+|-
+// TODO: move to best practices, use more-specific type before using the generic "related" type.
+
+4+^e|External References
+
+|ref
+|A URI referencing a related resource.
+|URI
+|"\http://example.org/somewhere/", "\https://coptic-dictionary.org/entry.cgi?tla=C2535"
+
+|senseRef
+|ID of a sense definition.
+|String
+|"02961779-n", "4129315-0", "8.10"
+
+4+^e|Citations / Quotations
+
+|citation
+|A citation, quotation or example of this entry's lemma.
+|String
+|"I got into my car."
+|===
+
+
+== Value
+
+The ``<lex:Value>`` element contains the actual information content of a specific information type. Its semantics, data type, and allowed / mandatory attributes is governed by the type of the ``<lex:Field>`` element in which it is contained.
+
+It is strongly encouraged to use terms of established vocabularies, where feasible. This includes in particular the use of linguistic tags and features of the <<ref:UD,Universal Dependencies>> annotation guidelines for the corresponding ``<lex:Field>`` types.
+
+
+=== Generic Value attributes
+
+A ``<lex:Value>`` element can be modified with additional attributes, which are, in most cases, optional but `RECOMMENDED`.
+
+The <<lex-val-attributes>> lists all allowed attributes for ``<lex:Value>`` elements. Additional information about their usage and cases in which they are mandatory are stated below.
+
+.Lexical Search Value attributes
+[#lex-val-attributes]
+[%header,cols="3m,7,2,6"]
+|===
+|Value Attribute
+|Description
+|Data type
+|Examples (without quotes)
+
+|xml:id
+|XML ID as target for `@idRefs` attribute
+|XML ID
+|"sense1"
+
+|xml:lang
+|Content language code in https://tools.ietf.org/html/bcp47[IETF BCP 47]
+|String
+|"deu", "egy-Egyp", "cop-x-cops"
+
+|langUri
+|URI referencing information about the content language, if not expressable using BCP 47
+|URI
+|"\https://en.wikipedia.org/wiki/Early_New_High_German"
+
+|preferred
+|`<lex:Value>` is preferred among other ``<lex:Value>`` element among other ``<lex:Value>`` elements in the same ``<lex:Field>`` (may be used for UI hints)
+|Boolean
+|"true"
+
+|ref
+|An unspecified reference about the content of the ``<lex:Value>`` element. This can be an audio file for `phonetic` field value or an external page with more information.
+|URI
+|"\https://thesaurus-linguae-aegyptiae.de/sentence/ICEDBefDgQaukEMWmajL4HChr4I"
+
+|idRefs
+|Whitespace separated list of XML IDs to reference other field/values
+|String
+|"id_sense1 id_sense2"
+
+|vocabRef
+|Reference to the used vocabulary of the content of the ``<lex:Value>`` element
+|URI
+|"\https://universaldependencies.org/u/pos"
+
+|vocabValueRef
+|Reference to specific value of a vocabulary
+|URI
+|"\https://universaldependencies.org/u/pos/NOUN", "\https://universaldependencies.org/u/feat/Gender.html#Fem"
+
+|type
+|A classification for a field value. It may function to group values. (UI hint)
+|String
+|"hyphenation" (segmentation), "sample" (ref)
+|===
+
+The attributes `@xml:lang` and `@langUri` are used to specify the object language of the content of the ``<lex:Value>`` element. They override object language information provided at the ``<lex:Entry>`` element level, if any. If the `@langUri` attribute is given, the `@xml:lang` attribute is `REQUIRED`.
+
+The `@xml:id` and `@idRefs` attributes are used to link ``<lex:Value>`` elements inside the same ``<lex:Entry>`` element, which can be used to highlight these relations in the user interface (like a `citation` ``<lex:Value>`` element referencing its corresponding `definition` ``<lex:Value>`` element). The semantics of this reference is unspecified.
+
+The `@type` attribute `SHOULD` be used to further specify generic field ``<lex:Value>`` by using values from limited vocabulary to classify their intended usage. We `RECOMMEND` certain values for different ``<lex:Field>`` types but it is an open list. Known `@type` values `MAY` be used by Clients to interpret and process ``<lex:Value>`` contents in specific ways.
+// TODO: add examples to non-normative appendix, as "best-practices"
+
+The `@vocabRef` attribute refers to the general vocabulary from which the content of the ``<lex:Field>`` element originates, e.g. `https://universaldependencies.org/u/pos/` for referencing the POS tags of the Universal Dependencies project, which provides context for the interpretation of a string like “noun”. `@vocabValueRef` refers to a specific value of a vocabulary, like `https://universaldependencies.org/u/pos/NOUN` for a noun according to the POS tags of the Universal Dependencies project. If both are provided, they `MUST` refer to the same vocabulary.
+
+
+=== Citation Value attributes
+
+Values in ``<lex:Field>`` elements of type `citation` are allowed more optional attributes, which are listed in <<lex-value-citation-attributes>>
+
+.Lexical Search Value attributes for type 'citation'
+[#lex-value-citation-attributes]
+[%header,cols="2m,6,2,5"]
+|===
+|Value Attribute
+|Description
+|Data type
+|Examples (without quotes)
+
+|source
+|Name of the source from which the citation value was taken
+|String
+|"FCS Daily - Latest news and gossip stories"
+
+|sourceRef
+|Reference of the source from which the citation value was taken
+|URI
+|"\https://wwww.fcs-daily.de/article/123"
+
+|date
+|Date information for the citation value
+|<<ref:EDTF,EDTF>> date/time (Level 0)
+// TODO: support of Level 1 to support uncertainties of citation sources?
+|"1992-02-10", "2024", "2000-01-01T01:02:03Z"
+|===
+
+
+=== Value attributes by Field type
+
+The <<#lex-field-types-attribute-usages>> lists which attributes `MUST` or `SHOULD` be attached to ``<lex:Value>`` elements of certain <<lex-field-types,_Field Type Identifiers_>> to provide Clients context for interpretation of values.
+
+.Attributes for Lexical Search Field types
+[#lex-field-types-attribute-usages]
+[%header,cols="2m,11"]
+|===
+|Field Type Identifier
+|Attribute Usage Recommendation
+
+|entryId
+|The attributes `@vocabRef` or `@vocabValueRef` `MAY` be used to provide context.
+
+|definition, +
+etymology
+|Hierarchical relations between ``<lex:Value>`` elements across ``<lex:Field>`` elements can be indicated by using the `@xml:id` and `@idRefs` attributes. Subordinate ``<lex:Value>`` elements contain an `@idRefs` attribute that refers to the `@xml:id` attribute of another ``<lex:Value>`` element. Clients `MAY` decide to show this hierarchy.
+
+|pos, +
+case, +
+number, +
+gender
+|The `@vocabRef` or `@vocabValueRef` attributes `SHOULD` be used to allow disambiguation of the provided values. Clients `MAY` use them to help users, e.g. by providing translations or pointing to definitions.
+
+|segmentation
+|Values `SHOULD` use the pipe (`\|`) character as separator to allow for post-processing by Clients (e.g., exchange of separators, splitting of parts). Other separator characters (`+`, `-`, `·`, …) `MAY` be used but uniform processing by Clients can not be guaranteed.
+
+The `@type` attribute `SHOULD` be used for `segmentation` ``<lex:Value>`` elements to indicate what type of segmentation is being performed or described.
+
+|ref
+|The `@type` attribute `MUST` be used to indicate what kind of reference is being provided.
+
+|senseRef
+|The attributes `@vocabRef` or `@vocabValueRef` `MUST` be used to provide context.
+
+|citation
+|The _special_ attributes `@source`, `@sourceRef` and `@date` `SHOULD` be used to provide additional context for `citation` ``<lex:Value>`` elements. The `@type` attribute `SHOULD` be used to indicate what type of citation, quotation or example is being given.
+|===
+
+
+== Serialisation
+
+The serialisation of a LexFCS entry is specified by the corresponding <<LexFCS Data Views,Data Views>>.

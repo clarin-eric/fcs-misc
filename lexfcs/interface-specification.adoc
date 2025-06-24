@@ -1,0 +1,71 @@
+= Summary and Interface Specification
+:description: SRU Explain and SearchRetrieve for FCS 2.0
+
+== Summary of Changes
+
+This specification extends the <<ref:CLARIN-FCSCore20,_CLARIN Federated Content Search (CLARIN-FCS) - Core 2.0_>> specification in the following ways:
+
+* introducing a new query language, <<LexCQL>>, based on <<ref:LOC-CQL,Contextual Query Language (CQL)>> to allow querying lexical resources,
+* extending the basic <<Extension of the Hits Data View for LexFCS,Hits Data View>> for inline markup, and adding a required <<Lexical Data View>> for searching through lexical resources,
+* extending the CLARIN-FCS _Endpoint Description_ with the _Lexical Search_ Capability.
+
+
+== Discovery
+
+The CLARIN-FCS SRU _explain_ response is extended by adding the _Lexical Search_ capability and _Lexical_ Data View to the _Endpoint Description_ to support client auto-configuration.
+
+
+=== Capabilities
+
+The _Lexical Search_ capability indicates to clients that the FCS endpoint supports searches through lexical resources using <<LexCQL>> and serializes results in the <<LexFCS Data Views,Data Views>>.
+
+.New Lexical Search Capability
+[%header,cols="1e,3m,2"]
+|===
+|Name
+|Capability Identifier
+|Summary
+
+|Lexical Search
+|\http://clarin.eu/fcs/capability/lex-search
+|Structured search for lexical resources
+|===
+
+
+=== Endpoint Description
+
+The _Endpoint Description_ will be extended by a mandatory `<ed:SupportedLexFields>` element describing supported lexical fields for querying and results. The `<ed:SupportedDataView>` element supports the additional <<Lexical Data View>> which has its own MIME type and `@id` value.
+
+The `<ed:EndpointDescription>` element will be extended by
+
+* one `<ed:SupportedLexFields>` element (`REQUIRED` if Endpoint supports _Lexical Search_)
++
+A list of LexFields that are generally supported by this Endpoint. This list is composed of one or more `<ed:SupportedLexField>` elements. The content of a `<ed:SupportedLexField>` `MUST` be the identifier of a Lex Field (see section <<Field>>), e.g. lemma. Each `<ed:SupportedLexField>` element `MUST` carry an `@id` attribute. The value of the `@id` attribute is later used in the `<ed:Resource>` element to indicate, which Lex Field is supported by a resource (see below). The Lex Field identifier is used in the Lex Data View (see section <<Lexical Data View>>).
++
+This list `MUST NOT` include duplicate entries, i.e. no Lex Field with the same `@id` identifier must appear more than once. Identifiers used in the content of the `<ed:SupportedLexField>` element `MUST` also only appear once.
++
+The value of the `@id` attribute `MUST NOT` contain the characters `,` (comma) or `;` (semicolon).
+
+The `<ed:Resource>` element will be extended by
+
+* one `<ed:AvailableLexFields>` element (`REQUIRED` if Endpoint supports _Lexical Search_ capability)
++ 
+The `<ed:AvailableLexFields>` element `MUST` carry a `@ref` attribute that contains a whitespace-separated list of id values that correspond to the value of the appropriate `@id` attribute for the `<ed:SupportedLexFields>` elements that are referenced.
++
+In case of sub-resources, each Resource `SHOULD` support all Lex Fields that are supported by the parent resource. However, every resource `MUST` declare all available Lex Fields independently, i.e. there is no implicit inheritance semantic.
+
+.Example of an Endpoint Description with Lexical Search support
+[#ed-lex,xml]
+----
+include::examples/endpoint-description-lexical-search.xml[]
+----
+
+<<ed-lex,Example Endpoint Description for Lexical Search>> shows a simple Endpoint Description for an Endpoint that supports the _Lexical Search_ Capability and provides the Lex Data View, which is indicated by a `<ed:SupportedDataView>` element. It only provides one top-level resource identified by the persistent identifier `ws_sentiws`. The resource has basic metadata such as multi-lingual titles, descriptions and a landing page. The predominant language in the resource contents is German. The Generic Hits Data View and the Lex Data View are supported for this resource, because the `<ed:AvailableDataViews>` element references the `<ed:SupporedDataView>` element with the `@id` with a value of `hits` and `lex`. The `<ed:AvailableLexFields>` references the Lex Fields from the list of all Lex Fields the Endpoints supports, listed in the `<ed:SupportedLexFields>` element. Each Lex Field is referenced in the space separated list of the `@ref` attribute of the `<ed:AvailableDataViews>` element pointing to the `@id` identifiers of the `<ed:SupportedLexField>` elements.
+
+
+== Searching and Result presentation
+
+Queries `MUST` be formulated using the <<LexCQL>> query language. Results `MUST` be serialized using both the _Generic Hits_ Data View as defined in the CLARIN FCS Core Specification and the <<Lexical Data View>>. For the _Generic Hits_ Data View, the <<Extension of the Hits Data View for LexFCS>> `MAY` be used, which supports limited inline markup to provide extra context to Hits.
+// TODO: Need explanation for why limited markup relevant: "which supports limited inline markup that allows users to X"
+
+// Clients may decide what they support for rendering when using the LexHits Data View.

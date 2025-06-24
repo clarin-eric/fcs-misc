@@ -1,0 +1,8 @@
+= Implementation Guide
+
+== Relation between LexCQL and Lex Data Model
+
+// "is" operator and @vocabValueRef
+// IRI
+
+// virtual lang search index and Entry language

@@ -13,31 +13,64 @@ TIP: For more examples of CQL ContextSets, see the https://www.loc.gov/standards
 
 TIP: For more information about CQL indexes, see <<ref:LOC-CQLCS,The CQL Context Set, section "INDEXES">>.
 
-
-[%header,width="100%",cols="1,2,2"]
+[%header,width="100%",cols="1m,3"]
 |===
 | Index title
 | Description
-| Details/Open questions
 
-| `lemma`
-| Lemma name
-| Support of multiword expressions?
+| lemma
+| Lemma form
 
-| `pos`
+| entryId
+| Identifier of the current entry
+
+| phonetic
+| Phonetic form
+
+| translation
+| Translation
+
+| transcription
+| Transcription or transliteration
+
+| definition
+| Definition or description
+
+| etymology
+| Etymology information
+
+| case, number, gender
+| Morphological information like case, number, gender, e.g. in full-form dictionaries
+
+| pos
 | Part of Speech
-| Use of <<ref:UD-POS,Universal POS tags>>. Allow custom tag sets?
 
-| `def`
-| Definition
-|
+| baseform
+| Baseform (stem, root, …) of a lemma
 
-| `xr$synonymy`, ...
+| segmentation
+| Composita segmentation, hyphenation; into phonemes, syllables, subwords
+
+| sentiment
+| Sentiment information
+
+| frequency
+| Frequency information like occurrences, relative frequency, word rank or frequency class
+
+| synonym, antonym, hyponym, hypernym, meronym, holonym
 | Semantic relations, analogous to https://dariah-eric.github.io/lexicalresources/pages/TEILex0/TEILex0.html#crossref_typology[types in TEI Lex0]
-| Only _Synonym_, _Hyponym_, _Hyperonym_, _Meronym_, _Antonym_, or additional relations?
 
-| `senseRef`
-| Sense, Entity, ... - URI/ID pointint to unique identifier, e.g. for disambiguation | Any URI allowed? Defined subsets (using prefixes)? Subdivision by type (e.g. synset/sense or entity, ...)?
+| related
+| Unspecified (semantic) relation
+
+| ref
+| A URI referencing a related resource.
+
+| senseRef
+| ID of a sense Sense, Entity, … definition
+
+| citation
+| A citation, quotation or example of this entry's lemma.
 |===
 
 
@@ -50,18 +83,35 @@ TIP: More information about CQL relations can be found <<ref:LOC-CQLCS,The CQL C
 
 * *`=`*
 +
+_alias: scr_
++
 Different functions based on index.
 Suggested use:
 +
 --
-  * _Full match_ for `lemma` and `def`,
-  * for other indexes (like `pos`) use as _"contained in"_ (_Endpoint-dependent behaviour_).
+  * _Full match_ as default behaviour,
+  * _Full text search_ for longer text fields like `definition`, `etymology` and `citation`.
 --
++
+Endpoints `MAY` decide whether they prefer to focus on precision or recall when matching, e.g. returning case-insensitive matches or other normalizations.
+
+* *`==`*
++
+_alias: exact_
++
+Exact equality matching. The term in the data is exactly equal to the term in the search query.
 
 
 === Defined Relations
 
-(potential definition of full/partial match in the future)
+* *`is`*
++
+To query an identifier or entity instead of the string value (`=`).
++
+--
+  * `pos is "\https://universaldependencies.org/u/pos/NOUN"` (searching for the `\https://universaldependencies.org/u/pos/NOUN` concept) +
+  vs. `pos = "NOUN"` (searching for the `NOUN` string value)
+--
 
 
 == Booleans
@@ -70,17 +120,54 @@ TIP: For more information about Booleans in CQL, see <<ref:LOC-CQLCS,The CQL Con
 
 * *`AND`*
 * *`OR`*
-* *`NOT`* (__might be unnecessary__)
-* *`PROX`* (__might be obsolete__)
+* *`NOT`*
+* *`PROX`* (__is not used!__)
 
 
 == Relation Modifiers / Relation Qualifiers
 
 TIP: For more information about relation modifiers/qualifiers, see <<ref:LOC-CQLCS,The CQL Context Set, section "RELATION MODIFIERS">>.
 
-*none*
+=== Functional  Modifiers
 
-* *`=`* with `/contains`, `/startswith`, `/endswith`, `/fullmatch`, `/partialmatch` modifiers
+* *`lang=__value__`*
++
+Specification of a ISO639/BCP47 language tag of the search term. This can for example be used to search for translations in certain languages.
+
+* `ignoreCase`, `respectCase`
++
+The server is instructed to either ignore or respect the case of the search term, rather than its default behavior (which is unspecified).
+
+* `ignoreAccents`, `respectAccents`
++
+The server is instructed to either ignore or respect diacritics in terms, rather than its default behavior (which is unspecified, but respectAccents is recommended).
+
+* `partialMatch`, `fullMatch`
++
+The server is instructed that the search term is either explicitly a partial match (of a potentially longer index value) or should match the index value completely.
+
+
+=== Matching
+
+* (`__masked__`, default modifier)
++
+The following patterns and special characters apply for search terms. To explicitly request this functionality, add `cql.masked` as a relation modifier.
+
+    ** A single asterisk (`*`) is used to mask zero or more characters.
+    ** A single question mark (`?`) is used to mask a single character, thus N consecutive question-marks means mask N characters.
+    ** Backslash (`\`) is used to escape `*`, `?`, quote (`"`), as well as itself. Backslash not followed immediately by one of these characters is an error. 
+
+* `unmasked`
++
+Do not apply masking rules, all characters are literal.
+
+* `honorWhitespace`
++
+Used with `==` for exact matching to indicate that matching should even include extraneous whitespace (preceding, embedded, or following). In the absence of this modifier it is left to the server to decide whether or not to honor extraneous whitespace. 
+
+* `regexp`
++
+The term should be treated as a regular expression. Regular expressions are treated by the individual servers and any features beyond those found in modern POSIX regular expressions will not necessarily be supported by all servers. This modifier overrides the default 'masked' modifier, above.
 
 
 == Boolean Modifiers
@@ -92,15 +179,29 @@ TIP: More information about Boolean modifiers can be found <<ref:LOC-CQLCS,The C
 
 == Examples
 
-. `cat`, `"cat"`, `"United Nations"` +
-Searching in the default index; `cql.word` or `lemma`
+. `cat` +
+`"cat"` +
+`"United Nations"` +
+Different variants to search in the default index.
+
+. `lemma == mouse` +
+Search for exact string value `mouse` in `lemma` index.
 
 . `pos = ADJ` +
-Search for adjectives
+Search for adjectives.
 
-. `def = "cat"` +
-Search for records whose definition contains the term "cat". +
-TODO: Stemming, Lower/Uppercase, Subword-Matches
+. `definition = "cat"` +
+Search for records whose definition contains the term "cat".
+//TODO: Stemming, Lower/Uppercase, Subword-Matches
 
-. `pos = NOUN NOT lion AND def = carnivore` +
-Search for nouns with "carnivore" in definition; exclusion of records with "lion"
+. `pos = "NOUN" NOT "lion" AND definition = carnivore` +
+Search for nouns with "carnivore" in definition; exclusion of records with "lion".
+
+. `pos = NOUN AND ( lemma = Apfel OR lemma = "Birne" )` +
+Search for nouns that have lemma with either "Apfel" or "Birne".
+
+. `translation =/lang=eng car` +
+Search for lexical entries with an English translation "car".
+
+. `lemma =/unmasked "^ca?r*"` +
+Search for the lemma with the literal term "^ca?r*".

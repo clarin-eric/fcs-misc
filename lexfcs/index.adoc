@@ -1,6 +1,6 @@
 = Federated Content Search for Lexical Resources (LexFCS): Specification
-Erik Körner <koerner@saw-leipzig.de>; Thomas Eckart <eckart@saw-leipzig.de>; Axel Herold <herold@bbaw.de>; Frank Wiegand <wiegand@bbaw.de>; Frank Michaelis <michaelis@ids-mannheim.de>; Matthias Bremm <bremm@uni-trier.de>; Louis Cotgrove <cotgrove@ids-mannheim.de>; Thorsten Trippel <trippel@ids-mannheim.de>; Felix Rau <f.rau@uni-koeln.de>
-v0.1, 2023-05-04
+Erik Körner <koerner@saw-leipzig.de>; Thomas Eckart <eckart@saw-leipzig.de>; Uwe Kretschmer <kretschmer@saw-leipzig.de>; Axel Herold <herold@bbaw.de>; Frank Wiegand <wiegand@bbaw.de>; Frank Michaelis <michaelis@ids-mannheim.de>; Claus Zinn <claus.zinn@uni-tuebingen.de>; Matthias Bremm <bremm@uni-trier.de>; Louis Cotgrove <cotgrove@ids-mannheim.de>; Thorsten Trippel <trippel@ids-mannheim.de>; Felix Rau <f.rau@uni-koeln.de>; Anne Klee <klee@uni-trier.de>; Daniel Werning <daniel.werning@bbaw.de>; Dominik Blöse <dominik.bloese@bbaw.de>
+v0.3, 2025-06-20
 // more metadata
 :description: Specification extension of the CLARIN Federated Content Search (FCS) for Lexical Resources (LexFCS).
 :organization: Text+
@@ -15,6 +15,8 @@ v0.1, 2023-05-04
 :sectnums:
 :sectnumlevels: 4
 :appendix-caption!:
+// references
+:xrefstyle: full
 // directory stuff
 :imagesdir: images
 // pdf
@@ -34,11 +36,31 @@ endif::[]
 
 include::introduction.adoc[leveloffset=+1]
 
+include::interface-specification.adoc[leveloffset=+1]
+
+include::datamodel.adoc[leveloffset=+1]
+
 include::lexcql.adoc[leveloffset=+1]
 
 include::dataviews.adoc[leveloffset=+1]
+
+<<<
 
 [appendix]
 == Normative Appendix
 
 include::lexcql-contextset.adoc[leveloffset=+2]
+
+<<<
+
+[appendix]
+== Non-Normative Appendix
+
+include::best-practices.adoc[leveloffset=+2]
+
+// include::implementation-guide.adoc[leveloffset=+2]
+
+<<<
+
+:sectnums!:
+include::changelog.adoc[leveloffset=+1]

@@ -13,44 +13,32 @@ The key words `MUST`, `MUST NOT`, `REQUIRED`, `SHALL`, `SHALL NOT`, `SHOULD`, `S
 
 NOTE: Based on _Glossary_ in <<ref:CLARIN-FCSCore20,FCS Core 2.0>> specification.
 
-Aggregator::
-    A module or service to dispatch queries to repositories and collect results.
-
 CLARIN-FCS, FCS::
     CLARIN federated content search, an interface specification to allow searching within resource content of repositories.
 
 Client::
-    A software component, which implements the interface specification to query Endpoints, i.e. an aggregator or a user-interface.
+    A software component, which implements the interface specification to query Endpoints, i.e. an aggregator or a user interface.
 
 CQL::
-    Contextual Query Language, previously known as Common Query Language, is a domain specific language for representing queries to information retrieval systems such as search engines, bibliographic catalogs and museum collection information.
+    Contextual Query Language, previously known as Common Query Language, is a domain-specific language for representing queries to information retrieval systems, such as search engines, bibliographic catalogs and museum collection databases.
 
 Data View::
-    A Data View is a mechanism to support different representations of search results, e.g. a "hits with highlights" view, an image or a geolocation.
+    A Data View is a mechanism to support different representations of search results, e.g. a "hits with highlights" view, an image, or a geolocation.
 
 Endpoint::
-    A software component, which implements the CLARIN-FCS interface specification and translates between CLARIN-FCS and a search engine.
+    A software component, which implements the CLARIN-FCS interface specification, and translates between CLARIN-FCS and a search engine.
 
 Hit::
-    A piece of data returned by a Search Engine that matches the search criterion. What is considered a Hit highly depends on Search Engine.
+    Data or a subdivision of data returned by a Search Engine that matches the search criterion. What is considered a Hit highly depends on the Search Engine.
 
 Interface Specification::
-    Common harmonized interface and suite of protocols that repositories need to implement.
-
-PID::
-    A Persistent identifier is a long-lasting reference to a digital object.
-
-Repository Registry::
-    A separate service that allows registering Repositories and their Endpoints and provides information about these to other components, e.g. an Aggregator. The https://centres.clarin.eu/[CLARIN Center Registry] is an implementation of such a repository registry.
+    Common harmonized interface and suite of protocols that repositories are required to implement.
 
 Resource::
-    A searchable and addressable entity at an Endpoint, such as a text corpus or a multi-modal corpus.
-
-Resource Fragment::
-    A smaller unit in a Resource, e.g. a sentence in a text corpus or a time interval in an audio transcription.
+    A searchable and addressable entity offered by an Endpoint, such as a text corpus or a multi-modal corpus.
 
 Result Set::
-    An (ordered) set of hits that match a search criterion produced by a search engine as the result of processing a query.
+    An (ordered) set of Hits that match a search criterion produced by a search engine as the result of processing a query.
 
 Search Engine::
     A software component within a repository that allows for searching within the repository contents.
@@ -108,26 +96,28 @@ NOTE: Based on _Normative References_ in <<ref:CLARIN-FCSCore20,FCS Core 2.0>> s
     The _CQL Context Set_, Library of Congress,
     https://www.loc.gov/standards/sru/cql/contextSets/theCqlContextSet.html
 
-//CLARIN-FCS-DataViews::
-//    CLARIN Federated Content Search (CLARIN-FCS) - Data Views, SCCTC FCS Task-Force, April 2014,
-//    https://trac.clarin.eu/wiki/FCS/Dataviews,
-//    https://www.clarin.eu/sites/default/files/CE-2014-0317-CLARIN_FCS_Specification_DataViews_1_0.pdf
-
 [[ref:CLARIN-FCSCore20]]CLARIN-FCSCore20::
     CLARIN Federated Content Search (CLARIN-FCS) - Core 2.0 specification, SCCTC FCS Task-Force,
-    https://office.clarin.eu/v/CE-2017-1046-FCS-Specification-v89.pdf
+    https://office.clarin.eu/v/CE-2017-1046-FCS-Specification-v89.pdf,
+    https://github.com/clarin-eric/fcs-misc/tree/main/fcs-core-2.0[(Sources)],
+    https://clarin-eric.github.io/fcs-misc/fcs-core-2.0-specs/fcs-core-2.0.html[(HTML Build)],
+    https://clarin-eric.github.io/fcs-misc/fcs-core-2.0-specs/fcs-core-2.0.pdf[(PDF Build)],
 
 
 == Non-Normative References
 
-[[ref:UD-POS]]UD-POS::
-    Universal Dependencies, Universal POS tags v2.0,
-    https://universaldependencies.org/u/pos/
+[[ref:UD]]UD::
+    Universal Dependencies project, that provides terminology for linguistic tags, features and relations,
+    https://universaldependencies.org/
+
+[[ref:EDTF]]EDTF::
+    Extended Date/Time Format (EDTF) Specification, February 4, 2019, The Library of Congress,
+    https://www.loc.gov/standards/datetime/
 
 
 == Typographic and XML Namespace conventions
 
-Sections that are still in discussion and not yet finalized are marked with `(WIP)` and may optionally have some _NOTE_ admonition blocks. Details and specifications `MUST NOT` be considered stable.
+Sections that are still in discussion and not yet finalized are marked with `(WIP)` and may optionally have some _NOTE_ admonition blocks. Details and specifications `SHOULD NOT` be considered stable.
 
 The following typographic conventions for XML fragments will be used throughout this specification:
 
@@ -141,8 +131,8 @@ An XML attribute with the name _attr_.
 
 * `string`
 +
-The literal _string_ must be used either as element content or attribute value.
+The literal _string_ `MUST` be used either as the content of an element or value of an attribute.
 
 Endpoints and Clients `MUST` adhere to the <<ref:XML-Namespaces>> specification. The CLARIN-FCS interface specification generally does not dictate whether XML elements should be serialized in their prefixed or non-prefixed syntax, but Endpoints `MUST` ensure that the correct XML namespace is used for elements and that XML namespaces are declared correctly. Clients `MUST` be agnostic regarding syntax for serializing the XML elements, i.e. if the prefixed or un-prefixed variant was used, and `SHOULD` operate solely on _expanded names_, i.e. pairs of _namespace name_ and _local name_.
 
-For a list of common XML namespace names and prefixes see the table "XML Namespaces and prefixes" in section 1.5 of the <<ref:CLARIN-FCSCore20,FCS Core 2.0 Specification>>.
+For a list of common XML namespace names and prefixes see the table "XML Namespaces and prefixes" in Section 1.5 of the <<ref:CLARIN-FCSCore20,FCS Core 2.0 Specification>>.

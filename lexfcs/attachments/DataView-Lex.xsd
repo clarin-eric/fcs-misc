@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+    xmlns:xml="http://www.w3.org/XML/1998/namespace" 
+    xmlns:lex="http://clarin.eu/fcs/dataview/lex"
+    xml:lang="en" vc:minVersion="1.1"
+    targetNamespace="http://clarin.eu/fcs/dataview/lex" elementFormDefault="qualified">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+
+    <xs:annotation>
+        <xs:documentation>
+            <h:p>
+                This schema defines the structure of an
+                <h:em>advanced lexical result</h:em> data view for lexical resources.
+            </h:p>
+            <h:p>
+                The value <h:code>application/x-clarin-fcs-lex+xml</h:code>
+                MUST be used to indicate an <h:em>advanced lexical result</h:em> data view.
+            </h:p>
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:element name="Entry">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Field" type="lex:FieldType" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute ref="xml:lang" />
+            <xs:attribute name="langUri" type="xs:anyURI" use="optional" />
+
+            <!-- enforce xml:lang when using langUri -->
+            <xs:assert test="not(not(@xml:lang) and @langUri)"/>
+            <!-- enforce mandatory lemma Field -->
+            <xs:assert test=".//@type='lemma'"/>
+        </xs:complexType>
+        <!-- enforce single Field per type -->
+        <xs:unique name="uniqueFieldTypesPerEntry">
+            <xs:selector xpath="lex:Field" />
+            <xs:field xpath="@type" />
+        </xs:unique>
+    </xs:element>
+
+    <xs:complexType name="FieldType">
+        <xs:sequence>
+            <xs:element name="Value" type="lex:ValueType" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="type" type="lex:fieldType" use="required"/>
+
+        <!-- enforce vocab(Value)Ref for "pos" Values -->
+        <xs:assert test="if (@type='pos') then (.//@vocabValueRef or .//@vocabRef) else true()"/>
+        <!-- enforce "citation" attributes only on "citation" Values -->
+         <xs:assert test="not(not(@type='citation') and (.//@source or .//@sourceRef or .//@date or .//@rel))"/>
+    </xs:complexType>
+    
+    <xs:complexType name="ValueType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute ref="xml:id" />
+                <xs:attribute ref="xml:lang" />
+                <xs:attribute name="langUri" type="xs:anyURI" use="optional"/>
+                <xs:attribute name="preferred" type="xs:boolean" use="optional"/>
+                <xs:attribute name="ref" type="xs:anyURI" use="optional"/>
+                <xs:attribute name="idRefs" type="xs:IDREFS" use="optional"/>
+                <xs:attribute name="vocabRef" type="xs:anyURI" use="optional"/>
+                <xs:attribute name="vocabValueRef" type="xs:anyURI" use="optional"/>
+                <xs:attribute name="type" type="xs:string" use="optional"/>
+                <xs:attribute name="source" type="xs:string" use="optional"/>
+                <xs:attribute name="sourceRef" type="xs:anyURI" use="optional"/>
+                <xs:attribute name="date" type="xs:string" use="optional"/> <!-- EDTF? -->
+
+                <!-- enforce xml:lang when using langUri -->
+                 <xs:assert test="not(not(@xml:lang) and @langUri)"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:simpleType name="fieldType">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">
+                Typed information about this lexical entry. Allowed field types are:
+                <h:ul>
+                    <h:li><h:b>antonym</h:b>: Values in accordance to http://hdl.handle.net/11459/CCR_C-83_fb60d00c-08cf-1d88-ed75-8a8267bee0fb</h:li>
+                    <h:li><h:b>definition</h:b>: Values in accordance to http://hdl.handle.net/11459/CCR_C-1972_e9eef6e1-7df2-0d6f-4834-210d1711387b</h:li>
+                    <h:li><h:b>pos</h:b>: Values in accordance to http://hdl.handle.net/11459/CCR_C-396_5a972b93-2294-ab5c-a541-7c344c5f26c3</h:li>
+                    <h:li><h:b>synonym</h:b>: Values in accordance to http://hdl.handle.net/11459/CCR_C-317_9cc31ff4-059d-3c39-7e68-706d63b2b221</h:li>
+                    <h:li>...</h:li>
+                </h:ul>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="entryId"/>
+            <!-- word forms -->
+            <xs:enumeration value="lemma"/>
+            <xs:enumeration value="phonetic"/>
+            <xs:enumeration value="translation"/>
+            <xs:enumeration value="transcription"/> <!-- ? rather multiple `lemma` entries -->
+            <!-- textual description and information -->
+            <xs:enumeration value="definition"/>
+            <xs:enumeration value="etymology"/>
+            <!-- grammar and morphology -->
+            <xs:enumeration value="case"/>
+            <xs:enumeration value="number"/>
+            <xs:enumeration value="gender"/>
+            <xs:enumeration value="pos"/>
+            <xs:enumeration value="baseform"/>
+            <xs:enumeration value="segmentation"/>
+            <!-- something else -->
+            <xs:enumeration value="sentiment"/>
+            <xs:enumeration value="frequency"/>
+            <!-- (semantic) relations -->
+            <xs:enumeration value="antonym"/>
+            <xs:enumeration value="hyponym"/>
+            <xs:enumeration value="hypernym"/>
+            <xs:enumeration value="meronym"/>
+            <xs:enumeration value="holonym"/>
+            <xs:enumeration value="synonym"/>
+            <xs:enumeration value="related"/>
+            <!-- references -->
+            <xs:enumeration value="ref"/> <!-- enforce xs:anyURI? -->
+            <xs:enumeration value="senseRef"/>
+            <!-- citations -->
+            <xs:enumeration value="citation"/>
+            <!-- TODO MORE? -->
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

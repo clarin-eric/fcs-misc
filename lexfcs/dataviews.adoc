@@ -2,37 +2,99 @@
 :description: FCS DataViews for Lex Search.
 
 
-Data formats for result representation.
+Data formats for the representation of results.
+
+
+== Lexical Data View
+
+The _Lexical (LEX)_ Data View is the mandatory serialization of search results for _Lexical Search_ queries. It structures information into key and multiple values pairs. More details in <<LexFCS Data Model,Data Model>>.
+
+[%noheader,cols="1h,2"]
+|===
+|Description
+|The representation of a lexical resource
+
+|MIME type
+|`application/x-clarin-fcs-lex+xml`
+
+|Payload Disposition
+|_inline_
+
+|Payload Delivery
+|_send-by-default_ (`REQUIRED`)
+
+|Recommended Short Identifier
+|`lex` (`RECOMMENDED`)
+
+|XML Schema
+|link:attachments/DataView-Lex.xsd[DataView-Lex.xsd]
+|===
+
+The _Lexical (LEX)_ Data View is serialized as XML in the `<fcs:DataView>` element, specified in <<ref:CLARIN-FCSCore20,FCS Core 2.0 specification>>. (section "Result Format", §2.2.3). The elements `<lex:Entry>`, `<lex:Field>` and `<lex:Value>` with their attributes are the direct serialization of the <<LexFCS Data Model,Data Model>>.
+
+A minimal example can be seen at <<dv-lex-basic>>. A few more targeted examples can be found in <<Serialization with the Lexical Data View>> demonstrating edge cases and special features when using this Data View.
+
+.Example of basic *Lex* Data View
+[source#dv-lex-basic,xml]
+----
+<!-- potential @pid and @ref attributes omitted -->
+<fcs:DataView type="application/x-clarin-fcs-lex+xml" xmlns:fcs="http://clarin.eu/fcs/resource">
+  <lex:Entry xmlns:lex="http://clarin.eu/fcs/dataview/lex">
+    <lex:Field type="lemma">
+      <lex:Value xml:lang="deu">Becher</lex:Value>
+    </lex:Field>
+    <!-- … -->
+  </lex:Entry>
+</fcs:DataView>
+----
+
+Serialization examples in the _Lexical (LEX)_ Data View can be found at: https://gitlab.gwdg.de/textplus/ag-fcs-lex-fcs-dataview/-/tree/master/examples.
+// TODO: use conditionals to render relative links or different repos (based on HTML/PDF output and CI/Repo)
 
 
 == Extension of the Hits Data View for LexFCS
 
-Based on:
+The _Generic Hits (HITS)_ Data View is mandatory in <<ref:CLARIN-FCSCore20,FCS Core 2.0 specification>> (section "Basic Search", §2.2.3.2). This schema extends the `<hits:Hit>` element with an optional `@kind` attribute (see <<Using the @kind Attribute>>), which provides information on the content of the Hit result.
 
-* <<ref:CLARIN-FCSCore20,FCS Core 2.0 specification>> (section "Basic Search", §2.2.3.2)
-* Hits XML schema https://github.com/clarin-eric/fcs-misc/blob/main/schema/Core_2/DataView-Hits.xsd["DataView-Hits.xsd"]
+[%noheader,cols="1h,2"]
+|===
+|Description
+|The representation of the hit
+
+|MIME type
+|`application/x-clarin-fcs-hits+xml`
+
+|Payload Disposition
+|_inline_
+
+|Payload Delivery
+|_send-by-default_ (`REQUIRED`)
+
+|Recommended Short Identifier
+|`hits` (`RECOMMENDED`)
+
+|XML Schema
+|link:attachments/DataView-LexHits.xsd[DataView-LexHits.xsd], based on https://github.com/clarin-eric/fcs-misc/blob/main/fcs-core-2.0/attachments/DataView-Hits.xsd["DataView-Hits.xsd"]
+|===
 
 .Example of basic *Hits* Data View
-[source,xml]
+[source#dv-hits-basic,xml]
 ----
 <!-- potential @pid and @ref attributes omitted -->
-<fcs:DataView type="application/x-clarin-fcs-hits+xml">
+<fcs:DataView type="application/x-clarin-fcs-hits+xml" xmlns:fcs="http://clarin.eu/fcs/resource">
   <hits:Result xmlns:hits="http://clarin.eu/fcs/dataview/hits">The quick brown <hits:Hit>fox</hits:Hit> jumps over the lazy<hits:Hit>dog</hits:Hit>.</hits:Result>
 </fcs:DataView>
 ----
 
-Reuse of the `<hits:Hit>` element, with the extension of content hinting by using an optional attribute `@kind` with the following allowed values:
+=== Using the @kind Attribute
 
-* `lex-lemma`: Lemma,
-* `lex-pos`: Part of speech,
-* `lex-def`: Definition.
-
+To extend the Hits Data View, the `<hits:Hit>` element is reused as per the <<ref:CLARIN-FCSCore20,FCS Core 2.0 Specification>>, but with the additional optional `@kind` attribute, which provides content hinting. The values of the `@kind` attribute `@kind` attribute follow the scheme `lex-<FIELD-TYPE>`, e.g. `lex-lemma` for lemma, `lex-pos` for part of speech (POS) tags etc.
 Textual content outside of `<hits:Hit>` are displayed unchanged.
 
 .Example of extended *Hits* Data View with additional `@kind` attributes
-[source,xml]
+[source#dv-lexhits,xml]
 ----
-<fcs:DataView type="application/x-textplus-fcs-hits+xml">
+<fcs:DataView type="application/x-textplus-fcs-hits+xml" xmlns:fcs="http://clarin.eu/fcs/resource">
   <hits:Result xmlns:hits="http://textplus.org/fcs/dataview/hits"><hits:Hit kind="lex-lemma">Apple</hits:Hit>: <hits:Hit kind="lex-pos">NOUN</hits:Hit>. <hits:Hit kind="lex-def">An apple is an edible fruit produced by an apple tree.</hits:Hit></hits:Result>
 </fcs:DataView>
 ----

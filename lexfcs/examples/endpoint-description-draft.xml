@@ -1,0 +1,76 @@
+<sruResponse:explainResponse>
+  <sruResponse:version>2.0</sruResponse:version>
+  <sruResponse:record>
+    <sruResponse:recordSchema>http://explain.z3950.org/dtd/2.0/</sruResponse:recordSchema>
+    <sruResponse:recordXMLEscaping>xml</sruResponse:recordXMLEscaping>
+    <sruResponse:recordData>
+      <zr:explain>
+        <!-- ... -->
+      </zr:explain>
+    </sruResponse:recordData>
+  </sruResponse:record>
+  <sruResponse:echoedExplainRequest>
+    <sruResponse:version>2.0</sruResponse:version>
+  </sruResponse:echoedExplainRequest>
+  <sruResponse:extraResponseData>
+    <ed:EndpointDescription version="2">
+      <ed:Capabilities>
+        <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
+        <ed:Capability>http://clarin.eu/fcs/capability/advanced-search</ed:Capability>
+        <ed:Capability>http://clarin.eu/fcs/capability/lex-search</ed:Capability>
+      </ed:Capabilities>
+      <!-- data views -->
+      <ed:SupportedDataViews>
+        <ed:SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</ed:SupportedDataView>
+        <ed:SupportedDataView id="adv" delivery-policy="send-by-default">application/x-clarin-fcs-adv+xml</ed:SupportedDataView>
+        <ed:SupportedDataView id="lex" delivery-policy="send-by-default">application/x-clarin-fcs-lex+xml</ed:SupportedDataView>
+      </ed:SupportedDataViews>
+      <!-- advanced search layers (results and for queries) -->
+      <ed:SupportedLayers>
+        <ed:SupportedLayer id="word" result-id="http://wortschatz-leipzig.de/noske/fcs/layer/word">text</ed:SupportedLayer>
+        <ed:SupportedLayer id="lc" result-id="http://wortschatz-leipzig.de/noske/fcs/layer/lc">text</ed:SupportedLayer>
+        <ed:SupportedLayer id="gnd" result-id="http://wortschatz-leipzig.de/noske/fcs/layer/gnd">entity</ed:SupportedLayer>
+      </ed:SupportedLayers>
+      <!-- lex extension: for FCS clients (Aggregator) to show what resources support what fields for searches -->
+      <ed:SupportedLexFields type="lex">
+        <ed:SupportedLexField id="lemma">lemma</ed:SupportedLexField>
+        <ed:SupportedLexField id="pos">pos</ed:SupportedLexField>
+      </ed:SupportedLexFields>
+      <!-- entity extension: for FCS clients to suggests values/URIs from vocabularies for query builders -->
+      <ed:SupportedVocabularies>
+        <ed:SupportedVocabulary ids="gnd senseRef-gnd"
+          vocabRef="http://gnd.de/"
+          vocabValueRefTemplate="http://gnd.de/<ID>"
+          desc="GND IDs" info-uri="gnd.de">http://gnd.de/##TEMPLATE##</ed:SupportedVocabulary>
+        <ed:SupportedVocabulary id="stts"
+          vocabRef="http://stuttgart.de/stts.info"
+          vocabValueRefTemplate="stts:<id>">stts:##TAG##</ed:SupportedVocabulary>
+        <!-- LOD prefixe? -->
+      </ed:SupportedVocabularies>
+      <!-- resources -->
+      <ed:Resources>
+        <ed:Resource pid="hdl:11022/0000-0007-D00C-1">
+          <ed:Title xml:lang="en">afr-za_web_2018_1M</ed:Title>
+          <ed:Description xml:lang="en">Afrikaans Web subcorpus (South Africa) based on material from 2018 (1,000,000 sentences)</ed:Description>
+          <ed:LandingPageURI>https://corpora.wortschatz-leipzig.de?corpusId=afr-za_web_2018_1M</ed:LandingPageURI>
+          <ed:Languages>
+            <ed:Language>afr</ed:Language>
+          </ed:Languages>
+          <ed:AvailableDataViews ref="hits adv" />
+          <ed:AvailableLayers ref="word lc" />
+        </ed:Resource>
+        <ed:Resource pid="ws_deu">
+          <ed:Title xml:lang="en">Wortschatz Leipzig German</ed:Title>
+          <ed:Description xml:lang="en">Wortschatz Leipzig German Resource</ed:Description>
+          <ed:LandingPageURI>https://wortschatz-leipzig.de/</ed:LandingPageURI>
+          <ed:Languages>
+            <ed:Language>deu</ed:Language>
+          </ed:Languages>
+          <ed:AvailableDataViews ref="hits lex" />
+          <!-- lex (data view) supports those fields (referencing IDs) -->
+          <ed:AvailableLexFields ref="lemma pos" />
+        </ed:Resource>
+      </ed:Resources>
+    </ed:EndpointDescription>
+  </sruResponse:extraResponseData>
+</sruResponse:explainResponse>

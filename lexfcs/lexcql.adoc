@@ -1,91 +1,192 @@
 = LexCQL
 :description: LexCQL query language.
 
-The LexCQL makes use of the <<ref:LOC-CQL,Contextual Query Language (CQL)>> for queries on lexical resources in the context of the FCS. This has the benefit of using an existing, well-known and standardized query language with an established ecosystem, including libraries, parsers and extensive documentation. The proposed Context Set can be found in section <<CQL ContextSet specification>>.
+LexCQL uses <<ref:LOC-CQL,Contextual Query Language (CQL)>> to query lexical resources available in the FCS. This has the benefit of using an existing, well-known and standardized query language with an established ecosystem, including libraries, parsers and extensive documentation. The proposed Context Set can be found in <<CQL ContextSet specification>>.
 
-LexCQL queries should offer the greatest possible compatibility and flexibility to users, i.e. it `SHOULD` allow the retrieval of lexical records which are available in different spelling or normalisation variants (upper/lower case; diacritics/umlauts; other forms of normalization) with a simple query. It therefore should make it easier to formulate meaningful queries, reduce frustration caused by missing or incomplete results and also enable fuzzy search functionality. Endpoints `SHOULD` support this flexible, user-oriented handling, but are always free to rank more suitable results higher.
+LexCQL queries offer users significant compatibility and flexibility, i.e. a simple query in LexCQL `SHOULD` allow the retrieval of lexical records with alternative spelling or normalisation variants, e.g. upper/lower case, diacritics/umlauts, or other forms of normalization. It should, therefore, be straightforward to formulate meaningful queries, reduce frustration caused by missing or incomplete results, and also enable fuzzy search functionality. Endpoints `SHOULD` support this flexible, user-oriented handling, but are always free to rank more suitable results higher.
 
 However, users `SHOULD` also be given the option of _"sharpening"_ search queries using optional operators or modifiers, to refine queries and the associated result sets.
 
+Full support of the LexCQL query language depends on the Endpoint. The Endpoint `MUST` support term-only queries. Endpoints or Clients `MUST` support link:++http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part5-cql/searchRetrieve-v1.0-os-part5-cql.html#_Toc324166815++[__Level 2__] of the CQL server conformance to be able to _parse_ (Endpoints) or _serialize_ (Clients) all of CQL and respond with appropriate error messages to the search/retrieve protocol interface. For appropriate error messages, refer to <<ref:CLARIN-FCSCore20,CLARIN-FCS Core 2.0, Section 3.1>>.
 
-== Queryable fields / indexes
-Every LexCQL Endpoint `MUST` support queries for field `lemma` (at least implicitly as default field) and `SHOULD` support as many queryable fields as feasible.
+NOTE: This does not _imply_ that Endpoints are _required_ to support all of CQL (and LexCQL), but rather that they are able to _parse_ all of CQL and generate the appropriate error message, e.g. if a query includes a feature they do not support.
 
-:fn-lemma: pass:n[footnote:[`SHOULD` be used as default query field]]
-:fn-pos: footnote:[Potential use of the <<ref:UD-POS,Universal Dependencies POS tags>>]
-
-=== Form and sense definition
-
-* `lemma`: Lemma, main form, article name {fn-lemma}
-
-* `def`: Definition
-
-=== Grammatical properties (WIP)
-
-NOTE: Analogous to https://dariah-eric.github.io/lexicalresources/pages/TEILex0/TEILex0.html#typology-of-gram[TEI Lex-0 types] .
-
-* `pos`: Part of speech {fn-pos}
-
-NOTE: __Open question__: all TEI Lex-0 vocabulary (like case, gender, etc.)?
+LexCQL uses the same diagnostics defined in <<ref:CLARIN-FCSCore20,CLARIN-FCS Core 2.0>> and <<ref:OASIS-SRU20,OASIS SRU 2.0>> to enable endpoints to report error and information messages.
 
 
-=== Semantic relations / Cross-references _(WIP)_
+== Search term
 
-NOTE: Analogous to https://dariah-eric.github.io/lexicalresources/pages/TEILex0/TEILex0.html#crossref_typology[TEI Lex-0 types] with `xr` Context Set.
-
-* `xr$synonymy`: Synonym
-* `xr$hyponymy`: Hyponym
-* `xr$hypernymy`: Hyperonym
-* `xr$meronymy`: Meronym
-* `xr$antonymy`: Antonym
-
-NOTE: __Open question__: how exactly do search scenarios look like here?
+A search term `MAY` be enclosed in double quotation marks (`"`), though it need not be. It `MUST` be enclosed in quotation marks if it contains any of the following characters: left or right angle bracket (`<`, `>`), left or right parenthesis (`(`, `(`), equal (`=`), backslash (`\`), apostrophe/single quotation mark (`'`), or whitespace. Backslash is used to escape quote and as well as itself.
 
 [discrete]
-==== Examples
+=== Examples
 
-* `pos = "NOUN" AND xr$synonymy = "house"`
-+
-Searching for nouns that are synonyms to "house".
+* `car`
+* `"car"`
+* `"car wash"`
+* `"car's"`
+* `"27\""` to search for term `27"`
+* `"\\"` to search for term `\`
 
 
-=== Senses, Entities, Synsets _(WIP)_
+== Queryable Fields / Indexes
 
-* `senseRef`: References to external sense definitions (like Princeton WordNet, GermaNet, Interlingual Index, authority files)
+LexCQL allows querying all fields that are supported by the <<LexFCS Data Model>> and uses their respective xref:datamodel.adoc#lex-field-types[field types]. Every LexCQL Endpoint `MUST` support queries for field `lemma` and `SHOULD` support as many queryable fields as feasible. It is recommended to use the field `lemma` as default if no field is specified in the request.
+
+To support querying the language of a lexical record, an additional virtual field `lang` has been defined which refers to the language of the whole lexical Entry. It has the same semantics as the `@xml:lang` attribute of a <<Field>> in a lexical <<Entry>>, where it is queried with the `lang` <<Relation Modifier,relation modifier>>.
 
 
 [discrete]
-==== Examples
+=== Examples
 
-* `senseRef = "https://d-nb.info/gnd/118571249"`
+* `car`
 +
-Searching for all references of the entity https://d-nb.info/gnd/118571249 (person "Gottfried Wilhelm Leibniz").
+Search for lexical records with the term "car" (recommended to be interpreted as query on the field `lemma`).
 
-* `senseRef = "wordnet:study%2:31:02::"`
+* `lemma = "car"`
 +
-Searching for sense "study" (http://wordnetweb.princeton.edu/perl/webwn?c=6&sub=Change&o2=&o0=1&o8=1&o1=1&o7=&o5=&o9=&o6=1&o3=&o4=&i=12&h=010000000000100000000&s=study[`study%2:31:02::`, _analyze, analyse, study, examine, canvass_]).
+Search for lexical records with the lemma "car".
+
+* `pos = "NOUN" AND synonym = "house"`
 +
-NOTE: Some inventory of authorities or lookups should be defined and agreed on. Otherwise, it is up to the Endpoint to interpret the senses correctly.
+Search for nouns that are synonyms of "house".
 
-_Open questions_:
-
- *** Standard way of referencing Princeton WordNet senses?
-
-
-=== Operators _(WIP)_
-
-* Partial or full match of an _index_
-
-** *`=`* for full match?
+* `lang = "deu" AND translation =/lang=eng "member of parliament"`
 +
-NOTE: Very generic definition in <<ref:LOC-CQLCS,CQL Context Set>> specification.
-+
-_Open questions_:
+Search for an lexical record in German that contains the English translation "member of parliament".
 
-*** Taking into account lower/uppercase normalisation of Umlauts?
-*** CQL operators for partial matches or usage of `/approx`?
-*** Regular expressions?
 
-* Combination with `AND` / `OR` and parentheses `(` ... `)`
+== Relations
+
+LexCQL supports the following relations between field and search term.
+
+* `=`
++ 
+This is the default relation, and the server can choose any appropriate relation or means of comparing the query term with the terms from the data being searched. It is encouraged to interpret this relation in a beginner friendly way and match all reasonably similar terms, based on string normalisation, string similiarity, lemmatisation, substring etc.
+
+
+* `==`
 +
-NOTE: Leave full support to the endpoints!
+This relation is used for exact equality matching. The term in the data is exactly equal to the term in the search query.
+
+* `is`
++
+This relation can be used to search for an external value definition specified as URI.
+
+
+[discrete]
+=== Examples
+
+* `lemma = "car"`
++
+Search for lexical records with the lemma "car". The endpoint decides which records are similar enough and might include in the result set variants, e.g. records with lemma "cars", "CARS" etc.
+
+* `lemma == "car"`
++
+Search for lexical records whose lemma exactly matches the string "car".
+
+* `pos is \https://universaldependencies.org/u/pos/NOUN`
++
+Search for lexical records whose part-of-speech is a noun according to the POS tags of the <<ref:UD,Universal Dependencies project>>.
+
+
+== Relation Modifier
+
+Relations `MAY` be modified with relation modifiers, each separated by a slash (`/`). The following relation modifiers are allowed. The endpoint decides if and to what degree relation modifiers of a query are considered.
+
+
+* (__masked__, default modifier)
++
+The following patterns and special characters apply for search terms. To explicitly request this functionality, add `cql.masked` as a relation modifier.
+
+    ** A single asterisk (`*`) is used to mask zero or more characters.
+    ** A single question mark (`?`) is used to mask a single character, thus N consecutive question-marks means mask N characters.
+    ** Backslash (`\`) is used to escape `*`, `?`, quote (`"`), as well as itself. Backslash not followed immediately by one of these characters is an error. 
+
+* `unmasked`
++
+Do not apply masking rules, all characters are literal.
+
+* `lang`
++
+Specifies the language of the requested term. It is encouraged to use and support an https://tools.ietf.org/html/bcp47[IETF BCP 47] compliant language code.
+
+* `ignoreCase`, `respectCase`
++
+The server is instructed to either ignore or respect the case of the search term, rather than its default behavior (which is unspecified).
+
+* `ignoreAccents`, `respectAccents`
++
+The server is instructed to either ignore or respect diacritics in terms, rather than its default behavior (which is unspecified, but respectAccents is recommended).
+
+* `honorWhitespace`
++
+Used with `==` for exact matching to indicate that matching should even include extraneous whitespace (preceding, embedded, or following). In the absence of this modifier it is left to the server to decide whether or not to honor extraneous whitespace. 
+
+* `regexp`
++
+The term should be treated as a regular expression. Regular expressions are treated by the individual servers and any features beyond those found in modern POSIX regular expressions will not necessarily be supported by all servers. This modifier overrides the default 'masked' modifier, above.
+
+* `partialMatch`, `fullMatch`
++
+The server is instructed that the search term is either explicitly a partial match (of a potentially longer index value) or should match the index value completely.
+
+[WARNING]
+====
+The CQL Context Set defined in link:++http://docs.oasis-open.org/search-ws/searchRetrieve/v1.0/os/part5-cql/searchRetrieve-v1.0-os-part5-cql.html#_Toc324166823++[OASIS] specifies the following modifiers that will not be used for LexCQL: +
+`word`, `string` (how term should be tokenized for matching, `string` for __no break into words__)
+====
+
+
+[discrete]
+=== Examples
+
+* `lemma = "car s*"`
++
+Search for lexical records whose lemma contains the string "car s" followed by any number of characters (like "car s", "car service" or "car sickness").
+
+* `lemma =/unmasked "car s*"`
++
+Search for lexical records whose lemma is "car s*".
+
+* `synonym =/lang=eng/ignoreCase "handy"`
++
+Search for lexical records with the synonym "handy" (including all case variations, like "HaNdY") in English language.
+
+
+== Operators
+
+LexCQL supports the following Boolean operators to form complex queries. Boolean operators have the same precedence; they are evaluated left-to-right. Parentheses may be used to override left-to-right evaluation.
+
+* `AND`
++
+The set of records representing two search clauses linked by `AND` is the intersection of the two sets of records representing the two search clauses. 
+
+* `OR`
++
+The set of records representing two search clauses linked by `OR` is the union of the two sets of records representing the two search clauses.
+
+* `NOT`
++
+The set of records representing two search clauses linked by `NOT` is the set of records representing the left hand set which are not in the set of records representing the right hand set. `NOT` cannot be used as a unary operator, it is interpreted as "AND NOT".
+
+
+[discrete]
+=== Examples
+
+* `lemma = "car" AND pos = "NOUN"`
++
+Search for lexical records with both the lemma "car" and the part-of-speech "NOUN".
+
+* `lemma = "car" AND (pos = "NOUN" OR pos = "ADJ")`
++
+Search for lexical records with the lemma "car" and either the part-of-speech "NOUN" or "ADJ".
+
+
+* `lemma = car NOT pos = "NOUN"`
++
+Search for lexical records with the lemma "car" while not having the part-of-speech "NOUN".
+
+* `pos = NOUN OR verb`
++
+Search for lexical records with the search clauses `pos = NOUN` and `verb`, connected with a Boolean OR operator.

@@ -1,0 +1,31 @@
+= Changelog
+
+[discrete]
+== 2025-06-20 -- Publication of LexFCS (v0.3)
+// https://zenodo.org/doi/10.5281/zenodo.15706299
+
+* Specify _Lex Fields_ in the _Endpoint Description_ for client self-configuration, describing what lex fields an endpoint supports for querying and that can appear in results (Lex Data View)
+* Change Lex Data View namespace to `http://clarin.eu/fcs/dataview/lex`
+* Update Lex Field Types
+* Various fixes
+
+[discrete]
+== 2024-12-16 -- Publication of LexFCS (v0.2)
+// https://zenodo.org/doi/10.5281/zenodo.14500586
+// https://github.com/clarin-eric/fcs-misc/commit/dfa09858514156dc5c0273993d1d015af2d8a6a5
+// ...
+// https://github.com/clarin-eric/fcs-misc/commit/692d270dfb284ca142ce20dcea38633d01892314
+
+* Specify _Lex Data Model_ with _Lex Data View_ serialization
+* LexCQL for new _Lex Data Model_
+
+[discrete]
+== 2024-04-10 -- Publication on CLARIN-ERIC GitHub
+// https://github.com/clarin-eric/fcs-misc/commit/452dcf10ad5982a58e119456876d3c96410cba51
+
+[discrete]
+== 2023-05-09 -- Publication of first draft (v0.1) on Zenodo
+// https://zenodo.org/doi/10.5281/zenodo.7849753
+
+* Propose _LexCQL_ query language and extension of _Hits Data View_ for LexFCS
+* LexFCS CQL Context Set for _LexCQL_
