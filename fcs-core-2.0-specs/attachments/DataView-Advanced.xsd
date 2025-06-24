@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+    xml:lang="en" vc:minVersion="1.0" vc:maxVersion="1.1"
+    xmlns:adv="http://clarin.eu/fcs/dataview/advanced"
+    targetNamespace="http://clarin.eu/fcs/dataview/advanced" elementFormDefault="qualified">
+
+    <xs:annotation>
+        <xs:documentation>
+            <h:p>
+                This schema defines the structure of a
+                <h:em>advanced result</h:em> data view.
+            </h:p>
+            <h:p>
+                The value <h:code>application/x-clarin-fcs-adv+xml</h:code>
+                MUST be used to indicate a <h:em>generic result</h:em> data view.
+            </h:p>
+        </xs:documentation>    
+    </xs:annotation>
+
+    <xs:element name="Advanced">
+        <xs:annotation>
+            <xs:documentation>
+                <h:p>
+                    CLARIN-FCS client MAY
+                    normalize white-space and strip leading and tailing
+                    white-space and collapse all white-space between
+                    tokens to a single #x20 character.
+                </h:p>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <!-- Segements -->
+                <xs:element name="Segments">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Segment" maxOccurs="unbounded">
+                                <xs:annotation>
+                                    <xs:documentation>
+                                        <h:p>
+                                            A segment is ...
+                                        </h:p>
+                                    </xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                    <xs:attribute name="id" type="adv:referenceType" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>
+                                                <h:p>
+                                                    A local identifier for this segment. Is used in the &lt;Span&gt; element to refer to a segment.
+                                                </h:p>
+                                            </xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="start" type="adv:offsetType" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>
+                                                <h:p>
+                                                    Start offset of the segment.
+                                                </h:p>
+                                            </xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="end" type="adv:offsetType" use="required">
+                                        <xs:annotation>
+                                            <xs:documentation>
+                                                <h:p>
+                                                    End offset of the segment. The End offset MUST be larger or equal to the start offset.
+                                                </h:p>
+                                            </xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                    <xs:attribute name="ref" type="xs:anyURI">
+                                        <xs:annotation>
+                                            <xs:documentation>
+                                                <h:p>
+                                                    An optional URI supplied by Endpoint which (may be) displayed by Tools like the Aggregator. The Endpoint
+                                                    needs to do something useful, if user follows this URI, i.e. display result in own viewer or
+                                                    invoke an audio-player, etc.
+                                                </h:p>
+                                            </xs:documentation>
+                                        </xs:annotation>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="unit" use="required">
+                            <xs:annotation>
+                                <xs:documentation>
+                                    <h:p>
+                                        This attribute indicates how the start and end offsets are represented.
+                                        They can be either enumerated items, like characters or tokens or timestamps.
+                                    </h:p> 
+                                </xs:documentation>
+                            </xs:annotation>
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="item">
+                                        <xs:annotation>
+                                            <xs:documentation>
+                                                <h:p>
+                                                    The start and end offsets represent enumerated items, e.g. like characters or tokens.
+                                                </h:p>
+                                            </xs:documentation>
+                                        </xs:annotation>
+                                    </xs:enumeration>
+                                    <xs:enumeration value="timestamp">
+                                        <xs:annotation>
+                                            <xs:documentation>
+                                                <h:p>
+                                                    The start and end offsets represent timestamps.
+                                                </h:p>
+                                            </xs:documentation>
+                                        </xs:annotation>
+                                    </xs:enumeration>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+
+                <!-- Layers-->
+                <xs:element name="Layers">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Layer" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="Span" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:simpleContent>
+                                                    <xs:extension base="xs:string">
+                                                        <xs:attribute name="ref" type="adv:referenceType" use="required">
+                                                        </xs:attribute>
+                                                        <xs:attribute name="highlight" type="adv:highlightType">
+                                                            
+                                                        </xs:attribute>
+                                                        <xs:attribute name="alt-value" type="xs:string">
+                                                            
+                                                        </xs:attribute>
+                                                    </xs:extension>
+                                                </xs:simpleContent>                                                
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="xs:anyURI" use="required">
+                                    </xs:attribute>
+                                </xs:complexType>
+                                <xs:unique name="UniqueSegmentRefInSpan">
+                                    <xs:selector xpath="adv:Span"/>
+                                    <xs:field xpath="@ref"/>
+                                </xs:unique>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>                    
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+        <xs:key name="SegmentId">
+            <xs:selector xpath="adv:Segments/adv:Segment"/>
+            <xs:field xpath="@id"/>
+        </xs:key>
+        <xs:keyref refer="adv:SegmentId" name="SegmentRef">
+            <xs:selector xpath="adv:Layers/adv:Layer/adv:Span"/>
+            <xs:field xpath="@ref"/>
+        </xs:keyref>
+    </xs:element>
+    
+    <xs:simpleType name="referenceType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z][a-zA-Z0-9]*" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="offsetType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d+|\d+:([0-5][0-9]|60):([0-5][0-9]|60)\.\d\d\d" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="highlightType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z][a-zA-Z0-9]*" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
