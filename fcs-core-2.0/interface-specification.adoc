@@ -254,7 +254,7 @@ The Endpoint `MUST` perform the query on the annotation layers that makes the mo
 [z:pos = "ADJ" & q:pos = "ADJ"]
 ----
 
-The qualifiers _z_ in _z:pos_ and _q_ in _q:pos_ `SHOULD` match an available qualifier attribute value in a _pos_-`SupportedLayer` in a discovered <<EndpointDescripion>>.
+The qualifiers _z_ in _z:pos_ and _q_ in _q:pos_ `SHOULD` match an available qualifier attribute value in a _pos_-`SupportedLayer` in a discovered <<Endpoint Description>>.
 
 NOTE: Endpoints supporting _Advanced Search_ `MUST` be able to parse all of FCS-QL. If they don't support a certain FCS-QL feature, they `MUST` generate an appropriate error message (see section <<SRU/CQL>>). If an Endpoint _only_ supports _Basic Search_, it `MUST NOT` silently accept queries that include FCS-QL features.
 
