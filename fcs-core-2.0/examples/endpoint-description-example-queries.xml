@@ -1,0 +1,39 @@
+<ed:EndpointDescription xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="2">
+  <ed:Capabilities>
+    <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
+    <ed:Capability>http://clarin.eu/fcs/capability/advanced-search</ed:Capability>
+  </ed:Capabilities>
+  <ed:SupportedDataViews>
+    <ed:SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</ed:SupportedDataView>
+    <ed:SupportedDataView id="adv" delivery-policy="send-by-default">application/x-clarin-fcs-adv+xml</ed:SupportedDataView>
+  </ed:SupportedDataViews>
+  <ed:SupportedLayers>
+    <ed:SupportedLayer id="word" result-id="http://wortschatz-leipzig.de/noske/fcs/layer/word">text</ed:SupportedLayer>
+    <ed:SupportedLayer id="lc" result-id="http://wortschatz-leipzig.de/noske/fcs/layer/lc" qualifier="lc">text</ed:SupportedLayer>
+  </ed:SupportedLayers>
+  <ed:Resources>
+    <!-- just one top-level resource at the Endpoint -->
+    <ed:Resource pid="hdl:11022/0000-0000-20E0-E">
+      <ed:Title xml:lang="en">deu_news_2010_1M</ed:Title>
+      <ed:Description xml:lang="en">German news subcorpus based on material from 2010 (1,000,000 sentences)</ed:Description>
+      <ed:Institution xml:lang="de">Wortschatz Leipzig</ed:Institution>
+      <ed:Institution xml:lang="en">Leipzig Corpora Collection</ed:Institution>
+      <ed:LandingPageURI>https://dict.wortschatz-leipzig.de?corpusId=deu_news_2010_1M</ed:LandingPageURI>
+      <ed:Languages>
+        <ed:Language>deu</ed:Language>
+      </ed:Languages>
+      <ed:AvailableDataViews ref="hits adv" />
+      <ed:AvailableLayers ref="word lc" />
+      <ed:ExampleQuery type="cql">
+        <ed:Query>Auto</ed:Query>
+        <ed:Description xml:lang="en">Example query for string "Auto" (translation: "car")</ed:Description>
+        <ed:Description xml:lang="de">Beispielsuche nach Zeichenkette "Auto"</ed:Description>
+      </ed:ExampleQuery>
+      <ed:ExampleQuery type="fcs">
+        <ed:Query>[ word = "Fenster" ]</ed:Query>
+        <ed:Description xml:lang="en">Search for token "Fenster" (English: window)</ed:Description>
+        <ed:Description xml:lang="de">Suche nach dem Token "Fenster"</ed:Description>
+      </ed:ExampleQuery>
+    </ed:Resource>
+  </ed:Resources>
+</ed:EndpointDescription>

@@ -5,12 +5,22 @@
 // --- Github ---
 
 [discrete]
+== 2025-11-17 -- Add ExampleQuery resource description element
+// https://github.com/clarin-eric/fcs-misc/commit/5e4d3c2965500705f0dd31d1972d98a991d061af
+// https://github.com/clarin-eric/fcs-misc/commit/b025be24302155a4ff65d56a9229df1097726993
+
+* Add the optional new `<ed:ExampleQuery>` element for `<ed:Resource>` elements of the _Endpoint Description_.
+* Smaller typo/formatting fixes.
+
+[discrete]
 == 2025-04-15 -- Fix FCS-QL grammar
+// https://github.com/clarin-eric/fcs-misc/commit/86d841b02607e4c016370ac8149e1a36bcc81b3b
 
 * Fix FCS-QL grammar to include missing escape characters for regular expression special characters, e.g., `]` and `}`
 
 [discrete]
 == 2024-09-04 -- Add EndpointDescription > Resource > Institution element
+// https://github.com/clarin-eric/fcs-misc/commit/9f364a308c9c2a65761577bdc08b098b810ae0d9
 
 * Add new optional `<ed:Institution>` element to further describe `<ed:Resource>`s in the _Endpoint Description_.
 * Proofing.

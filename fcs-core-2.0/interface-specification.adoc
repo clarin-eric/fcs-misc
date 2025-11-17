@@ -106,6 +106,15 @@ The `<ed:AvailableLayers>` element `MUST` carry a `@ref` attribute that contains
 +
 In case of sub-resources, each Resource `SHOULD` support all Layers that are supported by the parent resource. However, every resource `MUST` declare all available Layers independently, i.e. there is no implicit inheritance semantic.
 
+* zero or more `<ed:ExampleQuery>` elements (`OPTIONAL`)
++
+Meaningful sample queries should illustrate possible usage scenarios for the resource. The `<ed:ExampleQuery>` element `MUST` carry a `@type` attribute that contains a valid query type value such as _cql_ or _fcs_, same as is used in <<Operation _searchRetrieve_,_searchRetrieve_ requests>> for the _queryType_ parameter. The `<ed:ExampleQuery>` element has the following subelements:
++
+--
+* one `<ed:Query>` element containing the search query to be used with the specific resource at this endpoint.
+* one or more `<ed:Description>` elements to describe the query string in human-readable form. A `REQUIRED` `@xml:lang` attribute indicates the language of the description. An English version of a description is `REQUIRED`.
+--
+
 * zero or one `<ed:Resources>` element (`OPTIONAL`)
 +
 If a resource has searchable sub-resources, the Endpoint `MUST` supply additional finer grained resource elements, which are wrapped in a `<ed:Resources>` element. A sub-resource is a searchable entity within a resource, e.g. a sub-corpus.
@@ -133,6 +142,15 @@ include::examples/endpoint-description-adv-search.xml[]
 ----
 
 <<ed-adv,Example advanced Endpoint Description>> shows an Endpoint Description for an Endpoint that supports the _Advanced Search_ capability. The `<ed:SupportedDataViews>` also shows support for _Advanced Data View_ in this case. The `<ed:SupportedLayers>` contains the list of `<ed:SupportedLayer>` elements. These elements must carry an `@id` attribute that is referred to by an `<ed:Resource>` element to indicate which _Data View_ is supported and a `@result-id` attribute. The `@result-id` attribute is used in _ADV_. If needed the optional `@qualifier` attribute is used in a FCS-QL search term to address this specific layer, e.g. `pos` or `pos2`. The attribute `@alt-value-info` should contain a short description about the layer. If further information is needed use the `@alt-value-info-uri` attribute with an well-fomed URI to point to a web site. This information could be shown by the Aggregator together with any search results. The attribute `@type` has a default value of `value` which should only be changed to `empty` when needed.
+
+.Example of Endpoint Description with Example Queries
+[#ed-exquery,xml]
+----
+include::examples/endpoint-description-example-queries.xml[]
+----
+
+<<ed-exquery,Example Endpoint Description with `<ed:ExampleQuery>` element>> shows how to include example queries for resources in the Endpoint Description. Each resource may have zero, one or multiple examples for each of the supported query languages of this resource. Multiple example queries for the same query type are possible.
+The example also shows the usage of the `<ed:Institution>` element to specify multilingual labels for the institution that is owner of the resource.
 
 
 == Searching
