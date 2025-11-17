@@ -302,7 +302,7 @@
                     <xs:annotation>
                         <xs:documentation>
                             <h:p>
-                                An optional human-readable description of the resource. Is should
+                                An optional human-readable description of the resource. It should
                                 be at most one sentence. If supplied, an English version is
                                 mandatory.
                             </h:p>
@@ -389,6 +389,16 @@
                     </xs:complexType>
                 </xs:element>
 
+                <xs:element ref="ed:ExampleQuery" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                This element contains an example query related to this resource.
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
                 <xs:element ref="ed:Resources" minOccurs="0">
                     <xs:annotation>
                         <xs:documentation>
@@ -408,7 +418,7 @@
                         <xs:documentation>
                             <h:p>
                                 Extension point to allow Endpoints to embed custom data in the Endpoint Description
-                                for a specific resource. CLARIN-FCS clients SHOULD ignore any data they do not understand.  
+                                for a specific resource. CLARIN-FCS clients SHOULD ignore any data they do not understand.
                             </h:p>
                         </xs:documentation>
                     </xs:annotation>
@@ -428,6 +438,57 @@
         </xs:complexType>
     </xs:element>
 
+    <xs:element name="ExampleQuery">
+        <xs:annotation>
+            <xs:documentation>
+                <h:p>
+                    An example query for a resource. Specific for a query type with
+                    human-readable descriptions.
+                </h:p>
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Query" type="xs:string" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                The query string.
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Description" type="ed:i18nString" minOccurs="1"
+                    maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                An human-readable description of the example query.
+                                It should be at most one sentence. An English version
+                                is mandatory.
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+
+                <!-- extension point -->
+                <xs:any namespace="##other" processContents="skip" minOccurs="0"
+                    maxOccurs="unbounded">
+                    <xs:annotation>
+                        <xs:documentation>
+                            <h:p>
+                                Extension point to allow Endpoints to embed custom data in the
+                                Endpoint Description for a specific resource example query.
+                                CLARIN-FCS clients SHOULD ignore any data they do not understand.
+                            </h:p>
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:any>
+            </xs:sequence>
+            <xs:attribute name="type" type="ed:queryTypeString" use="required" />
+        </xs:complexType>
+    </xs:element>
+
     <xs:simpleType name="mimetypeString">
         <xs:restriction base="xs:string">
             <xs:pattern value="\w+/\w([\.\-]{0,1}\w)*(\+\w+){0,1}" />
@@ -441,4 +502,18 @@
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
+
+    <xs:simpleType name="queryTypeString">
+        <xs:union>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="cql" />
+                    <xs:enumeration value="fcs" />
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType>
+                <xs:restriction base="xs:string" />
+            </xs:simpleType>
+        </xs:union>
+    </xs:simpleType>
 </xs:schema>
