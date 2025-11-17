@@ -5,12 +5,18 @@
 // --- Github ---
 
 [discrete]
-== 2025-11-17 -- Add ExampleQuery resource description element
-// https://github.com/clarin-eric/fcs-misc/commit/5e4d3c2965500705f0dd31d1972d98a991d061af
+== 2025-11-17 -- Add ExampleQuery resource description element (v2.2)
 // https://github.com/clarin-eric/fcs-misc/commit/b025be24302155a4ff65d56a9229df1097726993
+// https://github.com/clarin-eric/fcs-misc/commit/5e4d3c2965500705f0dd31d1972d98a991d061af
+// https://github.com/clarin-eric/fcs-misc/commit/124b5ff50b44e574da8634b52d29d8f3279f53b4
+// https://github.com/clarin-eric/fcs-misc/commit/f3779d64e997967f6879d78b359e5746d7a917e6
+// https://github.com/clarin-eric/fcs-misc/commit/11edf9432ec8c53d44641b2017e87e4b21faf321
+// https://github.com/clarin-eric/fcs-misc/commit/fbf1bd6e07962405961f89b8900ec33a312d7bfd
 
 * Add the optional new `<ed:ExampleQuery>` element for `<ed:Resource>` elements of the _Endpoint Description_.
 * Smaller typo/formatting fixes.
+* Fixed and updated the `Endpoint-Description.xsd` schema.
+* Use version 2.x. Set to `v2.2` as current version, `v2.1` should have been the addition of the `Institution` element.
 
 [discrete]
 == 2025-04-15 -- Fix FCS-QL grammar
@@ -19,7 +25,7 @@
 * Fix FCS-QL grammar to include missing escape characters for regular expression special characters, e.g., `]` and `}`
 
 [discrete]
-== 2024-09-04 -- Add EndpointDescription > Resource > Institution element
+== 2024-09-04 -- Add EndpointDescription > Resource > Institution element (v2.1)
 // https://github.com/clarin-eric/fcs-misc/commit/9f364a308c9c2a65761577bdc08b098b810ae0d9
 
 * Add new optional `<ed:Institution>` element to further describe `<ed:Resource>`s in the _Endpoint Description_.
