@@ -182,6 +182,41 @@
                                                     </xs:documentation>
                                                 </xs:annotation>
                                             </xs:attribute>
+                                            <xs:attribute name="qualifier" use="optional">
+                                                <xs:annotation>
+                                                    <xs:documentation>
+                                                        <h:p>
+                                                            An optional attribute that is used as a qualifier in a FCS-QL
+                                                            search term in to address this specific layer.
+                                                        </h:p>
+                                                    </xs:documentation>
+                                                </xs:annotation>
+                                                <xs:simpleType>
+                                                    <xs:restriction base="xs:string">
+                                                        <xs:pattern value="[a-zA-Z0-9-]+" />
+                                                    </xs:restriction>
+                                                </xs:simpleType>
+                                            </xs:attribute>
+                                            <xs:attribute name="alt-value-info" type="xs:string" use="optional">
+                                                <xs:annotation>
+                                                    <xs:documentation>
+                                                        <h:p>
+                                                            An optional short description about the layer, e.g. the original tag set used.
+                                                        </h:p>
+                                                    </xs:documentation>
+                                                </xs:annotation>
+                                            </xs:attribute>
+                                            <xs:attribute name="alt-value-info-uri" type="xs:anyURI" use="optional">
+                                                <xs:annotation>
+                                                    <xs:documentation>
+                                                        <h:p>
+                                                            An optional well-formed URI that should point to a web site with further information,
+                                                            e.g. about the original tag set and how the translation to FCS is done.
+                                                            Clients can display this information together with the search result.
+                                                        </h:p>
+                                                    </xs:documentation>
+                                                </xs:annotation>
+                                            </xs:attribute>
                                             <xs:attribute name="type" use="optional" default="value">
                                                 <xs:annotation>
                                                     <xs:documentation>
