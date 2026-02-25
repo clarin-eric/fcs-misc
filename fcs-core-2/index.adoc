@@ -1,6 +1,6 @@
-= CLARIN Federated Content Search (CLARIN-FCS) - Core 2.0
+= CLARIN Federated Content Search (CLARIN-FCS) - Core 2.2
 Oliver Schonefeld <schonefeld@ids-mannheim.de>; Thomas Eckart <eckart@saw-leipzig.de>; Thomas Kisler <thomas@kisler.de>; Christoph Draxler <draxler@phonetik.uni-muenchen.de>; Kai Zimmer <zimmer@bbaw.de>; Matej Ďurčo <matej.durco@oeaw.ac.at>; Yana Panchenko <yana.panchenko@uni-tuebingen.de>; Hanna Hedeland <hedeland@ids-mannheim.de>; Andre Blessing <andre.blessing@ims.uni-stuttgart.de>; Olha Shkaravska <Olha.Shkaravska@mpi.nl>; Dieter Van Uytvanck <dieter@clarin.eu>; Leif-Jöran Olsson <leif-joran.olsson@svenska.gu.se>; Peter M. Fischer <fisseni@ids-mannheim.de>; Eliza Margaretha Illig <margaretha@ids-mannheim.de>; Erik Körner <koerner@saw-leipzig.de>
-v2.2, 2025-11-17
+v2.2, 2026-02-25
 // more metadata
 :description: The goal of the CLARIN Federated Content Search (CLARIN-FCS) - Core specification is to introduce an interface specification that decouples the search engine functionality from its exploitation, i.e. user-interfaces, third-party applications, and to allow services to access heterogeneous search engines in a uniform way.
 :organization: CLARIN

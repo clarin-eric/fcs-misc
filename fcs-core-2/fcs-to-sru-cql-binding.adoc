@@ -2,7 +2,7 @@
 
 == SRU/CQL
 
-CLARIN-FCS Core 2.0 uses SRU 2.0 (Search/Retrieve via URL) as underlaying communication protocol. SRU specifies a general communication protocol for searching and retrieving records and CQL (Contextual Query Language) specifies extensible query language. SRU 2.0 allows using additional custom query languages. CLARIN-FCS Core 2.0 uses FCS-QL for the Advanced Search capability.
+CLARIN-FCS Core 2.0 and newer use SRU 2.0 (Search/Retrieve via URL) as underlaying communication protocol. SRU specifies a general communication protocol for searching and retrieving records and CQL (Contextual Query Language) specifies extensible query language. SRU 2.0 allows using additional custom query languages. CLARIN-FCS Core 2.0 and newer use FCS-QL for the Advanced Search capability.
 
 Endpoints and Clients `MUST` implement the SRU/CQL protocol suite as defined in <<ref:OASIS-SRU-Overview>>, <<ref:OASIS-SRU-APD>>, <<ref:OASIS-CQL>>, <<ref:SRU-Explain>>, <<ref:SRU-Scan>>, especially with respect to:
 

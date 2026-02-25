@@ -1,4 +1,4 @@
-name: build <fcs-core-2.0> adocs
+name: build <fcs-core-2> adocs
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
       - main
       - dev
     paths:
-      - 'fcs-core-2.0/**'
-      - '.github/workflows/build-fcs-core-2.0-adoc.yml'
+      - 'fcs-core-2/**'
+      - '.github/workflows/build-fcs-core-2-adoc.yml'
   workflow_dispatch:
 
 concurrency:
@@ -23,16 +23,16 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build HTML
-        run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-core-2.0.html fcs-core-2.0/index.adoc
+        run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-core-2.html fcs-core-2/index.adoc
 
       - name: Build PDF
-        run: asciidoctor-pdf -v -D docs -o fcs-core-2.0.pdf fcs-core-2.0/index.adoc
+        run: asciidoctor-pdf -v -D docs -o fcs-core-2.pdf fcs-core-2/index.adoc
 
       - name: Copy attachments
-        run: cp -R fcs-core-2.0/attachments docs/
+        run: cp -R fcs-core-2/attachments docs/
 
       - name: Store results
         uses: actions/upload-artifact@v4
         with:
-          name: fcs-core-2.0-specs
+          name: fcs-core-2-specs
           path: docs/*

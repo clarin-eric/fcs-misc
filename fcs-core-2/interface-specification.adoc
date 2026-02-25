@@ -237,7 +237,7 @@ The column _Layer Type Identifier_ denotes the identifier for a layer. It is use
 
 Queries in _Advanced Search_ `MUST` be performed using _FCS-QL_ (<<FCS-QL EBNF,FCS-QL Grammar>>). The Endpoint `MUST` support parsing all of FCS-QL. If an Endpoint does not support a query, i.e. the used operators or layers are not supported by the Endpoint, it `MUST` return an appropriate error message using the appropriate SRU diagnostic (<<ref:LOC-DIAG>>). However, if the parameter `x-fcs-rewrites-allowed` is set to true, the Endpoint MAY rewrite the query with changed recall as a result.
 
-The Endpoint `MUST` perform the query on the annotation layers that makes the most sense for the user, e.g. if no specific <<PartofSpeech>> layer is given with several layers available from the Discovery phase it should use the most generic one. Endpoints `SHOULD` perform the query with case sensitivity as specified in the query which by default is case sensitive.
+The Endpoint `MUST` perform the query on the annotation layers that makes the most sense for the user, e.g. if no specific <<Layers,Part-of-Speech>> layer is given with several layers available from the Discovery phase it should use the most generic one. Endpoints `SHOULD` perform the query with case sensitivity as specified in the query which by default is case sensitive.
 
 .Examples of valid FCS-QL queries for _Advanced Search_
 ----

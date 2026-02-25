@@ -1,4 +1,5 @@
-<ed:EndpointDescription xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="2">
+<ed:EndpointDescription xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://clarin.eu/fcs/endpoint-description ../attachments/Endpoint-Description.xsd"  xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="2">
   <ed:Capabilities>
     <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
     <ed:Capability>http://clarin.eu/fcs/capability/advanced-search</ed:Capability>
