@@ -1,6 +1,17 @@
 = Changelog
 
 [discrete]
+== 2026-09-16 -- Publication of LexFCS (v1.0)
+// https://
+
+* Specify field select mechanism (`x-fcs-lex-fields`)
+* LexCQL default field `lemma`, virtual index `any` to query all fields, more grammar-related fields
+* Update LexCQL relation matching, remove `NOT` operator, add `<>` relation
+* Specify `is` relation matching with default entity values
+* Add extra appendix for LexCQL query matching, reorganize query examples
+* Rephrasing, fix formatting
+
+[discrete]
 == 2025-06-20 -- Publication of LexFCS (v0.3)
 // https://zenodo.org/doi/10.5281/zenodo.15706299
 

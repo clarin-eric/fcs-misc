@@ -25,7 +25,7 @@ jobs:
         run: asciidoctor -v -D docs -a data-uri --backend=html5 -o lexfcs.html lexfcs/index.adoc
 
       - name: Build PDF
-        run: asciidoctor-pdf -v -D docs -o lexfcs.pdf lexfcs/index.adoc
+        run: asciidoctor-pdf -v -r ./scripts/pdf-converter-custom-title-page-with-acknowledgment.rb --trace -D docs -o lexfcs.pdf lexfcs/index.adoc
 
       - name: Copy attachments
         run: cp -R lexfcs/attachments docs/

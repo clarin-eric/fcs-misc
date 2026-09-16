@@ -50,7 +50,7 @@
         <!-- enforce vocab(Value)Ref for "pos" Values -->
         <xs:assert test="if (@type='pos') then (.//@vocabValueRef or .//@vocabRef) else true()"/>
         <!-- enforce "citation" attributes only on "citation" Values -->
-         <xs:assert test="not(not(@type='citation') and (.//@source or .//@sourceRef or .//@date or .//@rel))"/>
+        <xs:assert test="not(not(@type='citation') and (.//@source or .//@sourceRef or .//@date or .//@rel))"/>
     </xs:complexType>
     
     <xs:complexType name="ValueType">
@@ -65,12 +65,13 @@
                 <xs:attribute name="vocabRef" type="xs:anyURI" use="optional"/>
                 <xs:attribute name="vocabValueRef" type="xs:anyURI" use="optional"/>
                 <xs:attribute name="type" type="xs:string" use="optional"/>
+                <!-- citation field attributes -->
                 <xs:attribute name="source" type="xs:string" use="optional"/>
                 <xs:attribute name="sourceRef" type="xs:anyURI" use="optional"/>
                 <xs:attribute name="date" type="xs:string" use="optional"/> <!-- EDTF? -->
 
                 <!-- enforce xml:lang when using langUri -->
-                 <xs:assert test="not(not(@xml:lang) and @langUri)"/>
+                <xs:assert test="not(not(@xml:lang) and @langUri)"/>
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -88,31 +89,34 @@
             </xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string">
+            <xs:enumeration value="lemma"/>
             <xs:enumeration value="entryId"/>
             <!-- word forms -->
-            <xs:enumeration value="lemma"/>
             <xs:enumeration value="phonetic"/>
+            <xs:enumeration value="transcription"/>
             <xs:enumeration value="translation"/>
-            <xs:enumeration value="transcription"/> <!-- ? rather multiple `lemma` entries -->
             <!-- textual description and information -->
             <xs:enumeration value="definition"/>
             <xs:enumeration value="etymology"/>
             <!-- grammar and morphology -->
-            <xs:enumeration value="case"/>
-            <xs:enumeration value="number"/>
-            <xs:enumeration value="gender"/>
-            <xs:enumeration value="pos"/>
             <xs:enumeration value="baseform"/>
-            <xs:enumeration value="segmentation"/>
-            <!-- something else -->
-            <xs:enumeration value="sentiment"/>
+            <xs:enumeration value="case"/>
+            <xs:enumeration value="degree"/>
             <xs:enumeration value="frequency"/>
+            <xs:enumeration value="gender"/>
+            <xs:enumeration value="grammar"/>
+            <xs:enumeration value="mood"/>
+            <xs:enumeration value="number"/>
+            <xs:enumeration value="pos"/>
+            <xs:enumeration value="segmentation"/>
+            <xs:enumeration value="sentiment"/>
+            <xs:enumeration value="tense"/>
             <!-- (semantic) relations -->
             <xs:enumeration value="antonym"/>
-            <xs:enumeration value="hyponym"/>
-            <xs:enumeration value="hypernym"/>
-            <xs:enumeration value="meronym"/>
             <xs:enumeration value="holonym"/>
+            <xs:enumeration value="hypernym"/>
+            <xs:enumeration value="hyponym"/>
+            <xs:enumeration value="meronym"/>
             <xs:enumeration value="synonym"/>
             <xs:enumeration value="related"/>
             <!-- references -->
@@ -120,7 +124,6 @@
             <xs:enumeration value="senseRef"/>
             <!-- citations -->
             <xs:enumeration value="citation"/>
-            <!-- TODO MORE? -->
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>

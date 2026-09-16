@@ -1,7 +1,7 @@
-extends: default
+extends: default-with-font-fallbacks
 header:
   font-color: #999999
-  height: 0.5in
+  height: 0.6in
   recto:
     columns: '<30% =0% >70%'
     right:
@@ -22,3 +22,60 @@ footer:
   verso:
     left:
       content: '{page-number} | {chapter-title}'
+page:
+  margin: [0.75in, 0.67in, 0.67in, 0.67in]
+title-page:
+  text-align: center
+  logo:
+    align: center
+    image: image:{docdir}/themes/textplus-logo.svg[pdfwidth=3.25in]
+    top: 8%
+  title:
+    font-color: #181818
+    top: 50%
+  subtitle:
+    font-color: #999999
+  authors:
+    font-size: 10
+    margin-top: 20
+  acknowledgements:
+    font-size: 8
+    margin-top: 120
+    # text-align: justify
+
+# optional fonts to fix possible rendering issues
+# if font is missing or not supported, update/remove the following font section
+# also update the `extends` declaration on top with `extends: default`
+font:
+  catalog:
+    merge: true
+    # https://github.com/asciidoctor/asciidoctor-pdf/issues/1129
+    # https://docs.asciidoctor.org/pdf-converter/latest/theme/font-support/
+    # apt install fonts-vlgothic
+    VLGothic: /usr/share/fonts/truetype/vlgothic/VL-PGothic-Regular.ttf
+    # # (manual install?)
+    # Consolas:
+    #   normal: /usr/share/fonts/truetype/consolas/Consolas-Regular.ttf
+    #   italic: /usr/share/fonts/truetype/consolas/Consolas-Italic.ttf
+    #   bold: /usr/share/fonts/truetype/consolas/Consolas-Bold.ttf
+    #   bold_italic: /usr/share/fonts/truetype/consolas/Consolas-Bold-Italic.ttf
+    # # apt install ttf-mscorefonts-installer
+    # Courier New:
+    #   normal: /usr/share/fonts/truetype/msttcorefonts/Courier_New.ttf
+    #   italic: /usr/share/fonts/truetype/msttcorefonts/Courier_New_Italic.ttf
+    #   bold: /usr/share/fonts/truetype/msttcorefonts/Courier_New_Bold.ttf
+    #   bold_italic: /usr/share/fonts/truetype/msttcorefonts/Courier_New_Bold_Italic.ttf
+    # Droid Sans Mono: /usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf
+    # DejaVu Sans Mono:
+    #   normal: /usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf
+    #   italic: /usr/share/fonts/truetype/dejavu/DejaVuSansMono-Oblique.ttf
+    #   bold: /usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf
+    #   bold_italic: /usr/share/fonts/truetype/dejavu/DejaVuSansMono-BoldOblique.ttf
+  fallbacks:
+  - M+ 1p Fallback
+  - Noto Emoji
+  - VLGothic
+  # - Consolas
+  # - Courier New
+  # - Droid Sans Mono
+  # - DejaVu Sans Mono

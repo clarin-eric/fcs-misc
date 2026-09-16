@@ -2,9 +2,9 @@
 :description: CQL ContextSet specification for LexCQL query language.
 
 
-Used identifier: `\http://text-plus.org/cql/lexres/1.0/` (__draft__)
+Used identifier: `\http://text-plus.org/cql/lex/1.0/` (__draft__)
 
-Recommended prefix: `lexres`
+Recommended prefix: `lex`
 
 TIP: For more examples of CQL ContextSets, see the https://www.loc.gov/standards/sru/cql/contextSets/listOfContextSets.html[list of Context Sets] at the Library of Congress (LoC).
 
@@ -15,62 +15,71 @@ TIP: For more information about CQL indexes, see <<ref:LOC-CQLCS,The CQL Context
 
 [%header,width="100%",cols="1m,3"]
 |===
-| Index title
+| Index Title
 | Description
 
-| lemma
-| Lemma form
+| antonym, holonym, hypernym, hyponym, meronym, synonym
+| Semantic relations
 
-| entryId
-| Identifier of the current entry
-
-| phonetic
-| Phonetic form
-
-| translation
-| Translation
-
-| transcription
-| Transcription or transliteration
-
-| definition
-| Definition or description
-
-| etymology
-| Etymology information
-
-| case, number, gender
-| Morphological information like case, number, gender, e.g. in full-form dictionaries
-
-| pos
-| Part of Speech
+| any
+| All available indexes (virtual index)
 
 | baseform
 | Baseform (stem, root, …) of a lemma
 
-| segmentation
-| Composita segmentation, hyphenation; into phonemes, syllables, subwords
+| case, degree, gender, mood, number, tense
+| Morphological information, e.g. in full-form dictionaries
 
-| sentiment
-| Sentiment information
+| citation
+| A citation, quotation or usage example of this entry's lemma.
+
+| definition
+| Definition or description
+
+| entryId
+| Identifier of the current entry
+
+| etymology
+| Etymology information
+
+| grammar
+| General grammatical information, only to be used if more specific fields can not be supported
 
 | frequency
 | Frequency information like occurrences, relative frequency, word rank or frequency class
 
-| synonym, antonym, hyponym, hypernym, meronym, holonym
-| Semantic relations, analogous to https://dariah-eric.github.io/lexicalresources/pages/TEILex0/TEILex0.html#crossref_typology[types in TEI Lex0]
+| lang
+| Language of the lexical entry's content
+
+| lemma
+| Lemma form
+
+| phonetic
+| Phonetic form
+
+| pos
+| Part of Speech
+
+| ref
+| A URI referencing a related resource
 
 | related
 | Unspecified (semantic) relation
 
-| ref
-| A URI referencing a related resource.
+| segmentation
+| Composita segmentation, hyphenation; into phonemes, syllables, subwords
 
 | senseRef
-| ID of a sense Sense, Entity, … definition
+| ID of a sense definition
 
-| citation
-| A citation, quotation or example of this entry's lemma.
+| sentiment
+| Sentiment information
+
+| transcription
+| Transcription or transliteration
+
+| translation
+| Translation
 |===
 
 
@@ -83,35 +92,24 @@ TIP: More information about CQL relations can be found <<ref:LOC-CQLCS,The CQL C
 
 * *`=`*
 +
-_alias: scr_
+The search term is tokenised by the endpoint and it is evaluated whether all tokens are present in the tokenised field value while ignoring the given token order. Endpoints `MAY` fall back to an untokenised matching if tokenisation is not supported.
 +
-Different functions based on index.
-Suggested use:
-+
---
-  * _Full match_ as default behaviour,
-  * _Full text search_ for longer text fields like `definition`, `etymology` and `citation`.
---
-+
-Endpoints `MAY` decide whether they prefer to focus on precision or recall when matching, e.g. returning case-insensitive matches or other normalizations.
+Endpoints `MAY` take measures to enhance recall, e.g., lemmatisation, case folding, or diacritic normalisation.
 
 * *`==`*
 +
-_alias: exact_
+This relation is used for exact matching against the complete untokenised value of a field.
+
+* *`<>`*
 +
-Exact equality matching. The term in the data is exactly equal to the term in the search query.
+This relation evaluates exact inequality. It matches all records where the untokenised field value is not identical to the query string.
 
 
 === Defined Relations
 
 * *`is`*
 +
-To query an identifier or entity instead of the string value (`=`).
-+
---
-  * `pos is "\https://universaldependencies.org/u/pos/NOUN"` (searching for the `\https://universaldependencies.org/u/pos/NOUN` concept) +
-  vs. `pos = "NOUN"` (searching for the `NOUN` string value)
---
+This relation is used to search for results based on entities or concepts that are defined in external vocabularies using Uniform Resource Identifiers (URIs).
 
 
 == Booleans
@@ -120,8 +118,6 @@ TIP: For more information about Booleans in CQL, see <<ref:LOC-CQLCS,The CQL Con
 
 * *`AND`*
 * *`OR`*
-* *`NOT`*
-* *`PROX`* (__is not used!__)
 
 
 == Relation Modifiers / Relation Qualifiers
@@ -132,47 +128,37 @@ TIP: For more information about relation modifiers/qualifiers, see <<ref:LOC-CQL
 
 * *`lang=__value__`*
 +
-Specification of a ISO639/BCP47 language tag of the search term. This can for example be used to search for translations in certain languages.
+Specifies the language of the search term. It is `RECOMMENDED` to use and support an https://tools.ietf.org/html/bcp47[IETF BCP 47] compliant language code.
 
-* `ignoreCase`, `respectCase`
+* *`ignoreCase`, `respectCase`*
 +
-The server is instructed to either ignore or respect the case of the search term, rather than its default behavior (which is unspecified).
+Instructs the endpoint to either ignore or respect string casing during matching, overriding the endpoint’s default casing behavior (which is undefined).
 
-* `ignoreAccents`, `respectAccents`
+* *`ignoreAccents`, `respectAccents`*
 +
-The server is instructed to either ignore or respect diacritics in terms, rather than its default behavior (which is unspecified, but respectAccents is recommended).
-
-* `partialMatch`, `fullMatch`
-+
-The server is instructed that the search term is either explicitly a partial match (of a potentially longer index value) or should match the index value completely.
+Instructs the endpoint to either ignore or respect diacritics and character variants, overriding the endpoint's default behavior (where `respectAccents` is `RECOMMENDED` as the default).
+This modifier controls the handling of Unicode combining characters, historical letter forms (e.g., ſ U+017F), ligatures (e.g., ﬁ U+FB01), or multi-character equivalents (e.g., ß U+00DF).
+When `ignoreAccents` is active, endpoints `SHOULD` apply Unicode compatibility normalisation (NFKD) and strip combining marks (e.g., ﬁ → fi), fold historical letter forms to their modern equivalents (e.g., ſ → s) and apply case-folding rules for characters such as ß → ss.
+When `respectAccents` is active, endpoints `MUST` preserve the full distinction of characters as encoded, including diacritics, combining marks, and compatibility-equivalent or historical letter forms. No accent stripping, compatibility folding, or character-level normalisation (beyond standard Unicode normalisation for comparison) are applied for matching purposes.
 
 
 === Matching
 
-* (`__masked__`, default modifier)
+* (default)
 +
-The following patterns and special characters apply for search terms. To explicitly request this functionality, add `cql.masked` as a relation modifier.
+By default, special characters within search terms are interpreted as wildcards.
 
-    ** A single asterisk (`*`) is used to mask zero or more characters.
-    ** A single question mark (`?`) is used to mask a single character, thus N consecutive question-marks means mask N characters.
-    ** Backslash (`\`) is used to escape `*`, `?`, quote (`"`), as well as itself. Backslash not followed immediately by one of these characters is an error. 
+    ** A single asterisk (`*`) masks zero or more characters.
+    ** A single question mark (`?`) masks exactly one character, thus N consecutive question marks mask N characters.
+    ** A backslash (`\`) acts as an escape character for `*`, `?`, the double quote (`"`), and the backslash character itself. A backslash `MUST` be followed immediately by one of these characters; otherwise the query is invalid.
 
-* `unmasked`
+* *`regexp`*
 +
-Do not apply masking rules, all characters are literal.
-
-* `honorWhitespace`
-+
-Used with `==` for exact matching to indicate that matching should even include extraneous whitespace (preceding, embedded, or following). In the absence of this modifier it is left to the server to decide whether or not to honor extraneous whitespace. 
-
-* `regexp`
-+
-The term should be treated as a regular expression. Regular expressions are treated by the individual servers and any features beyond those found in modern POSIX regular expressions will not necessarily be supported by all servers. This modifier overrides the default 'masked' modifier, above.
+Interprets the search term as a POSIX regular expression. Support for extended regular expression features is `OPTIONAL` and endpoint-specific. By default, regular expressions are unanchored, meaning they match against any substring of the index value unless the expression explicitly uses anchoring constructs such as `^` (start of string) or `$` (end of string).
+This overrides the interpretation of the default special characters mentioned above.
 
 
 == Boolean Modifiers
-
-TIP: More information about Boolean modifiers can be found <<ref:LOC-CQLCS,The CQL Context Set, section "BOOLEAN MODIFIERS">>.
 
 *none*
 
@@ -182,26 +168,43 @@ TIP: More information about Boolean modifiers can be found <<ref:LOC-CQLCS,The C
 . `cat` +
 `"cat"` +
 `"United Nations"` +
-Different variants to search in the default index.
+Different variants to search in the default index (i.e. `lemma`).
 
 . `lemma == mouse` +
 Search for exact string value `mouse` in `lemma` index.
 
 . `pos = ADJ` +
-Search for adjectives.
+Search for token "ADJ" in index `pos`.
+
+. `pos is "https://universaldependencies.org/u/pos/NOUN" AND definition = person` +
+Search for nouns with token "person" in definition, using a tagset from the Universal Dependency Project for index `pos`.
+
+. `pos is NOUN AND definition = person` +
+Search for nouns with token "person" in definition, using (implictly) a tagset from the Universal Dependency Project for index `pos`.
 
 . `definition = "cat"` +
-Search for records whose definition contains the term "cat".
-//TODO: Stemming, Lower/Uppercase, Subword-Matches
+Search for records whose definition contains the token "cat".
 
-. `pos = "NOUN" NOT "lion" AND definition = carnivore` +
-Search for nouns with "carnivore" in definition; exclusion of records with "lion".
+. `pos = "NOUN" AND lemma <> "lion" AND definition = carnivore` +
+Search for nouns with token "carnivore" in index `definition`, excluding records having the exact lemma "lion".
 
 . `pos = NOUN AND ( lemma = Apfel OR lemma = "Birne" )` +
-Search for nouns that have lemma with either "Apfel" or "Birne".
+Search for nouns with lemma containing either token "Apfel" or token "Birne" (or both).
 
-. `translation =/lang=eng car` +
-Search for lexical entries with an English translation "car".
+. `translation =/lang=en car` +
+Search for records with an English translation that contains the token "car".
 
-. `lemma =/unmasked "^ca?r*"` +
-Search for the lemma with the literal term "^ca?r*".
+. `lemma =/lang=fr "chat"` +
+Search for records with a lemma in French that contains the token "chat".
+
+. `lemma =/ignoreCase "drive"` +
+Search for records containing token "drive" regardless of case.
+
+. `lemma =/ignoreAccents "für"` +
+Search for records with a lemma containing token "für" while ignoring diacritics.
+
+. `definition =/regexp "^cat.*"` +
+Search for records whose definition contains a token beginning with "cat" using a regular expression.
+
+. `lemma == "\^ca\?r\*"` +
+Search for records with the literal term "^ca?r*" as lemma.

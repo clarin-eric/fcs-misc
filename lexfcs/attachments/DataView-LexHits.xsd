@@ -2,9 +2,9 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:h="http://www.w3.org/1999/xhtml"
     xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
-    xmlns:hits="http://textplus.org/fcs/dataview/hits"
+    xmlns:hits="http://clarin.eu/fcs/dataview/hits"
     xml:lang="en" vc:minVersion="1.0" vc:maxVersion="1.1"
-    targetNamespace="http://textplus.org/fcs/dataview/hits" elementFormDefault="qualified">
+    targetNamespace="http://clarin.eu/fcs/dataview/hits" elementFormDefault="qualified">
 
     <xs:annotation>
         <xs:documentation>

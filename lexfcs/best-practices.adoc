@@ -2,56 +2,56 @@
 
 // TODO: externalize example snippets
 
-== Serialization with the Lexical Data View
+== Serialisation with the Lexical Data View
 
-=== Specifying a default language -- @xml:lang and @langUri
+=== Specifying a default language – @xml:lang and @langUri
 
-Each `<lex:Value>` element can specify language information using the `@xml:lang` and `@langUri` attributes. To avoid redundancy, a default language `MAY` be specified at the `<lex:Entry>` element. If `<lex:Value>` elements do not specify their language explicitely, they inherit the entry`s language information.
+Each `<lex:Value>` element can specify language information using the `@xml:lang` and `@langUri` attributes. To avoid redundancy, a default language `MAY` be specified at the `<lex:Entry>` element. If `<lex:Value>` elements do not specify their language explicitely, they inherit the entry's language information.
 
-`<lex:Value>` elements with the same `@xml:lang` attribute value but different `@langUri` attribute values `MUST` be considered to describe different languages.  As a consequence, only `<lex:Value>` elements with the same `@xml:lang` and `@langUri` attribute values as the `<lex:Entry>` element `MAY` inherit the entry`s language information. If in doubt, specify the language attributes redundantly.
+`<lex:Value>` elements with the same `@xml:lang` attribute value but different `@langUri` attribute values `MUST` be considered to describe different languages. If in doubt, specify the language attributes redundantly.
 
 .Default and explicit language specification for Values
 [%linenums#example-lang-attributes,xml]
 ----
 <!-- abbreviated example from examples/dwee-Becher.lex.xml -->
-<lex:Entry xmlns:lex="http://clarin.eu/fcs/dataview/lex" xml:lang="deu"> <!--1-->
+<lex:Entry xmlns:lex="http://clarin.eu/fcs/dataview/lex" xml:lang="de"> <!--1-->
   <lex:Field type="lemma">
-    <lex:Value xml:lang="deu">Becher</lex:Value>
+    <lex:Value xml:lang="de">Becher</lex:Value>
   </lex:Field>
   <lex:Field type="segmentation">
     <lex:Value type="hyphenation">Be|cher</lex:Value> <!--2-->
   </lex:Field>
   <lex:Field type="hypernym">
-    <lex:Value xml:lang="deu">Gefäß</lex:Value> <!--3-->
+    <lex:Value xml:lang="de">Gefäß</lex:Value> <!--3-->
     <lex:Value>Gegenstand</lex:Value>
     <lex:Value xml:lang="goh">pehhari</lex:Value>
   </lex:Field>
   <lex:Field type="synonym">
     <lex:Value>Eimer</lex:Value>
-    <lex:Value xml:lang="deu" langUri="https://en.wikipedia.org/wiki/Early_New_High_German">Kraus</lex:Value>  <!--4-->
+    <lex:Value xml:lang="de" langUri="https://en.wikipedia.org/wiki/Early_New_High_German">Kraus</lex:Value>  <!--4-->
     <lex:Value xml:lang="goh">kelich</lex:Value>
   </lex:Field>
 </lex:Entry>
 ----
 <1> Specifying German as default language of `<lex:Entry>` via `@xml:lang`.
-<2> Any `<lex:Value>` element without its own language attributes inherits language information from its parent  `<lex:Entry>`, here `@xml:lang="_deu_"`.
-<3> `@xml:lang="_deu_"` is redundant.
+<2> Any `<lex:Value>` element without its own language attributes inherits language information from its parent  `<lex:Entry>`, here `@xml:lang="_de_"`.
+<3> `@xml:lang="_de_"` is redundant.
 <4> Due to `@langUri`, the content language of this `<lex:Value>` element `MUST` be considered to be a different language, even though the `@xml:lang` attribute value is the same as the one at `<lex:Entry>` level. As no language information is inherited here, both attributes `@xml:lang` and `@langUri` `MUST` be specified.
 
 
-=== Contextualize Value contents for improved interpretability
+=== Contextualise Value contents for improved interpretability
 
 // senseRef: dornseiff, PWN with www-link; description of acronyms (PWN, …)
 
-The example <<example-senseref-contextualization>> shows how plain text content can be semantically enriched by explicitly stating the used vocabulary or by referencing the value's external definition via attributes `@vocabRef` or `@vocabValueRef`.
+The example <<example-senseref-contextualisation>> shows how plain text content can be semantically enriched by explicitly stating the used vocabulary or by referencing the value's external definition via attributes `@vocabRef` or `@vocabValueRef`.
 
-.Contextualization of senseRef Values
-[%linenums#example-senseref-contextualization,xml]
+.Contextualisation of senseRef Values
+[%linenums#example-senseref-contextualisation,xml]
 ----
 <!-- abbreviated example from examples/wortschatz-Auto.lex.xml -->
-<lex:Entry xmlns:lex="http://clarin.eu/fcs/dataview/lex" xml:lang="deu">
+<lex:Entry xmlns:lex="http://clarin.eu/fcs/dataview/lex" xml:lang="de">
   <lex:Field type="lemma">
-    <lex:Value xml:lang="deu">Auto</lex:Value>
+    <lex:Value xml:lang="de">Auto</lex:Value>
   </lex:Field>
   <lex:Field type="senseRef">
     <!-- Dornseiff -->
@@ -66,8 +66,8 @@ The example <<example-senseref-contextualization>> shows how plain text content 
 </lex:Entry>
 ----
 <1> Using the `@vocabRef` attribute referencing `\https://doi.org/10.1515/9783110457742`, the value `8.10` can be interpreted as category _"8.10 Auto, Fahrt"_ of the Dornseiff dictionary, volume 9.
-<2> The `@vocabValueRef` attribute value contains the authoritative reference at the authority file GND for the value `4129315-0` .
-<3> Using the `@vocabRef` attribute, the value `02961779-n` can be interpreted in the context of Princeton WordNet synsets.
+<2> The `@vocabValueRef` attribute value contains the authoritative reference to the authority file GND for the value "4129315-0".
+<3> Using the `@vocabRef` attribute, the value "02961779-n" can be interpreted in the context of Princeton WordNet synsets.
 
 
 // TODO: also mention @type attribute for Values in citation/lemma/…?
@@ -83,9 +83,9 @@ Any `<lex:Value>` element can refer to other `<lex:Value>` elements in the same 
 [%linenums#example-id-idrefs-relations,xml]
 ----
 <!-- abbreviated example from examples/GermaNet_Ei.lex.xml -->
-<lex:Entry xmlns:lex="http://clarin.eu/fcs/dataview/lex" xml:lang="deu">
+<lex:Entry xmlns:lex="http://clarin.eu/fcs/dataview/lex" xml:lang="de">
   <lex:Field type="lemma">
-    <lex:Value xml:lang="deu">Ei</lex:Value>
+    <lex:Value xml:lang="de">Ei</lex:Value>
   </lex:Field>
   <lex:Field type="senseRef">
     <lex:Value xml:id="sense_1" vocabRef="http://textplus.sfs.uni-tuebingen.de/api/germanet/synset">s39427</lex:Value> <!--1-->
@@ -116,18 +116,18 @@ Any `<lex:Value>` element can refer to other `<lex:Value>` elements in the same 
 
 === Connecting Values within Fields using @xml:id and @idRefs to build Value hierarchies
 
-`<lex:Value>` elements within `<lex:Field>` elements of type _definition_, _etymology_ and _senseRef_ can be organized hierarchically by using the `@xml:id` and `@idRefs` attributes. `<lex:Value>` elements can refer to their head `<lex:Value>` element via their `@idRefs` attribute.
+`<lex:Value>` elements within `<lex:Field>` elements of type `definition`, `etymology` and `senseRef` can be organised hierarchically by using the `@xml:id` and `@idRefs` attributes. `<lex:Value>` elements can refer to their head `<lex:Value>` element via their `@idRefs` attribute.
 
 // Problematic if more than one ref, but none meant to be hierarchical
-If `@idRefs` contains multiple IDs then only the first one is assumed to be the direct parent `<lex:Value>` element, so additional IDs may still connect the `<lex:Value>` element to other `<lex:Value>` elements as described in <<Connecting Values using @xml:id and @idRefs>>.
+If `@idRefs` contains multiple IDs then only the first one is assumed to be the direct parent `<lex:Value>` element, so additional IDs `MAY` still connect the `<lex:Value>` element to other `<lex:Value>` elements as described in <<Connecting Values using @xml:id and @idRefs>>.
 
 .Value hierarchy using @xml:id and @idRefs
 [%linenums#example-id-idrefs-hierarchy,xml,highlight="7..8,11..12"]
 ----
 <!-- abbreviated example from examples/dwdswb-herausgehen.lex.xml -->
-<lex:Entry xmlns="http://clarin.eu/fcs/dataview/lex" xml:lang="deu">
+<lex:Entry xmlns="http://clarin.eu/fcs/dataview/lex" xml:lang="de">
   <lex:Field type="lemma">
-    <lex:Value xml:lang="deu">herausgehen</lex:Value>
+    <lex:Value xml:lang="de">herausgehen</lex:Value>
   </lex:Field>
   <lex:Field type="definition">
     <lex:Value xml:id="def-1">(zu Fuß) (von irgendwo, drinnen) heraus bzw. nach draußen, […]</lex:Value> <!--1-->
@@ -144,14 +144,14 @@ If `@idRefs` contains multiple IDs then only the first one is assumed to be the 
   </lex:Field>
 </lex:Entry>
 ----
-<1> A `<lex:Value>` element with an `@xml:id` attribute of value `def-1`.
-<2> A `<lex:Value>` element stating in its `@idRefs` attribute to be a child of the `<lex:Value>` element with `@xml:id` attribute of value `def-1`.
+<1> A `<lex:Value>` element with an `@xml:id` attribute of value "def-1".
+<2> A `<lex:Value>` element stating in its `@idRefs` attribute to be a child of the `<lex:Value>` element with `@xml:id` attribute of value "def-1".
 <3> `<lex:Value>` elements in `<lex:Field>` elements of type other than `definition` or `etymology` can refer to the same `<lex:Value>` element but will not be seen as children of this hierarchy, only as related in an unspecifed way.
 
 
 === Referencing external resources using the @ref attribute
 
-The `@ref` attribute is used to reference an external resource that provides additional information about the `<lex:Value` element's content. Depending on the `<lex:Field>` type, the referenced resource may be interpreted differently.
+The `@ref` attribute is used to reference an external resource that provides additional information about the `<lex:Value>` element's content. Depending on the `<lex:Field>` type, the referenced resource `MAY` be interpreted differently.
 
 For example in `<lex:Value>` elements in `<lex:Field>` element with `@type="_phonetic_"`, the external resource might provide a link to an audio file with pronunciation.
 
@@ -159,9 +159,9 @@ For example in `<lex:Value>` elements in `<lex:Field>` element with `@type="_pho
 [%linenums#example-ref-phonetic-audio-file,xml,highlight=7]
 ----
 <!-- abbreviated example from examples/dwdswb-herausgehen.lex.xml -->
-<lex:Entry xmlns="http://clarin.eu/fcs/dataview/lex" xml:lang="deu">
+<lex:Entry xmlns="http://clarin.eu/fcs/dataview/lex" xml:lang="de">
   <lex:Field type="lemma">
-    <lex:Value xml:lang="deu">herausgehen</lex:Value>
+    <lex:Value xml:lang="de">herausgehen</lex:Value>
   </lex:Field>
   <lex:Field type="phonetic">
     <lex:Value ref="https://www.dwds.de/audio/032/herausgehen.mp3">hɛˈʀaʊ̯sgeːən</lex:Value>

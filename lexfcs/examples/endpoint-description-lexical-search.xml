@@ -1,13 +1,14 @@
 <ed:EndpointDescription xmlns:ed="http://clarin.eu/fcs/endpoint-description" version="2">
   <ed:Capabilities>
     <ed:Capability>http://clarin.eu/fcs/capability/basic-search</ed:Capability>
-    <ed:Capability>http://clarin.eu/fcs/capability/lex-search</ed:Capability>
+    <ed:Capability>http://clarin.eu/fcs/capability/lexical-search/1.0</ed:Capability>
   </ed:Capabilities>
   <ed:SupportedDataViews>
     <ed:SupportedDataView id="hits" delivery-policy="send-by-default">application/x-clarin-fcs-hits+xml</ed:SupportedDataView>
     <ed:SupportedDataView id="lex" delivery-policy="send-by-default">application/x-clarin-fcs-lex+xml</ed:SupportedDataView>
   </ed:SupportedDataViews>
   <ed:SupportedLexFields>
+    <ed:SupportedLexField id="any">any</ed:SupportedLexField>
     <ed:SupportedLexField id="lang">lang</ed:SupportedLexField>
     <ed:SupportedLexField id="entryId">entryId</ed:SupportedLexField>
     <ed:SupportedLexField id="lemma">lemma</ed:SupportedLexField>
@@ -16,17 +17,17 @@
     <ed:SupportedLexField id="sentiment">sentiment</ed:SupportedLexField>
   </ed:SupportedLexFields>
   <ed:Resources>
-    <ed:Resource pid="ws_sentiws">
+    <ed:Resource pid="hdl:11022/0000-0007-FE0F-C">
       <ed:Title xml:lang="de">SentiWS</ed:Title>
       <ed:Title xml:lang="en">SentiWS</ed:Title>
       <ed:Description xml:lang="de">Der SentimentWortschatz, oder kurz SentiWS, ist eine öffentlich verfügbare deutschsprachige Ressource für die Sentiment Analyse, Opinion Mining und ähnliche Zwecke. ...</ed:Description>
       <ed:Description xml:lang="en">SentimentWortschatz, or SentiWS for short, is a publicly available German-language resource for sentiment analysis, opinion mining etc. ...</ed:Description>
-      <ed:LandingPageURI>https://wortschatz.uni-leipzig.de/de/download#sentiWSDownload</ed:LandingPageURI>
+      <ed:LandingPageURI>https://hdl.handle.net/11022/0000-0007-FE0F-C</ed:LandingPageURI>
       <ed:Languages>
         <ed:Language>deu</ed:Language>
       </ed:Languages>
       <ed:AvailableDataViews ref="hits lex" />
-      <ed:AvailableLexFields ref="lang entryId lemma pos baseform sentiment" />
+      <ed:AvailableLexFields ref="any lang entryId lemma pos baseform sentiment" />
     </ed:Resource>
   </ed:Resources>
 </ed:EndpointDescription>
