@@ -24,7 +24,7 @@ jobs:
           mkdir -p /usr/share/fonts/truetype/vlgothic
           curl -L -o /usr/share/fonts/truetype/vlgothic/VL-PGothic-Regular.ttf https://github.com/deepin-community/fonts-vlgothic/raw/refs/heads/master/VL-PGothic-Regular.ttf
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build HTML
         run: asciidoctor -v -D docs -a data-uri --backend=html5 -o lexfcs.html lexfcs/index.adoc
@@ -36,7 +36,7 @@ jobs:
         run: cp -R lexfcs/attachments docs/
 
       - name: Store results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: lexfcs-specs
           path: docs/*

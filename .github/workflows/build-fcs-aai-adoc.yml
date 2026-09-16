@@ -20,7 +20,7 @@ jobs:
     container: asciidoctor/docker-asciidoctor
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build HTML
         run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-aai.html fcs-aai/index.adoc
@@ -32,7 +32,7 @@ jobs:
         run: cp -R fcs-aai/attachments docs/
 
       - name: Store results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fcs-aai-specs
           path: docs/*

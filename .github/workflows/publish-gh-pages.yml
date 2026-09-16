@@ -14,7 +14,7 @@ jobs:
     container: asciidoctor/docker-asciidoctor
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build HTML
         run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-core-1.0.html fcs-core-1.0/index.adoc
@@ -26,7 +26,7 @@ jobs:
         run: cp -R fcs-core-1.0/attachments docs/
 
       - name: Store results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fcs-core-1.0-specs
           path: docs/*
@@ -36,7 +36,7 @@ jobs:
     container: asciidoctor/docker-asciidoctor
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build HTML
         run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-core-2.html fcs-core-2/index.adoc
@@ -48,7 +48,7 @@ jobs:
         run: cp -R fcs-core-2/attachments docs/
 
       - name: Store results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fcs-core-2-specs
           path: docs/*
@@ -58,7 +58,7 @@ jobs:
     container: asciidoctor/docker-asciidoctor
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build HTML
         run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-dataviews-1.0.html fcs-dataviews-1.0/index.adoc
@@ -67,7 +67,7 @@ jobs:
         run: asciidoctor-pdf -v -D docs -o fcs-dataviews-1.0.pdf fcs-dataviews-1.0/index.adoc
 
       - name: Store results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fcs-dataviews-1.0-specs
           path: docs/*
@@ -77,7 +77,7 @@ jobs:
     container: asciidoctor/docker-asciidoctor
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build HTML
         run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-aai.html fcs-aai/index.adoc
@@ -86,7 +86,7 @@ jobs:
         run: asciidoctor-pdf -v -D docs -o fcs-aai.pdf fcs-aai/index.adoc
 
       - name: Store results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fcs-aai-specs
           path: docs/*
@@ -96,7 +96,7 @@ jobs:
     container: asciidoctor/docker-asciidoctor
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build HTML
         run: asciidoctor -v -D docs -a data-uri --backend=html5 -o lexfcs.html lexfcs/index.adoc
@@ -108,7 +108,7 @@ jobs:
         run: cp -R lexfcs/attachments docs/
 
       - name: Store results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: lexfcs-specs
           path: docs/*
@@ -118,7 +118,7 @@ jobs:
     container: asciidoctor/docker-asciidoctor
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build HTML
         run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-endpoint-dev-tutorial.html fcs-endpoint-dev-tutorial/index.adoc
@@ -127,7 +127,7 @@ jobs:
         run: asciidoctor-pdf -v -D docs -o fcs-endpoint-dev-tutorial.pdf fcs-endpoint-dev-tutorial/index.adoc
 
       - name: Store results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fcs-endpoint-dev-tutorial
           path: docs/*
@@ -137,7 +137,7 @@ jobs:
     container: asciidoctor/docker-asciidoctor
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup reveal.js
         run: |
@@ -162,7 +162,7 @@ jobs:
           mv -v fcs-endpoint-dev-slides/css slides/
 
       - name: Store results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fcs-endpoint-dev-slides
           path: slides/*
@@ -172,7 +172,7 @@ jobs:
     container: asciidoctor/docker-asciidoctor
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build HTML
         run: asciidoctor -v -D docs -a data-uri --backend=html5 -o fcs-endpoint-dev-slides.html fcs-endpoint-dev-slides/index.adoc
@@ -181,7 +181,7 @@ jobs:
       #  run: asciidoctor-pdf -v -D docs -o fcs-endpoint-dev-slides.pdf fcs-endpoint-dev-slides/index.adoc
 
       - name: Store results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fcs-endpoint-dev-slides-docs
           path: docs/*
@@ -201,10 +201,10 @@ jobs:
       ]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Fetch build artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: build
 
