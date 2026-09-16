@@ -19,6 +19,11 @@ jobs:
     container: asciidoctor/docker-asciidoctor
 
     steps:
+      - name: Install fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get -y --no-install-recommends fonts-vlgothic
+
       - uses: actions/checkout@v4
 
       - name: Build HTML
