@@ -21,8 +21,8 @@ jobs:
     steps:
       - name: Install fonts
         run: |
-          apt-get update
-          apt-get -y --no-install-recommends fonts-vlgothic
+          mkdir -p /usr/share/fonts/truetype/vlgothic
+          curl -L -o /usr/share/fonts/truetype/vlgothic/VL-PGothic-Regular.ttf https://github.com/deepin-community/fonts-vlgothic/raw/refs/heads/master/VL-PGothic-Regular.ttf
 
       - uses: actions/checkout@v4
 
