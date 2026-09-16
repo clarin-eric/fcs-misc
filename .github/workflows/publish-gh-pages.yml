@@ -91,7 +91,7 @@ jobs:
           name: fcs-aai-specs
           path: docs/*
 
-  lexfcs:
+  lexfcs-1:
     runs-on: ubuntu-latest
     container: asciidoctor/docker-asciidoctor
 
@@ -104,18 +104,18 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: Build HTML
-        run: asciidoctor -v -D docs -a data-uri --backend=html5 -o lexfcs.html lexfcs/index.adoc
+        run: asciidoctor -v -D docs -a data-uri --backend=html5 -o lexfcs-1.html lexfcs-1/index.adoc
 
       - name: Build PDF
-        run: asciidoctor-pdf -v -r ./lexfcs/scripts/pdf-converter-custom-title-page-with-acknowledgment.rb --trace -D docs -o lexfcs.pdf lexfcs/index.adoc
+        run: asciidoctor-pdf -v -r ./lexfcs-1/scripts/pdf-converter-custom-title-page-with-acknowledgment.rb --trace -D docs -o lexfcs-1.pdf lexfcs-1/index.adoc
 
       - name: Copy attachments
-        run: cp -R lexfcs/attachments docs/
+        run: cp -R lexfcs-1/attachments docs/
 
       - name: Store results
         uses: actions/upload-artifact@v7
         with:
-          name: lexfcs-specs
+          name: lexfcs-1-specs
           path: docs/*
 
   fcs-endpoint-dev-tutorial:
@@ -199,7 +199,7 @@ jobs:
         fcs-core-1-0,
         fcs-dataviews-1-0,
         fcs-aai,
-        lexfcs,
+        lexfcs-1,
         fcs-endpoint-dev-tutorial,
         fcs-endpoint-dev-slides,
         fcs-endpoint-dev-slides-as-doc,
