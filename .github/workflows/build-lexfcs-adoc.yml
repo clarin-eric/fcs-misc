@@ -21,8 +21,8 @@ jobs:
     steps:
       - name: Install fonts
         run: |
-          sudo apt-get update
-          sudo apt-get -y --no-install-recommends fonts-vlgothic
+          apt-get update
+          apt-get -y --no-install-recommends fonts-vlgothic
 
       - uses: actions/checkout@v4
 
