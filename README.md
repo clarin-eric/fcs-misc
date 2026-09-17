@@ -9,11 +9,11 @@ Jump to: [[Specification Documents](#specification-documents)]
 
 ## Specification Documents
 
-- [CLARIN Federated Content Search - FCS **Core 2.0**: `fcs-core-2.0/index.adoc`](fcs-core-2.0/index.adoc)
+- [CLARIN Federated Content Search - FCS **Core 2.x**: `fcs-core-2/index.adoc`](fcs-core-2/index.adoc)
+- [Text+ **LexFCS 1.x**: `lexfcs-1/index.adoc`](lexfcs-1/index.adoc) _(Mirror of [Text+ Gitlab Repo](https://gitlab.gwdg.de/textplus/lexfcs-specification))_
 - [CLARIN Federated Content Search - FCS **Core 1.0**: `fcs-core-1.0/index.adoc`](fcs-core-1.0/index.adoc)
 - [CLARIN Federated Content Search - FCS **Data Views 1.0**: `fcs-dataviews-1.0/index.adoc`](fcs-dataviews-1.0/index.adoc)
 - _WIP_ [CLARIN Federated Content Search - FCS **AAI 1.0**: `fcs-aai/index.adoc`](fcs-aai/index.adoc)
-- _WIP_ [Text+ **LexFCS 1.0**: `lexfcs/index.adoc`](lexfcs/index.adoc) _(Mirror of [Text+ Gitlab Repo](https://gitlab.gwdg.de/textplus/ag-fcs-documents))_
 
 ### Folder Structure
 
@@ -36,8 +36,8 @@ You can build the specifications documents yourself with:
 
 ```bash
 # Set spec you want to build
-# Based on folder names, choose one of: fcs-core-1.0, fcs-core-2.0, fcs-aai, fcs-dataviews-1.0
-NAME=fcs-core-2.0
+# Based on folder names, choose one of: fcs-core-2, lexfcs-1, fcs-aai, fcs-core-1.0, fcs-dataviews-1.0
+NAME=fcs-core-2
 
 # Output will be placed in `docs/`
 
