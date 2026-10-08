@@ -1,6 +1,6 @@
 = Federated{nbsp}Content{nbsp}Search for{nbsp}Lexical{nbsp}Resources{nbsp}(LexFCS): Specification
 Erik Körner <koerner@saw-leipzig.de>; Thomas Eckart <eckart@saw-leipzig.de>; Uwe Kretschmer <kretschmer@saw-leipzig.de>; Axel Herold <herold@bbaw.de>; Frank Wiegand <wiegand@bbaw.de>; Frank Michaelis <michaelis@ids-mannheim.de>; Claus Zinn <claus.zinn@uni-tuebingen.de>; Matthias Bremm <bremm@uni-trier.de>; Louis Cotgrove <cotgrove@ids-mannheim.de>; Thorsten Trippel <trippel@ids-mannheim.de>; Felix Rau <f.rau@uni-koeln.de>; Anne Klee <klee@uni-trier.de>; Daniel Werning <daniel.werning@bbaw.de>; Dominik Blöse <dominik.bloese@bbaw.de>; Jan Oliver Rüdiger <ruediger@ids-mannheim.de>; Gaetano Manzone <manzone@ids-mannheim.de>; Hagen Beelitz <beelitz@saw-leipzig.de>
-v1.0, 2026-09-16
+v1.0, 2026-10-07
 // TODO: add funding information, e.g., DFG project number, CLARIN ERIC, etc.
 // more metadata
 :description: Specification extension of the CLARIN Federated Content Search (FCS) for Lexical Resources (LexFCS).

@@ -84,7 +84,7 @@ This is illustrated in the second example in xref:fig-ese-regex-specialchar[xref
 [#fig-ese-regex-specialchar,discrete]
 image::images/lexfcs-spec-rel-exact-string-equality-regexmod-specialchar.svg[]
 
-Nevertheless, it is still possible to use the regular expression special characters `^` and `$` to formulate search patterns that are evaluated at the start, at the end, or from start to end of the field value. See the following examples for illustration
+Nevertheless, it is still possible to use the regular expression special characters `^` and `$` to formulate search patterns that are evaluated at the start, at the end, or from start to end of the field value. See the following examples for illustration:
 
 . Pattern from start: `^A` matches "A" at the beginning of field values "Alle Wege führen nach Rom" and "A green mouse dashes across a hill"
 . Pattern from end: `.ill$` matches "hill" at the end of field value "A green mouse dashes across a hill"

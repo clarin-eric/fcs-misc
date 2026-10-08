@@ -1,8 +1,16 @@
 = Changelog
 
 [discrete]
+== 2026-10-07 -- Fixes
+
+* Fixed dataview namespace in example
+* Fixed "1 match" to "2 matches" in SVGs
+
+[discrete]
 == 2026-09-16 -- Publication of LexFCS (v1.0)
-// https://
+// https://zenodo.org/records/22791989
+// commit: 32c80e5fd4d22b66609f162b89f73fc732fc4d53
+// https://gitlab.gwdg.de/textplus/lexfcs-specification/-/commit/32c80e5fd4d22b66609f162b89f73fc732fc4d53
 
 * Specify field select mechanism (`x-fcs-lex-fields`)
 * LexCQL default field `lemma`, virtual index `any` to query all fields, more grammar-related fields
@@ -14,6 +22,8 @@
 [discrete]
 == 2025-06-20 -- Publication of LexFCS (v0.3)
 // https://zenodo.org/doi/10.5281/zenodo.15706299
+// commit: 9c583bb566c74d6d06739612a91173950a4d9167
+// https://gitlab.gwdg.de/textplus/lexfcs-specification/-/commit/9c583bb566c74d6d06739612a91173950a4d9167
 
 * Specify _Lex Fields_ in the _Endpoint Description_ for client self-configuration, describing what lex fields an endpoint supports for querying and that can appear in results (Lex Data View)
 * Change Lex Data View namespace to `http://clarin.eu/fcs/dataview/lex`
@@ -23,6 +33,8 @@
 [discrete]
 == 2024-12-16 -- Publication of LexFCS (v0.2)
 // https://zenodo.org/doi/10.5281/zenodo.14500586
+// commit: dfa09858514156dc5c0273993d1d015af2d8a6a5
+// https://gitlab.gwdg.de/textplus/lexfcs-specification/-/commit/dfa09858514156dc5c0273993d1d015af2d8a6a5
 // https://github.com/clarin-eric/fcs-misc/commit/dfa09858514156dc5c0273993d1d015af2d8a6a5
 // ...
 // https://github.com/clarin-eric/fcs-misc/commit/692d270dfb284ca142ce20dcea38633d01892314
